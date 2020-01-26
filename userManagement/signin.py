@@ -1,4 +1,4 @@
-from ICS499_LogonServer.database.mysqlDB import mysqlDB
+from database.mysqlDB import mysqlDB
 
 class signin:
     mysqlDB = ''
