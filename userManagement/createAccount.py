@@ -1,14 +1,15 @@
-from database.mysqlDB import mysqlDB
+from database.MysqlDB import MysqlDB
 
-class createAccount:
+class CreateAccount:
     mysqlDB = ''
-    username = ""
-    password = ""
+    test = ''
+    username = ''
+    password = ''
 
-    def __init__(self):
-        self.mysqlDB = mysqlDB('admin','ICS4992020','localhost','userdb')
+    def __init__(self, mysqlDB):
+        self.mysqlDB = mysqlDB
 
-    def createAccount(parsedData):
+    def createAccount(self, parsedData):
 		#mysqldb getPassword
         print("Inside createAccount")
 		#compare password to given getPassword
