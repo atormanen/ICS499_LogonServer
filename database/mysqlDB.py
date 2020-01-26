@@ -2,13 +2,15 @@ import mysql.connector
 from database.queryBuilder import queryBuilder
 
 class mysqlDB:
-    builder = queryBuilder('temperature')
+    builder = ''
     user = "admin"
     password = "ICS4992020"
-    host = "chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com"
-    database = ""
+    #host = "chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com"
+    host = 'localhost'
+    database = "userdb"
 
     def __init__(self, user, password, host, database):
+        self.builder = queryBuilder()
         self.user = user
         self.password = password
         self.host = host
@@ -27,5 +29,17 @@ class mysqlDB:
         cursor.close()
         cnx.close()
 
-    def getPassword(self,username):
-        return false
+    def getPasswordFor(self, username):
+        selectStatement = self.builder.getPasswordFor(username)
+        cnx = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host,
+                              database=self.database,
+                              use_pure=False)
+        cursor = cnx.cursor()
+
+        data = cursor.execute(selectStatement)
+        print(data)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        return self.builder.getPasswordFor(username)

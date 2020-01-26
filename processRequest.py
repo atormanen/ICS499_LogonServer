@@ -1,23 +1,17 @@
-from userManagement import signin
+from userManagement import *
 
 
 class processRequest:
+    signin = signin()
+    createAccount = createAccount()
     requestType = ''
     parsedData = ''
-    signin = signin()
-    lobby = lobby()
-    gameMangement = move()
 
     def proccesRequestType(self, parsedData):
+        self.parsedData = parsedData
         if parsedData["requestType"] == "signin":
-            signin.signin()
-        elif parsedData["requestType"] == "lobby":
-            lobby.lobby()
-        elif parsedData["requestType"] == "move":
-            print(parsedData["requestType"])
-        elif parsedData["requestType"] == "leaderboards":
-            print(parsedData["requestType"])
+            signin.signin(parsedData)
         elif parsedData["requestType"] == "createAccount":
-            print(parsedData["requestType"])
+            createAccount.createAccount(parsedData)
         else:
             return True

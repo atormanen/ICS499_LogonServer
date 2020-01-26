@@ -1,17 +1,15 @@
 import socket
 import sys
-from database.mysqlDB import mysqlDB
 from _thread import *
 import threading
 import json
 from processRequest import *
 
-db = mysqlDB('ICS499','CarmenDiane2019!','127.0.0.1','WeatherDataTest')
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 hostname = socket.gethostname()
-serverIp = '18.220.27.139'
-#serverIp = '192.168.1.174'
+#serverIp = '18.220.27.139'
+serverIp = '192.168.1.174'
 portNumber = 12345
 bufferSize = 1024
 processReq = processRequest()
