@@ -1,4 +1,4 @@
-from database.MysqlDB import MysqlDB
+#from database.MysqlDB import MysqlDB
 
 class CreateAccount:
     mysqlDB = ''

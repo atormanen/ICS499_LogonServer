@@ -8,7 +8,7 @@ from processRequest import *
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 hostname = socket.gethostname()
-serverIp = '10.0.0.243'
+#serverIp = '10.0.0.243'
 #serverIp = '192.168.1.174'
 portNumber = 12345
 bufferSize = 1024
