@@ -17,6 +17,7 @@ class Listener:
 
 
     def __init__(self):
+        print("inside init")
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.bufferSize = 1024
         self.portNumber = 12345
