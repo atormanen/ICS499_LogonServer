@@ -3,7 +3,7 @@ from userManagement.CreateAccount import CreateAccount
 from database.MysqlDB import MysqlDB
 
 
-class processRequest:
+class ProcessRequest:
     requestType = ''
     parsedData = ''
 
