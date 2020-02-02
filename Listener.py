@@ -12,7 +12,7 @@ class Listener:
     #serverIp = ''
     #portNumber = 0
     #bufferSize = 0
-    #processReq = processRequest()
+    processReq = ProcessRequest()
 
 
 
