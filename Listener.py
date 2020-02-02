@@ -3,7 +3,8 @@ import sys
 #from _thread import *
 from threading import Thread
 import json
-from processRequest import *
+from ProcessRequest import *
+from multiprocessing import Process
 
 class Listener:
     #serverSocket = ''
@@ -42,7 +43,7 @@ class Listener:
             self.serverIp = IP
 
 
-    def sendBadRequest(connectionSocket):
+    def sendBadRequest(self,connectionSocket):
         #print("Error-bad request")
         msg = "ERROR - BAD REQUEST"
         connectionSocket.send(msg.encode())
@@ -55,18 +56,18 @@ class Listener:
             if bufferExceeded:
                 try:
                     connectionSocket.settimeout(3)
-                    rcvd_msg = connectionSocket.recv(bufferSize).decode()
+                    rcvd_msg = connectionSocket.recv(self.bufferSize).decode()
                 except socket.timeout as err:
                     #Expecting a timeout
                     break
             else:
-                rcvd_msg = connectionSocket.recv(bufferSize).decode()
+                rcvd_msg = connectionSocket.recv(self.bufferSize).decode()
             full_msg += rcvd_msg
             if(len(rcvd_msg) == 0):
                 break
-            elif len(rcvd_msg) < bufferSize:
+            elif len(rcvd_msg) < self.bufferSize:
                 break
-            elif len(rcvd_msg) == bufferSize:
+            elif len(rcvd_msg) == self.bufferSize:
                 rcvd_msg = ''
                 bufferExceeded = True
         #print(full_msg)
@@ -76,8 +77,8 @@ class Listener:
             sendBadRequest(connectionSocket)
             return
         #returns true if bad request
-        if(processReq.proccesRequestType(parsedData)):
-            sendBadRequest(connectionSocket)
+        if(self.processReq.proccesRequestType(parsedData)):
+            self.sendBadRequest(connectionSocket)
 
     def listen(self):
         while True:
@@ -85,13 +86,13 @@ class Listener:
             try:
                 connectionSocket, addr = self.serverSocket.accept()
                 counter = 0
-                thread = Thread(target=processRequest,args=(connectionSocket,))
+                thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
                 thread.join()
                 #start_new_thread(processRequest, (connectionSocket,))
                 #db.mysqlDump(full_msg)
             except IOError:
-                print(IOError)
+                print('IOError')
                 connectionSocket.close()
 
     def createListener(self):

@@ -13,6 +13,7 @@ class ProcessRequest:
         self.createAccount = CreateAccount(self.mysqlDB)
 
     def proccesRequestType(self, parsedData):
+        print('inside proccesRequestType')
         self.parsedData = parsedData
         if parsedData["requestType"] == "signin":
             self.signin.signin(parsedData)
