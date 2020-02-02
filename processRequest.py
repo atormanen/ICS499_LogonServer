@@ -4,9 +4,6 @@ from database.MysqlDB import MysqlDB
 
 
 class processRequest:
-    mysqlDB = ''
-    signin = ''
-    createAccount = ''
     requestType = ''
     parsedData = ''
 

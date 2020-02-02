@@ -6,10 +6,12 @@ class Controller:
 
     def __init__(self):
         self.listener = Listener()
-        listener.listen()
+
         #createListener()
 
-    def createListener():
+    def createListener(self):
+        self.listener.createListener()
+        self.listener.listen()
         process = Process(target=listener.listen, args=(listener,))
         process.start()
         process.join()
@@ -21,4 +23,6 @@ def main():
 
 
 if __name__ == '__main__':
+    c = Controller()
+    c.createListener()
     main()
