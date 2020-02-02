@@ -6,7 +6,8 @@ class Controller:
 
     def __init__(self):
         self.listener = Listener()
-        createListener()
+        listener.listen()
+        #createListener()
 
     def createListener():
         process = Process(target=listener.listen, args=(listener,))
