@@ -13,12 +13,13 @@ class Listener:
     #serverIp = ''
     #portNumber = 0
     #bufferSize = 0
-    processReq = ProcessRequest()
+    #processReq = ProcessRequest()
 
 
 
-    def __init__(self):
+    def __init__(self, requestQueue):
         print("inside init")
+        self.requestQueue = requestQueue
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.bufferSize = 1024
         self.portNumber = 12345
@@ -74,23 +75,27 @@ class Listener:
         try:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
-            sendBadRequest(connectionSocket)
-            return
-        #returns true if bad request
-        if(self.processReq.proccesRequestType(parsedData)):
             self.sendBadRequest(connectionSocket)
+            return
+        if parsedData["requestType"] == "sigin":
+            self.sendBadRequest(connectionSocket)
+        elif parsedData["requestType"] != "createAccount":
+            self.sendBadRequest(connectionSocket)
+        else:
+            self.requestQueue.put(RequestItem(connectionSocket,parsedData))
+
 
     def listen(self):
-        while True:
-            print('inside listen()')
+        counter = 0
+        while True:     
+            print(counter)
+            counter = counter + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
-                counter = 0
+
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
                 thread.join()
-                #start_new_thread(processRequest, (connectionSocket,))
-                #db.mysqlDump(full_msg)
             except IOError:
                 print('IOError')
                 connectionSocket.close()

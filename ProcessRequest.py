@@ -1,19 +1,19 @@
 from userManagement.Signin import Signin
 from userManagement.CreateAccount import CreateAccount
 from database.MysqlDB import MysqlDB
-
+from threading import Thread
 
 class ProcessRequest:
     requestType = ''
     parsedData = ''
 
-    def __init__(self):
-        self.mysqlDB = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
-        self.signin = Signin(self.mysqlDB)
-        self.createAccount = CreateAccount(self.mysqlDB)
+    def __init__(self, database, requestQueue):
+        self.requestQueue = requestQueue
+        self.database = database
+        self.signin = Signin(self.database)
+        self.createAccount = CreateAccount(self.database)
 
     def proccesRequestType(self, parsedData):
-        print('inside proccesRequestType')
         self.parsedData = parsedData
         if parsedData["requestType"] == "signin":
             self.signin.signin(parsedData)
@@ -21,3 +21,7 @@ class ProcessRequest:
             self.createAccount.createAccount(parsedData)
         else:
             return True
+    def processRequests(self):
+        requestItem = self.requestQueue.get()
+        thread = Thread(target=self.proccesRequestType, args=(requestedItem.parsedData,))
+        thread.start()
