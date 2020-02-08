@@ -76,7 +76,7 @@ class Listener:
     def listen(self):
         counter = 0
         while True:
-            print(counter)
+            #print(counter)
             counter = counter + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
@@ -84,7 +84,7 @@ class Listener:
                 thread.start()
                 thread.join()
             except IOError:
-                print('IOError')
+                #print('IOError')
                 connectionSocket.close()
 
     def createListener(self):

@@ -22,7 +22,7 @@ class Controller:
     def createRequestProcessors(self):
         processes = []
         for i in range(os.cpu_count()):
-            print('Createing processes %d' % i)
+            #print('Createing processes %d' % i)
             processes.append(Process(target=self.createRequestProcessor))
         for i in processes:
             i.start()
