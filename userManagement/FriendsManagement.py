@@ -7,7 +7,7 @@ class FriendsList:
 
     def getFriendsList(self, parsedData):
 		#connect to mysqldb to get FriendsList
-		return False
+	    return False
 
 
 class SendFreindRequest:
