@@ -25,7 +25,7 @@ class ProcessRequest:
 
     def processRequests(self):
         while True:
-            print("waiting on req queue - PID: ", os.getpid())
+            #print("waiting on req queue - PID: ", os.getpid())
             requestItem = self.requestQueue.get()
 
             #Decrypt parsedData

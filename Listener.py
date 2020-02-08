@@ -20,7 +20,7 @@ class Listener:
     def createSocket(self):
         self.serverSocket.bind((self.serverIp,self.portNumber))
         self.serverSocket.listen(5)
-        print("Server Initialized on ", self.serverIp, ":", self.portNumber)
+        #print("Server Initialized on ", self.serverIp, ":", self.portNumber)
 
     def set_ip(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
