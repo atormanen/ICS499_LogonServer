@@ -1,8 +1,6 @@
 #from database.MysqlDB import MysqlDB
 
 class CreateAccount:
-    mysqlDB = ''
-    test = ''
     username = ''
     password = ''
 
@@ -10,9 +8,13 @@ class CreateAccount:
         self.mysqlDB = mysqlDB
 
     def createAccount(self, parsedData):
-		#mysqldb getPassword
-        print("Inside createAccount")
-		#compare password to given getPassword
+		#check if username exists
+        #return false if username alread exists
+        checkUsernameAvailability(parsedData["username"])
+        #call mysqlDB to create CreateAccount
 
-		#if signin succussful return true, else increment unssucsussful signin and
-		#return False
+        #if account createion succussful return true otherwise False
+        return False
+
+    def checkUsernameAvailability(self,username):
+        return False

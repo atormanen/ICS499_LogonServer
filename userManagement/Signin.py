@@ -7,12 +7,16 @@ class Signin:
         self.mysqlDB = mysqlDB
 
     def signin(self, parsedData):
-
-		#mysqldb getPassword
         username = parsedData["username"]
-        print("Inside signin")
-		#compare password to given getPassword
+        password = parsedData["password"]
+
+		#get password from mysqldb
         password = self.mysqlDB.getPasswordFor(username)
-        print(password)
+		#compare password to given getPassword
+
 		#if signin succussful return true, else increment unssucsussful signin and
 		#return False
+
+    def signinFailed(self):
+        #connect to db and increment signin signinFailed
+        return False

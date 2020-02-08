@@ -5,26 +5,17 @@ from threading import Thread
 import json
 from ProcessRequest import *
 from multiprocessing import Process
+from RequestItem import RequestItem
 
 class Listener:
-    #serverSocket = ''
-
     hostname = socket.gethostname()
-    #serverIp = ''
-    #portNumber = 0
-    #bufferSize = 0
-    #processReq = ProcessRequest()
-
-
 
     def __init__(self, requestQueue):
-        print("inside init")
         self.requestQueue = requestQueue
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.bufferSize = 1024
         self.portNumber = 12345
         self.serverIp = ''
-
 
     def createSocket(self):
         self.serverSocket.bind((self.serverIp,self.portNumber))
@@ -76,23 +67,19 @@ class Listener:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
             self.sendBadRequest(connectionSocket)
+            print("Badd req from listener")
             return
-        if parsedData["requestType"] == "sigin":
-            self.sendBadRequest(connectionSocket)
-        elif parsedData["requestType"] != "createAccount":
-            self.sendBadRequest(connectionSocket)
-        else:
-            self.requestQueue.put(RequestItem(connectionSocket,parsedData))
+        reqItem = RequestItem(connectionSocket,parsedData)
+        self.requestQueue.put(reqItem)
 
 
     def listen(self):
         counter = 0
-        while True:     
+        while True:
             print(counter)
             counter = counter + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
-
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
                 thread.join()

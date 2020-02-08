@@ -29,10 +29,12 @@ class Controller:
 
     def createListener(self):
         self.listener.createListener()
-        self.listener.listen()
-        thread = Thread(target=listener.listen, args=(listener,))
+        #self.listener.listen()
+        thread = Thread(target=self.listener.listen)
         thread.start()
         thread.join()
+
+
 
 def main():
     print('inside main')
