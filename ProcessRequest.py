@@ -12,12 +12,12 @@ class ProcessRequest:
     parsedData = ''
 
     def __init__(self, requestQueue):
+        self.database = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
         self.createAccount = CreateAccount(self.database)
         self.reqValidation = Validation()
         self.responder = Responder()
-        self.mysqlDB = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
 
     def proccesRequestType(self, reqItem):
         if self.reqValidation.isBadRequest(reqItem.parsedData):
