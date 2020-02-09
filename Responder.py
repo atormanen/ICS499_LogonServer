@@ -14,3 +14,7 @@ class Responder:
 
     def sendRequestedData(self,connectionSocket,reqestedData):
         connectionSocket.send(requestedData.encode())
+
+    def sendAccountCreationStatus(self, connectionSocket,status):
+        status = '' + status
+        connectionSocket.send(status.encode())

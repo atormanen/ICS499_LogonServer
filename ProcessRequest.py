@@ -12,7 +12,8 @@ class ProcessRequest:
     parsedData = ''
 
     def __init__(self, requestQueue):
-        self.database = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
+        #self.database = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
+        self.database = MysqlDB('app','123','192.168.1.174','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
         self.createAccount = CreateAccount(self.database)
@@ -27,7 +28,12 @@ class ProcessRequest:
             #self.sendBadRequest(connectionSocket)
             return False
         elif parsedData["requestType"] == "createAccount":
-            self.createAccount.createAccount(reqItem.parsedData)
+            result = self.createAccount.createAccount(reqItem.parsedData)
+            if result == True:
+                returnStatus = "AccountCreationSuccusful"
+            elif result == False:
+                returnStatus = "AccountCreationFailed"
+            self.responder.sendAccountCreationStatus(reqItem.connectionSocket, returnStatus)
             return False
         elif parsedData["requestType"] == "getUserStats":
             return False

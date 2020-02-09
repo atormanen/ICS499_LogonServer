@@ -3,11 +3,11 @@ from database.queryBuilder import queryBuilder
 
 class MysqlDB:
     builder = ''
-    user = "admin"
-    password = "ICS4992020"
-    host = "chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com"
+    #user = "admin"
+    #password = "ICS4992020"
+    #host = "chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com"
     #host = 'localhost'
-    database = "userdb"
+    #database = "userdb"
 
     def __init__(self, user, password, host, database):
         self.builder = queryBuilder()
@@ -45,13 +45,14 @@ class MysqlDB:
         return False
 
     def validateUserExists(self, username, userId):
+        print("Inside db")
         cnx = mysql.connector.connect(user=self.user, password=self.password,
                               host=self.host,
                               database=self.database,
                               use_pure=False)
         cursor = cnx.cursor()
 
-        cursor.execute("SELECT EXISTS(SLECT username FROM user WHERE username = " + username + " );")
+        cursor.execute(validateUserExists(username))
         result = cnx.fetchall()
         #cursor.close()
         #cnx.close()
@@ -59,10 +60,35 @@ class MysqlDB:
         return result
 
     def validateUsernameAvailable(self, username):
+        cnx = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host,
+                              database=self.database,
+                              auth_plugin='mysql_native_password')
+        cursor = cnx.cursor()
 
-        return False
+        cursor.execute(self.builder.validateUsernameAvailable(username))
+        result = cursor.fetchall()
+        cursor.close()
+        cnx.close()
+        intResult = result[0][0]
+        return intResult
 
     def createUser(self, parsedData):
+
+        cnx = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host,
+                              database=self.database,
+                              auth_plugin='mysql_native_password')
+        cursor = cnx.cursor()
+        cursor.execute(self.builder.getLastUserId())
+        id = cursor.fetchall()
+        id = str(id[0][0] + 1)
+        cursor.execute(self.builder.createUser(id,parsedData))
+        cnx.commit()
+        cursor.execute(self.builder.createUserStats(id))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
         return False
 
     def getFriendsList(self, username, userId):
