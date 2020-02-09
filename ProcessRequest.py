@@ -22,6 +22,7 @@ class ProcessRequest:
     def proccesRequestType(self, reqItem):
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)
+        parsedData = reqItem.parsedData
         if parsedData["requestType"] == "signin":
             #self.sendBadRequest(connectionSocket)
             return False
