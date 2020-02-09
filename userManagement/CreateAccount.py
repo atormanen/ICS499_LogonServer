@@ -10,7 +10,7 @@ class CreateAccount:
     def createAccount(self, parsedData):
 		#check if username exists
         #return false if username alread exists
-        checkUsernameAvailability(parsedData["username"])
+        self.checkUsernameAvailability(parsedData["username"])
         #call mysqlDB to create CreateAccount
 
         #if account createion succussful return true otherwise False
