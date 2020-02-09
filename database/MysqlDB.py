@@ -45,9 +45,21 @@ class MysqlDB:
         return False
 
     def validateUserExists(self, username, userId):
-        return False
+        cnx = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host,
+                              database=self.database,
+                              use_pure=False)
+        cursor = cnx.cursor()
+
+        cursor.execute("SELECT EXISTS(SLECT username FROM user WHERE username = " + username + " );")
+        result = cnx.fetchall()
+        #cursor.close()
+        #cnx.close()
+        print(result)
+        return result
 
     def validateUsernameAvailable(self, username):
+
         return False
 
     def createUser(self, parsedData):

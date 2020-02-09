@@ -13,7 +13,7 @@ class Controller:
     def __init__(self):
         self.requestQueue = multiprocessing.Queue()
         self.listener = Listener(self.requestQueue)
-        self.mysqlDB = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
+        
 
     def createRequestProcessor(self):
         req = ProcessRequest(self.mysqlDB, self.requestQueue)

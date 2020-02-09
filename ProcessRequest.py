@@ -11,17 +11,34 @@ class ProcessRequest:
     requestType = ''
     parsedData = ''
 
-    def __init__(self, database, requestQueue):
+    def __init__(self, requestQueue):
         self.requestQueue = requestQueue
-        self.database = database
         self.signin = Signin(self.database)
         self.createAccount = CreateAccount(self.database)
         self.reqValidation = Validation()
         self.responder = Responder()
+        self.mysqlDB = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
 
     def proccesRequestType(self, reqItem):
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)
+        if parsedData["requestType"] == "signin":
+            #self.sendBadRequest(connectionSocket)
+            return False
+        elif parsedData["requestType"] == "createAccount":
+            self.createAccount.createAccount(reqItem.parsedData)
+            return False
+        elif parsedData["requestType"] == "getUserStats":
+            return False
+        elif parsedData["requestType"] == "getFriendsList":
+            return False
+        elif parsedData["requestType"] == "sendFriendRequest":
+            return False
+        elif parsedData["requestType"] == "validateFriendRequest":
+            return False
+        else:
+            #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
+            return True
 
     def processRequests(self):
         while True:

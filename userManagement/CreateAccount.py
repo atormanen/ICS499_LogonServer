@@ -17,4 +17,5 @@ class CreateAccount:
         return False
 
     def checkUsernameAvailability(self,username):
+        self.mysqlDB.validateUsernameAvailable(username)
         return False
