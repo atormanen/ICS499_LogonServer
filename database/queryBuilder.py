@@ -35,3 +35,6 @@ class queryBuilder:
 
     def createUserStats(self, id):
         return "INSERT INTO user_statistics VALUES("+ id +" ,0,0,0,0,0,1);"
+
+    def getFriendsList(self, id):
+        return "SELECT "

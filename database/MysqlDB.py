@@ -92,6 +92,17 @@ class MysqlDB:
         return False
 
     def getFriendsList(self, username, userId):
+        cnx = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host,
+                              database=self.database,
+                              auth_plugin='mysql_native_password')
+        cursor = cnx.cursor()
+        cursor.execute(self.builder.createUser(id,parsedData))
+        cnx.commit()
+        cursor.execute(self.builder.createUserStats(id))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
         return False
 
     def getUserInfo(self, username, userId):
