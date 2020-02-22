@@ -1,4 +1,4 @@
-class Validation:
+class ValidateRequest:
 
     def __init__(self):
         self.num = 0

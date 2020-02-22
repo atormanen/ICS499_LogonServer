@@ -1,7 +1,6 @@
 import time
 import json
 class queryBuilder:
-    tableName = ''
 
     def __init__(self):
         self.tableName = 'test'
@@ -12,8 +11,8 @@ class queryBuilder:
         return insertStatement
 
     def getPasswordFor(self, username):
-        selectStatement = "SELECT password from player where username ='" +\
-            username + "'"
+        selectStatement = "SELECT password FROM user WHERE username ='" +\
+            username + "';"
         return selectStatement
 
     def validateUserExists(self,username):
@@ -37,4 +36,16 @@ class queryBuilder:
         return "INSERT INTO user_statistics VALUES("+ id +" ,0,0,0,0,0,1);"
 
     def getFriendsList(self, id):
-        return "SELECT "
+        querry = "select user.user_id, user.username \
+                    from user \
+                    inner join  friend_list \
+                    on user.user_id = friend_list.friend_id \
+                    where friend_list.user_id = " + str(id) + ";"
+        return querry
+
+    def getUserId(self, username):
+        querry = "SELECT user_id FROM user WHERE username = " + username + ";"
+        return querry
+
+    def getUserStats(self, id):
+        querry = "SELECT * FROM user_statistics WHERE user_id = " + id + ";"

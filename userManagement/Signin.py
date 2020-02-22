@@ -1,22 +1,22 @@
 #from ..mysqlDB import mysqlDB
 class Signin:
-    test = ''
-    mysqlDB = ''
 
     def __init__(self, mysqlDB):
         self.mysqlDB = mysqlDB
 
+    def validatePassword(self, username, password):
+        dbPassword = self.mysqlDB.getPasswordFor(username)
+        dbPassword = dbPassword[0][0]
+		#compare password to given getPassword
+        if(password == dbPassword):
+            return True
+        else:
+            return False
+
     def signin(self, parsedData):
         username = parsedData["username"]
         password = parsedData["password"]
-
-		#get password from mysqldb
-        password = self.mysqlDB.getPasswordFor(username)
-		#compare password to given getPassword
-
-		#if signin succussful return true, else increment unssucsussful signin and
-		#return False
-
-    def signinFailed(self):
-        #connect to db and increment signin signinFailed
-        return False
+        if(compareResult = self.validatePassword(username, password)):
+            #do the signin stuff
+        else:
+            retrun False

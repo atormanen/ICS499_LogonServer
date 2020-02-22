@@ -25,7 +25,7 @@ class ProcessRequest:
             self.responder.sendBadRequest(reqItem.connectionSocket)
         parsedData = reqItem.parsedData
         if parsedData["requestType"] == "signin":
-            #self.sendBadRequest(connectionSocket)
+            self.signin.signin(parsedData)
             return False
         elif parsedData["requestType"] == "createAccount":
             result = self.createAccount.createAccount(reqItem.parsedData)
@@ -51,7 +51,5 @@ class ProcessRequest:
         while True:
             #print("waiting on req queue - PID: ", os.getpid())
             requestItem = self.requestQueue.get()
-
             #Decrypt parsedData
-
             self.proccesRequestType(requestItem)

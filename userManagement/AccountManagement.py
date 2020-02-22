@@ -1,6 +1,6 @@
 #from database.MysqlDB import MysqlDB
 
-class CreateAccount:
+class AccountManagement:
     username = ''
     password = ''
 

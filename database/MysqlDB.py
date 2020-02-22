@@ -1,13 +1,7 @@
 import mysql.connector
 from database.queryBuilder import queryBuilder
-
+#from queryBuilder import queryBuilder
 class MysqlDB:
-    builder = ''
-    #user = "admin"
-    #password = "ICS4992020"
-    #host = "chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com"
-    #host = 'localhost'
-    #database = "userdb"
 
     def __init__(self, user, password, host, database):
         self.builder = queryBuilder()
@@ -16,97 +10,64 @@ class MysqlDB:
         self.host = host
         self.database = database
 
-    def mysqlDump(self, data):
-        insertStatement = self.builder.buildQuery(data)
-        cnx = mysql.connector.connect(user=self.user, password=self.password,
+    def dbInsert(self, statement):
+        mydb = mysql.connector.connect(user=self.user, password=self.password,
                               host=self.host,
                               database=self.database,
-                              use_pure=False)
-        cursor = cnx.cursor()
-
-        cursor.execute(insertStatement)
-        cnx.commit()
+                              auth_plugin='mysql_native_password')
+        cursor = mydb.cursor()
+        cursor.execute(statement)
+        mydb.commit()
         cursor.close()
-        cnx.close()
+        mydb.close()
 
-    def getPasswordFor(self, username, userId):
-        selectStatement = self.builder.getPasswordFor(username)
-        cnx = mysql.connector.connect(user=self.user, password=self.password,host=self.host,database=self.database,use_pure=True)
-        cursor = cnx.cursor()
+    def dbFetch(self, statement):
+        mydb = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host,
+                              database=self.database,
+                              auth_plugin='mysql_native_password')
+        cursor = mydb.cursor()
+        cursor.execute(statement)
+        result = cursor.fetchall()
+        return result
 
-        data = cursor.execute(selectStatement)
-        print(data)
-        cnx.commit()
-        cursor.close()
-        cnx.close()
-        return self.builder.getPasswordFor(username)
+    def getPasswordFor(self, username):
+        print('getting pass')
+        result = self.dbFetch(self.builder.getPasswordFor(username))
+        return result
 
     def incrementSigninFailed(self):
         return False
 
-    def validateUserExists(self, username, userId):
-        print("Inside db")
-        cnx = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              use_pure=False)
-        cursor = cnx.cursor()
-
-        cursor.execute(validateUserExists(username))
-        result = cnx.fetchall()
-        #cursor.close()
-        #cnx.close()
-        print(result)
+    def validatekUserExists(self, username):
+        statement = self.builder.validateUserExists(username)
+        result = self.dbFetch(statement)
         return result
 
+    #Returns 1\true if exits, false\0 if not
     def validateUsernameAvailable(self, username):
-        cnx = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = cnx.cursor()
-
-        cursor.execute(self.builder.validateUsernameAvailable(username))
-        result = cursor.fetchall()
-        cursor.close()
-        cnx.close()
+        statement = self.builder.validateUsernameAvailable(username)
+        result = self.dbFetch(statement)
         intResult = result[0][0]
         return intResult
 
     def createUser(self, parsedData):
-
-        cnx = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = cnx.cursor()
-        cursor.execute(self.builder.getLastUserId())
-        id = cursor.fetchall()
+        id = self.dbFetch(self.builder.getLastUserId())
+        #id = cursor.fetchall()
         id = str(id[0][0] + 1)
-        cursor.execute(self.builder.createUser(id,parsedData))
-        cnx.commit()
-        cursor.execute(self.builder.createUserStats(id))
-        cnx.commit()
-        cursor.close()
-        cnx.close()
+        self.dbInsert(self.builder.createUser(id,parsedData))
+        self.dbInsert(self.builder.createUserStats(id))
+
+
+    def getFriendsList(self, username):
+        result = self.dbFetch(self.builder.getFriendsList(userId))
+        return result
+
+    def getUserInfo(self, username):
+
         return False
 
-    def getFriendsList(self, username, userId):
-        cnx = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = cnx.cursor()
-        cursor.execute(self.builder.createUser(id,parsedData))
-        cnx.commit()
-        cursor.execute(self.builder.createUserStats(id))
-        cnx.commit()
-        cursor.close()
-        cnx.close()
-        return False
-
-    def getUserInfo(self, username, userId):
-        return False
-
-    def getUserStats(self, username, userId):
-        return False
+    def getUserStats(self, username):
+        id = self.dbFetch(builder.getUserId(username))
+        result = self.dbFetch(self.builder.getUserStats(userId))
+        return result
