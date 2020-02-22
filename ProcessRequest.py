@@ -1,11 +1,11 @@
 from userManagement.Signin import Signin
-from userManagement.CreateAccount import CreateAccount
-from userManagement.Validation import Validation
+from userManagement.AccountManagement import AccountManagement
+from userManagement.ValidateRequest import ValidateRequest
 from database.MysqlDB import MysqlDB
 from threading import Thread
 from Responder import Responder
 import os
-from userManagement.FriendsManagement import *
+from userManagement.FriendsManagement import FriendsManagement
 
 class ProcessRequest:
     requestType = ''
@@ -16,7 +16,7 @@ class ProcessRequest:
         self.database = MysqlDB('app','123','192.168.1.174','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
-        self.createAccount = CreateAccount(self.database)
+        self.createAccount = AccountManagement(self.database)
         self.reqValidation = Validation()
         self.responder = Responder()
 
