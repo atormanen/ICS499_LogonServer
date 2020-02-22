@@ -16,7 +16,7 @@ class Signin:
     def signin(self, parsedData):
         username = parsedData["username"]
         password = parsedData["password"]
-        if(compareResult = self.validatePassword(username, password)):
+        if(compareResult == self.validatePassword(username, password)):
             #do the signin stuff
         else:
             retrun False
