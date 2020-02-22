@@ -17,7 +17,7 @@ class ProcessRequest:
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
         self.createAccount = AccountManagement(self.database)
-        self.reqValidation = Validation()
+        self.reqValidation = ValidateRequest()
         self.responder = Responder()
 
     def proccesRequestType(self, reqItem):
