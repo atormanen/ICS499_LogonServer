@@ -10,8 +10,7 @@ class Signin:
 		#compare password to given getPassword
         if(password == dbPassword):
             return True
-        else:
-            return False
+        return False
 
     def signin(self, parsedData):
         username = parsedData["username"]
