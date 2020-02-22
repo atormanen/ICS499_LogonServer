@@ -17,5 +17,5 @@ class Signin:
         password = parsedData["password"]
         if(compareResult == self.validatePassword(username, password)):
             #do the signin stuff
-        else:
-            retrun False
+            return True
+        return False
