@@ -1,4 +1,4 @@
-#from ..mysqlDB import mysqlDB
+#Signin will handle the mechanics of signing a user in
 class Signin:
 
     def __init__(self, mysqlDB):

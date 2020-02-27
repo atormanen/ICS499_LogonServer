@@ -1,4 +1,4 @@
-#from database.MysqlDB import MysqlDB
+#Is this class nececary? Should it be combined with signin?
 
 class AccountManagement:
     username = ''

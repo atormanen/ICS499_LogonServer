@@ -7,9 +7,12 @@ from ProcessRequest import ProcessRequest
 import os
 import queue
 
+#Controller will initilaize all the objects and processes needed
+#for the applications. It will sping up a few request request processors
+#and then run the listener thread.
 class Controller:
-    #listener = ''
 
+    #requestQueue is shared queue among all processes
     def __init__(self):
         self.requestQueue = multiprocessing.Queue()
         self.listener = Listener(self.requestQueue)
@@ -34,8 +37,7 @@ class Controller:
         thread.start()
         thread.join()
 
-
-
+    
 def main():
     print('inside main')
 

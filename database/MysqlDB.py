@@ -1,6 +1,9 @@
 import mysql.connector
 from database.queryBuilder import queryBuilder
 #from queryBuilder import queryBuilder
+
+#MysqlDB is a class used to implement common database queries programaticly. It
+#uses the querryBuilder class which holds the actual mysql syntax.
 class MysqlDB:
 
     def __init__(self, user, password, host, database):
@@ -53,7 +56,6 @@ class MysqlDB:
 
     def createUser(self, parsedData):
         id = self.dbFetch(self.builder.getLastUserId())
-        #id = cursor.fetchall()
         id = str(id[0][0] + 1)
         self.dbInsert(self.builder.createUser(id,parsedData))
         self.dbInsert(self.builder.createUserStats(id))

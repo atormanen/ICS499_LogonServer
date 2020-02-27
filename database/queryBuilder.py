@@ -1,5 +1,7 @@
 import time
 import json
+#This class holds all the mysql syntax for the sql class
+## TODO: change MysqlDB to db and change querry builder to mysqlQuerry
 class queryBuilder:
 
     def __init__(self):

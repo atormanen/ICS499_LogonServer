@@ -1,5 +1,5 @@
-#from database.MysqlDB import MysqlDB
-
+#Friends management will handle the mechanics of sending freinds reqeusts,
+#handeling friends lists, and accepting fiend requests
 class FriendsManagement:
 
     def __init__(self, mysqlDB):

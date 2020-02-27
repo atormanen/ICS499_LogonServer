@@ -1,3 +1,6 @@
+#Validate request will check the initial variable to see what kind of request
+#type it is.
+## TODO: Check the entire json object for apropriate fields and not just the req type
 class ValidateRequest:
 
     def __init__(self):

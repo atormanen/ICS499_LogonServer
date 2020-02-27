@@ -8,9 +8,10 @@ import os
 from userManagement.FriendsManagement import FriendsManagement
 
 class ProcessRequest:
-    requestType = ''
-    parsedData = ''
 
+    #PrecessReqeust is set up to be a seperate process in the OS and
+    #will hold the shared request queue object. It will pull requests
+    #from the queue as they are inserted from the listener
     def __init__(self, requestQueue):
         #self.database = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
         self.database = MysqlDB('app','123','192.168.1.174','userdb')
@@ -20,10 +21,13 @@ class ProcessRequest:
         self.reqValidation = ValidateRequest()
         self.responder = Responder()
 
+    ## TODO: find a better way to process these requests types. 
     def proccesRequestType(self, reqItem):
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)
+
         parsedData = reqItem.parsedData
+
         if parsedData["requestType"] == "signin":
             self.signin.signin(parsedData)
             return False
@@ -47,9 +51,10 @@ class ProcessRequest:
             #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
             return True
 
+    #The process thread will block on requestQueue.get() until something
+    #arrives.
     def processRequests(self):
         while True:
-            #print("waiting on req queue - PID: ", os.getpid())
             requestItem = self.requestQueue.get()
             #Decrypt parsedData
             self.proccesRequestType(requestItem)

@@ -7,15 +7,18 @@ from ProcessRequest import *
 from multiprocessing import Process
 from RequestItem import RequestItem
 
+#Class listener is used to listen on a servers ip address and port portNumber
+#12345 for incoming requests.
 class Listener:
     hostname = socket.gethostname()
-
+    
     def __init__(self, requestQueue):
         self.requestQueue = requestQueue
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.bufferSize = 1024
         self.portNumber = 12345
         self.serverIp = ''
+        self.reqCount = 0
 
     def createSocket(self):
         self.serverSocket.bind((self.serverIp,self.portNumber))
@@ -74,14 +77,14 @@ class Listener:
 
 
     def listen(self):
-        counter = 0
         while True:
             #print(counter)
-            counter = counter + 1
+            selr.reqCount = reqCount + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
+                #is thread.join nececary?
                 thread.join()
             except IOError:
                 #print('IOError')
