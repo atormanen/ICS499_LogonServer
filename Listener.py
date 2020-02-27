@@ -11,7 +11,7 @@ from RequestItem import RequestItem
 #12345 for incoming requests.
 class Listener:
     hostname = socket.gethostname()
-    
+
     def __init__(self, requestQueue):
         self.requestQueue = requestQueue
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -65,12 +65,12 @@ class Listener:
             elif len(rcvd_msg) == self.bufferSize:
                 rcvd_msg = ''
                 bufferExceeded = True
-        #print(full_msg)
+        print("TEST",full_msg)
         try:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
             self.sendBadRequest(connectionSocket)
-            print("Badd req from listener")
+            #print("Badd req from listener")
             return
         reqItem = RequestItem(connectionSocket,parsedData)
         self.requestQueue.put(reqItem)
