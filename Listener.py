@@ -65,7 +65,7 @@ class Listener:
             elif len(rcvd_msg) == self.bufferSize:
                 rcvd_msg = ''
                 bufferExceeded = True
-        print("TEST",full_msg)
+        print("TEST ",self.reqCount,"  ",full_msg)
         try:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
@@ -85,7 +85,7 @@ class Listener:
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
                 #is thread.join nececary?
-                thread.join()
+                #thread.join()
             except IOError:
                 #print('IOError')
                 connectionSocket.close()
