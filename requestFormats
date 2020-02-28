@@ -3,7 +3,7 @@ requestTypes: signin, createAccount, getUserStats, sendFriendRequest,
   validateFriendRequest
 
 User must be signed in for getUserStats, sendFriendRequest,and validateFriendRequest
-
+********************************************************
 signin
 {
   "requestType":"signin",
@@ -12,6 +12,13 @@ signin
   "publicKey":"pub key here"
 }
 
+signin response
+{
+  "reqeustType":"siginin",
+  "status":"succes", --- or failure
+  "token","blahblahblah" - or null if failure
+}
+********************************************************
 createAccount
 {
   "requestType":"createAccount",
@@ -22,19 +29,39 @@ createAccount
   "password":"test649845634684sdfsdf"
 }
 
+createAccount response
+{
+  "requestType":"createAccount",
+  "status":"succes" --- or failure
+}
+********************************************************
 getUserStats
 {
   "requestType":"getUserStats",
   "username":"testaccount1344",
 }
 
+return user stats
+********************************************************
 sendFriendRequest
 {
   "requestType":"sendFriendRequest",
   "username":"testaccount1344",
 }
-validateFriendRequest
+
+freind request sendRequestedData
+{
+  "requestType":"sendFriendRequest",
+  "status":"succus"
+}
+********************************************************
+acceptFriendRequest
 {
   "requestType":"validateFriendRequest",
   "username":"testaccount1344",
+}
+
+{
+  "requestType":"validateFriendRequest",
+  "status":"succus"
 }
