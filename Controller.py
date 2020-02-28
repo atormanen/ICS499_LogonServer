@@ -1,5 +1,5 @@
 from Listener import Listener
-from database.MysqlDB import MysqlDB
+from database.DB import DB
 from multiprocessing import Process
 import multiprocessing
 from threading import Thread
@@ -37,7 +37,7 @@ class Controller:
         thread.start()
         thread.join()
 
-    
+
 def main():
     print('inside main')
 

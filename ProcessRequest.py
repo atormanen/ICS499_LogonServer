@@ -1,7 +1,7 @@
 from userManagement.Signin import Signin
 from userManagement.AccountManagement import AccountManagement
 from userManagement.ValidateRequest import ValidateRequest
-from database.MysqlDB import MysqlDB
+from database.DB import DB
 from threading import Thread
 from Responder import Responder
 import os
@@ -13,15 +13,15 @@ class ProcessRequest:
     #will hold the shared request queue object. It will pull requests
     #from the queue as they are inserted from the listener
     def __init__(self, requestQueue):
-        #self.database = MysqlDB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
-        self.database = MysqlDB('app','123','192.168.1.174','userdb')
+        #self.database = DB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
+        self.database = DB('app','123','192.168.1.174','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
         self.createAccount = AccountManagement(self.database)
         self.reqValidation = ValidateRequest()
         self.responder = Responder()
 
-    ## TODO: find a better way to process these requests types. 
+    ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)

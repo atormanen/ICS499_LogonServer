@@ -79,7 +79,7 @@ class Listener:
     def listen(self):
         while True:
             #print(counter)
-            selr.reqCount = reqCount + 1
+            self.reqCount = self.reqCount + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))

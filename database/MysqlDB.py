@@ -1,75 +1,53 @@
-import mysql.connector
-from database.queryBuilder import queryBuilder
-#from queryBuilder import queryBuilder
-
-#MysqlDB is a class used to implement common database queries programaticly. It
-#uses the querryBuilder class which holds the actual mysql syntax.
+import time
+import json
+#This class holds all the mysql syntax for the sql class
+## TODO: change MysqlDB to db and change querry builder to mysqlQuerry
 class MysqlDB:
 
-    def __init__(self, user, password, host, database):
-        self.builder = queryBuilder()
-        self.user = user
-        self.password = password
-        self.host = host
-        self.database = database
+    def __init__(self):
+        self.tableName = 'test'
 
-    def dbInsert(self, statement):
-        mydb = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = mydb.cursor()
-        cursor.execute(statement)
-        mydb.commit()
-        cursor.close()
-        mydb.close()
-
-    def dbFetch(self, statement):
-        mydb = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = mydb.cursor()
-        cursor.execute(statement)
-        result = cursor.fetchall()
-        return result
+    def buildQuery(self, data):
+        now = time.strftime('%Y-%m-%d %H-%M-%S')
+        parsedData = json.loads(data)
+        return insertStatement
 
     def getPasswordFor(self, username):
-        print('getting pass')
-        result = self.dbFetch(self.builder.getPasswordFor(username))
-        return result
+        selectStatement = "SELECT password FROM user WHERE username ='" +\
+            username + "';"
+        return selectStatement
 
-    def incrementSigninFailed(self):
-        return False
+    def validateUserExists(self,username):
+        return "SELECT EXISTS(SLECT username FROM user WHERE username = " +\
+            username + " );"
 
-    def validatekUserExists(self, username):
-        statement = self.builder.validateUserExists(username)
-        result = self.dbFetch(statement)
-        return result
+    def validateUsernameAvailable(self,username):
+        return "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
+            username + "' );"
 
-    #Returns 1\true if exits, false\0 if not
-    def validateUsernameAvailable(self, username):
-        statement = self.builder.validateUsernameAvailable(username)
-        result = self.dbFetch(statement)
-        intResult = result[0][0]
-        return intResult
+    def getLastUserId(self):
+        return "SELECT MAX(user_id) FROM user;"
 
-    def createUser(self, parsedData):
-        id = self.dbFetch(self.builder.getLastUserId())
-        id = str(id[0][0] + 1)
-        self.dbInsert(self.builder.createUser(id,parsedData))
-        self.dbInsert(self.builder.createUserStats(id))
+    def createUser(self, id, parsedData):
+        return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
+            "','" +parsedData["firstName"] + "','" + parsedData["lastName"] +\
+            "','" + parsedData["email"] + "',0,'" + parsedData["password"] +\
+             "');"
 
+    def createUserStats(self, id):
+        return "INSERT INTO user_statistics VALUES("+ id +" ,0,0,0,0,0,1);"
 
-    def getFriendsList(self, username):
-        result = self.dbFetch(self.builder.getFriendsList(userId))
-        return result
+    def getFriendsList(self, id):
+        querry = "select user.user_id, user.username \
+                    from user \
+                    inner join  friend_list \
+                    on user.user_id = friend_list.friend_id \
+                    where friend_list.user_id = " + str(id) + ";"
+        return querry
 
-    def getUserInfo(self, username):
+    def getUserId(self, username):
+        querry = "SELECT user_id FROM user WHERE username = " + username + ";"
+        return querry
 
-        return False
-
-    def getUserStats(self, username):
-        id = self.dbFetch(builder.getUserId(username))
-        result = self.dbFetch(self.builder.getUserStats(userId))
-        return result
+    def getUserStats(self, id):
+        querry = "SELECT * FROM user_statistics WHERE user_id = " + id + ";"
