@@ -5,7 +5,7 @@ from threading import Thread
 import json
 from ProcessRequest import *
 from multiprocessing import Process
-from RequestItem import RequestItem
+from DataManagement.MessageItem import MessageItem
 
 #Class listener is used to listen on a servers ip address and port portNumber
 #12345 for incoming requests.
@@ -72,8 +72,8 @@ class Listener:
             self.sendBadRequest(connectionSocket)
             #print("Badd req from listener")
             return
-        reqItem = RequestItem(connectionSocket,parsedData)
-        self.requestQueue.put(reqItem)
+        msgItem = MessageItem(connectionSocket,parsedData)
+        self.requestQueue.put(msgItem)
 
 
     def listen(self):

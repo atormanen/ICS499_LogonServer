@@ -3,7 +3,7 @@ from userManagement.AccountManagement import AccountManagement
 from userManagement.ValidateRequest import ValidateRequest
 from database.DB import DB
 from threading import Thread
-from Responder import Responder
+from DataManagement.Responder import Responder
 import os
 from userManagement.FriendsManagement import FriendsManagement
 
