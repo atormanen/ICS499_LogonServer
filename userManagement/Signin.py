@@ -16,7 +16,7 @@ class Signin:
         return False
 
     def tokenUpToDate(self,username):
-        tokenExpiration = self.db.getTokenExpiration(username)
+        tokenExpiration = self.db.getTokenCreationTime(username)
         currentTime = time.time()
         timeDiference = currentTime - tokenExpiration[0][0]
         if(timeDiference > 86400):

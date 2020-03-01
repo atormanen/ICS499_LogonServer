@@ -19,7 +19,8 @@ class ProcessRequest:
         self.database = DB('app','123','192.168.1.174','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
-        self.createAccount = AccountManagement(self.database)
+        self.accountManagement = AccountManagement(self.database)
+        self.friendsManagement = FriendsManagement(self.database)
         self.reqValidation = ValidateRequest()
         self.responder = Responder()
 
@@ -34,26 +35,32 @@ class ProcessRequest:
             token = self.signin.signin(parsedData)
             reqItem.signinResponse(token)
             self.responder.sendResponse(reqItem)
-            return False
         elif parsedData["requestType"] == "createAccount":
-            result = self.createAccount.createAccount(reqItem.parsedData)
+            result = self.accountManagement.createAccount(reqItem.parsedData)
             if result == True:
-                returnStatus = "AccountCreationSuccusful"
+                reqItem.createAccountResponse('succus')
             elif result == False:
-                returnStatus = "AccountCreationFailed"
-            self.responder.sendAccountCreationStatus(reqItem.connectionSocket, returnStatus)
-            return False
+                reqItem.createAccountResponse('fail')
+            self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getUserStats":
-            return False
+            #call Account Management to get user stats
+            self.accountManagement.getUserStats(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getFriendsList":
-            return False
+            #call FriendsManagement to retrieve friends list
+            self.friendsManagement.getFriendsList(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "sendFriendRequest":
-            return False
+            #call FriendsManagement to send friend request
+            self.friendsManagement.sendFriendRequest(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "validateFriendRequest":
-            return False
+            #call friends management to validate friend request
+            self.friendsManagement.validateFriendRequest(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
         else:
-            #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
-            return True
+            self.responder.sendBadRequest(reqItem.connectionSocket)
+
 
     #The process thread will block on requestQueue.get() until something
     #arrives.

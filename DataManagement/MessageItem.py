@@ -26,18 +26,34 @@ class MessageItem:
         }
         response["status"] = status
         response["reason"] = reason
-        self.responseObj = json.loads(response)
+        self.responseObj = json.dumps(response)
 
-    def getUSerStatsResponse(self):
-        ## TODO: Generate stats stuff
+    def getUSerStatsResponse(self, stats):
         response = {
-                    "requestType":"createAccount",
-                    "status":"",
-                    "reason":""
+                    "requestType":"getUserStats",
+                    "userId":"",
+                    "gamesPlayed":"",
+                    "gamesWon":"",
+                    "gamesResigned":"",
+                    "score":"",
+                    "longest_win_streak":""
         }
-        response["status"] = status
-        response["reason"] = reason
-        self.responseObj = json.loads(response)
+        response["userId"] = stats[0]
+        response["gamesPlayed"] = stats[1]
+        response["gamesWon"] = stats[2]
+        response["gamesResigned"] = stats[3]
+        response["score"] = stats[4]
+        response["longest_win_streak"] = stats[5]
+        self.responseObj = json.dumps(response)
+
+    def getFriendsListResponse(self, friendsList):
+        response = {
+                    "requestType":"getFriendsList",
+                    "list":""
+        }
+        response["list"] = friendsList
+        self.responseObj = json.dumps(response)
+
 
     def acceptFriendReqResponse(self,status):
         response = {
@@ -45,14 +61,14 @@ class MessageItem:
                     "status":""
         }
         response["status"] = status
-        self.responseObj = json.loads(response)
+        self.responseObj = json.dumps(response)
 
     def sendFriendReqResponse(self,status,reason='null'):
         response = {
-                    "requestType":"createAccount",
+                    "requestType":"sendFriendRequest",
                     "status":"",
                     "reason":""
         }
         response["status"] = status
         response["reason"] = reason
-        self.responseObj = json.loads(response)
+        self.responseObj = json.dumps(response)

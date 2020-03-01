@@ -14,34 +14,64 @@ class DB:
         self.database = database
 
     def dbInsert(self, statement):
-        mydb = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = mydb.cursor()
-        cursor.execute(statement)
-        mydb.commit()
-        cursor.close()
-        mydb.close()
+        try:
+            mydb = mysql.connector.connect(user=self.user, password=self.password,
+                                  host=self.host,
+                                  database=self.database,
+                                  auth_plugin='mysql_native_password')
+            cursor = mydb.cursor()
+            cursor.execute(statement)
+            mydb.commit()
+            result = True
+        except mysql.connector.Error as error:
+            ## TODO: Log to error log
+            print("Insert errror")
+            result = False
+        finally:
+            if(mydb.is_connected()):
+                cursor.close()
+                mydb.close()
+            return result
 
     def dbFetch(self, statement):
-        mydb = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = mydb.cursor()
-        cursor.execute(statement)
-        result = cursor.fetchall()
-        return result
+        try:
+            mydb = mysql.connector.connect(user=self.user, password=self.password,
+                                  host=self.host,
+                                  database=self.database,
+                                  auth_plugin='mysql_native_password')
+            cursor = mydb.cursor()
+            cursor.execute(statement)
+            result = cursor.fetchall()
+        except Error as e:
+            ## TODO: Log error to log
+            print("Error fetching data from db")
+            result = False
+        finally:
+            if(mydb.is_connected()):
+                cursor.close()
+                mydb.close()
+            return result
 
     def dbUpdate(self, statement):
-        mydb = mysql.connector.connect(user=self.user, password=self.password,
-                              host=self.host,
-                              database=self.database,
-                              auth_plugin='mysql_native_password')
-        cursor = mydb.cursor()
-        cursor.execute(statement)
-        mydb.commit()
+        try:
+            mydb = mysql.connector.connect(user=self.user, password=self.password,
+                                  host=self.host,
+                                  database=self.database,
+                                  auth_plugin='mysql_native_password')
+            cursor = mydb.cursor()
+            cursor.execute(statement)
+            mydb.commit()
+            result = True
+        except mysql.connector.Error as error:
+            ## TODO: Log error to Log
+            print("Error updating data to db")
+            result = False
+        finally:
+            if(mydb.is_connected()):
+                cursor.close()
+                mydb.close()
+            return result
+
 
     def getPasswordFor(self, username):
         result = self.dbFetch(self.builder.getPasswordFor(username))
@@ -68,22 +98,24 @@ class DB:
         statement = self.builder.createUser(id,parsedData)
         print(statement)
         self.dbInsert(statement)
-        self.dbInsert(self.builder.createUserStats(id))
+        result = self.dbInsert(self.builder.createUserStats(id))
+        return result
 
-    def signin(self, username, token, tokenExpiration):
-        result = self.dbUpdate(self.builder.signin(username,token,tokenExpiration))
+    def signin(self, username, token, tokenCreationTime):
+        result = self.dbUpdate(self.builder.signin(username,token,tokenCreationTime))
         return result
 
     def getToken(self,username):
         result = self.dbFetch(self.builder.getToken(username))
         return result
 
-    def getTokenExpiration(self,username):
-        result = self.dbFetch(self.builder.getTokenExpiration(username))
+    def getTokenCreationTime(self,username):
+        result = self.dbFetch(self.builder.getTokenCreationTime(username))
         return result
-    
+
     def getFriendsList(self, username):
-        result = self.dbFetch(self.builder.getFriendsList(userId))
+        userId = self.dbFetch(self.builder.getUserId(username))
+        result = self.dbFetch(self.builder.getFriendsList(userId[0][0]))
         return result
 
     def getUserInfo(self, username):
@@ -91,6 +123,31 @@ class DB:
         return False
 
     def getUserStats(self, username):
-        id = self.dbFetch(builder.getUserId(username))
+        userId = self.dbFetch(self.builder.getUserId(username))
+        userId = str(userId[0][0])
         result = self.dbFetch(self.builder.getUserStats(userId))
+        return result
+
+    def sendFriendRequest(self, username, friendsUsername):
+        userId = self.dbFetch(self.builder.getUserId(username))
+        friendsId = self.dbFetch(self.builder.getUserId(friendsUsername))
+        if(userId == False):
+            return False
+        if(friendsId == False):
+            return False
+        userId = userId[0][0]
+        friendsId = friendsId[0][0]
+        result = self.dbInsert(self.builder.sendFriendRequest(userId,friendsId))
+        return result
+
+    def acceptFriendRequest(self, username, friendsUsername, acceptedRequest):
+        userId = self.dbFetch(self.builder.getUserId(username))
+        friendsId = self.dbFetch(self.builder.getUserId(friendsUsername))
+        if(userId == False):
+            return False
+        if(friendsId == False):
+            return False
+        friendsId = friendsId[0][0]
+        userId = userId[0][0]
+        result = self.dbUpdate(self.builder.acceptFriendRequest(userId, friendsId, acceptedRequest))
         return result

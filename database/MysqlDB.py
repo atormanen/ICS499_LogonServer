@@ -48,11 +48,12 @@ class MysqlDB:
         return querry
 
     def getUserId(self, username):
-        querry = "SELECT user_id FROM user WHERE username = " + username + ";"
+        querry = "SELECT user_id FROM user WHERE username = '" + username + "';"
         return querry
 
     def getUserStats(self, id):
         querry = "SELECT * FROM user_statistics WHERE user_id = " + id + ";"
+        return querry
 
     def signin(self, username, token, tokenExpiration):
         querry = "UPDATE user SET token_expiration='"+tokenExpiration + \
@@ -64,6 +65,17 @@ class MysqlDB:
         querry = "SELECT signon_token FROM user WHERE username='" + username + "';"
         return querry
 
-    def getTokenExpiration(self,username):
-        querry = "SELECT unix_timestamp(token_expiration) FROM user WHERE username='" + username + "';"
+    def getTokenCreationTime(self,username):
+        querry = "SELECT unix_timestamp(token_creation) FROM user WHERE username='" + username + "';"
+        return querry
+
+    def sendFriendRequest(self, user_id, friend_id):
+        querry = "INSERT INTO friend_list VALUES(" + str(user_id) +\
+                    ","+ str(friend_id) + ",0);"
+        return querry
+
+    def acceptFriendRequest(self, userId, friendId, acceptedRequest):
+        querry = "UPDATE friend_list set request_accepted = " + str(acceptedRequest) +\
+                    " WHERE friend_id = " + str(friendId) + " AND user_id = " +\
+                    str(userId) + ";"
         return querry

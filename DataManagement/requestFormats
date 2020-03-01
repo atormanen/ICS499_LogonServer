@@ -44,10 +44,23 @@ getUserStats
 
 return user stats
 ********************************************************
+getFriendsList
+{
+  "requestType":"getFriendsList",
+  "username":"testaccount1344",
+}
+
+getFriendsListResponse
+{
+  "requestType":"getFriendsList",
+  "status":"succus"
+}
+********************************************************
 sendFriendRequest
 {
   "requestType":"sendFriendRequest",
   "username":"testaccount1344",
+  "friendsUsername":"freindsname"
 }
 
 freind request sendRequestedData
@@ -60,6 +73,7 @@ acceptFriendRequest
 {
   "requestType":"validateFriendRequest",
   "username":"testaccount1344",
+  "friendsUsername":"freindsname"
 }
 
 {
