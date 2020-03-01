@@ -34,8 +34,16 @@ class DB:
         result = cursor.fetchall()
         return result
 
+    def dbUpdate(self, statement):
+        mydb = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host,
+                              database=self.database,
+                              auth_plugin='mysql_native_password')
+        cursor = mydb.cursor()
+        cursor.execute(statement)
+        mydb.commit()
+
     def getPasswordFor(self, username):
-        print('getting pass')
         result = self.dbFetch(self.builder.getPasswordFor(username))
         return result
 
@@ -62,7 +70,18 @@ class DB:
         self.dbInsert(statement)
         self.dbInsert(self.builder.createUserStats(id))
 
+    def signin(self, username, token, tokenExpiration):
+        result = self.dbUpdate(self.builder.signin(username,token,tokenExpiration))
+        return result
 
+    def getToken(self,username):
+        result = self.dbFetch(self.builder.getToken(username))
+        return result
+
+    def getTokenExpiration(self,username):
+        result = self.dbFetch(self.builder.getTokenExpiration(username))
+        return result
+    
     def getFriendsList(self, username):
         result = self.dbFetch(self.builder.getFriendsList(userId))
         return result

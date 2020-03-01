@@ -16,7 +16,7 @@ class MessageItem:
                     "token":""
         }
         response["token"] = token
-        self.responseObj = json.loads(response)
+        self.responseObj = json.dumps(response)
 
     def createAccountResponse(self,status,reason='null'):
         response = {

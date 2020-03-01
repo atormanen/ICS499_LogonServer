@@ -20,3 +20,6 @@ class Responder:
     def sendAccountCreationStatus(self, connectionSocket,status):
         status = '' + status
         connectionSocket.send(status.encode())
+
+    def sendResponse(self, msgItem):
+        msgItem.connectionSocket.send(msgItem.responseObj.encode())

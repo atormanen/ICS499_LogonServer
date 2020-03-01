@@ -4,8 +4,10 @@ from userManagement.ValidateRequest import ValidateRequest
 from database.DB import DB
 from threading import Thread
 from DataManagement.Responder import Responder
+from DataManagement.MessageItem import MessageItem
 import os
 from userManagement.FriendsManagement import FriendsManagement
+from userManagement.Tokens import Tokens
 
 class ProcessRequest:
 
@@ -29,7 +31,9 @@ class ProcessRequest:
         parsedData = reqItem.parsedData
 
         if parsedData["requestType"] == "signin":
-            self.signin.signin(parsedData)
+            token = self.signin.signin(parsedData)
+            reqItem.signinResponse(token)
+            self.responder.sendResponse(reqItem)
             return False
         elif parsedData["requestType"] == "createAccount":
             result = self.createAccount.createAccount(reqItem.parsedData)

@@ -1,8 +1,11 @@
 #Signin will handle the mechanics of signing a user in
+from userManagement.Tokens import Tokens
+import time
 class Signin:
 
     def __init__(self, db):
         self.db = db
+        self.token = Tokens('test')
 
     def validatePassword(self, username, password):
         dbPassword = self.db.getPasswordFor(username)
@@ -12,13 +15,25 @@ class Signin:
             return True
         return False
 
+    def tokenUpToDate(self,username):
+        tokenExpiration = self.db.getTokenExpiration(username)
+        currentTime = time.time()
+        timeDiference = currentTime - tokenExpiration[0][0]
+        if(timeDiference > 86400):
+            return False
+        return True
+
     def signin(self, parsedData):
         username = parsedData["username"]
         password = parsedData["password"]
         if(self.validatePassword(username, password)):
-            #do the signin stuff
-            #Generate a session token
-            #Set a token expiration in the db
-            #Bundle the tocken into the response package
-            return True
+            if(self.tokenUpToDate(username)):
+                #Bundle the tocken into the response package
+                signonToken = self.db.getToken(username)
+                signonToken = signonToken[0][0]
+                return signonToken
+            else:
+                signonToken = self.token.getToken()
+                self.db.signin(username, signonToken, self.token.getTokenCreationTime())
+                return signonToken
         return False

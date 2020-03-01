@@ -53,3 +53,17 @@ class MysqlDB:
 
     def getUserStats(self, id):
         querry = "SELECT * FROM user_statistics WHERE user_id = " + id + ";"
+
+    def signin(self, username, token, tokenExpiration):
+        querry = "UPDATE user SET token_expiration='"+tokenExpiration + \
+                    "',signon_token='" + token + "' WHERE username = " + \
+                    "'" + username + "';"
+        return querry
+
+    def getToken(self,username):
+        querry = "SELECT signon_token FROM user WHERE username='" + username + "';"
+        return querry
+
+    def getTokenExpiration(self,username):
+        querry = "SELECT unix_timestamp(token_expiration) FROM user WHERE username='" + username + "';"
+        return querry

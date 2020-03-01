@@ -37,7 +37,6 @@ class Controller:
         thread.start()
         thread.join()
 
-
 def main():
     print('inside main')
 
