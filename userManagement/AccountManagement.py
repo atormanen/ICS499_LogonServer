@@ -7,6 +7,11 @@ class AccountManagement:
     def __init__(self, mysqlDB):
         self.db = mysqlDB
 
+    def validateUsername(self, username):
+        if(self.db.validateUserExists(username)):
+            return True
+        return False
+
     def createAccount(self, parsedData):
 		#check if username exists
         #return false if username alread exists

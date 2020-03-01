@@ -35,6 +35,7 @@ class DB:
 
     def dbFetch(self, statement):
         try:
+            result = ''
             mydb = mysql.connector.connect(user=self.user, password=self.password,
                                   host=self.host,
                                   database=self.database,
@@ -80,7 +81,7 @@ class DB:
     def incrementSigninFailed(self):
         return False
 
-    def validatekUserExists(self, username):
+    def validateUserExists(self, username):
         statement = self.builder.validateUserExists(username)
         result = self.dbFetch(statement)
         return result

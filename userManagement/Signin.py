@@ -8,11 +8,12 @@ class Signin:
         self.token = Tokens('test')
 
     def validatePassword(self, username, password):
-        dbPassword = self.db.getPasswordFor(username)
-        dbPassword = dbPassword[0][0]
-		#compare password to given getPassword
-        if(password == dbPassword):
-            return True
+        if(self.db.validateUserExists(username)):
+            dbPassword = self.db.getPasswordFor(username)
+            dbPassword = dbPassword[0][0]
+		    #compare password to given getPassword
+            if(password == dbPassword):
+                return True
         return False
 
     def tokenUpToDate(self,username):
