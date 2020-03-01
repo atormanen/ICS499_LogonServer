@@ -33,6 +33,7 @@ createAccount response
 {
   "requestType":"createAccount",
   "status":"succes" --- or failure
+  "reason":"uname exests..."
 }
 ********************************************************
 getUserStats

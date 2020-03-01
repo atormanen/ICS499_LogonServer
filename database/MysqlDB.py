@@ -29,9 +29,11 @@ class MysqlDB:
         return "SELECT MAX(user_id) FROM user;"
 
     def createUser(self, id, parsedData):
+        now = time.strftime('%Y-%m-%d %H-%M-%S')
         return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
             "','" +parsedData["firstName"] + "','" + parsedData["lastName"] +\
             "','" + parsedData["email"] + "',0,'" + parsedData["password"] +\
+            "','" + now + "','" + "null" +\
              "');"
 
     def createUserStats(self, id):

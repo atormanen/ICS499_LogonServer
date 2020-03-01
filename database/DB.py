@@ -57,7 +57,9 @@ class DB:
     def createUser(self, parsedData):
         id = self.dbFetch(self.builder.getLastUserId())
         id = str(id[0][0] + 1)
-        self.dbInsert(self.builder.createUser(id,parsedData))
+        statement = self.builder.createUser(id,parsedData)
+        print(statement)
+        self.dbInsert(statement)
         self.dbInsert(self.builder.createUserStats(id))
 
 
