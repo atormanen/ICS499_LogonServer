@@ -5,7 +5,7 @@ import time
 
 class Tokens:
 
-    def __init__(self,stuff):
+    def __init__(self):
         self.t = ""
 
     def generateToken(self):
