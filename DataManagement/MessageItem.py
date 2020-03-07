@@ -3,6 +3,9 @@ import json
 #It holds the json object that was sent to the server as well as
 #the socket
 
+## TODO: Create subclasses for each message type.
+#Too much happening here
+
 class MessageItem:
     def __init__(self,connectionSocket, parsedData):
         self.connectionSocket = connectionSocket

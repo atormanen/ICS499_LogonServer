@@ -5,7 +5,7 @@ class Signin:
 
     def __init__(self, db):
         self.db = db
-        self.token = Tokens('test')
+        self.token = Tokens()
 
     def validatePassword(self, username, password):
         if(self.db.validateUserExists(username)):

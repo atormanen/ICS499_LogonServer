@@ -19,8 +19,8 @@ class ProcessRequest:
         self.database = DB('app','123','192.168.1.106','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
-        self.accountManagement = AccountManagement(self.database)
-        self.friendsManagement = FriendsManagement(self.database)
+        self.accountManager = AccountManagement(self.database)
+        self.friendsManager = FriendsManagement(self.database)
         self.reqValidation = ValidateRequest()
         self.responder = Responder()
 
@@ -28,6 +28,7 @@ class ProcessRequest:
     def proccesRequestType(self, reqItem):
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)
+            return
 
         parsedData = reqItem.parsedData
 
@@ -36,7 +37,7 @@ class ProcessRequest:
             reqItem.signinResponse(token)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "createAccount":
-            result = self.accountManagement.createAccount(reqItem.parsedData)
+            result = self.accountManager.createAccount(reqItem.parsedData)
             if result == True:
                 reqItem.createAccountResponse('succus')
             elif result == False:
@@ -44,19 +45,19 @@ class ProcessRequest:
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getUserStats":
             #call Account Management to get user stats
-            self.accountManagement.getUserStats(parsedData, reqItem)
+            self.accountManager.getUserStats(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getFriendsList":
-            #call FriendsManagement to retrieve friends list
-            self.friendsManagement.getFriendsList(parsedData, reqItem)
+            #call FriendsManager to retrieve friends list
+            self.friendsManager.getFriendsList(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "sendFriendRequest":
-            #call FriendsManagement to send friend request
-            self.friendsManagement.sendFriendRequest(parsedData, reqItem)
+            #call FriendsManager to send friend request
+            self.friendsManager.sendFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "validateFriendRequest":
             #call friends management to validate friend request
-            self.friendsManagement.validateFriendRequest(parsedData, reqItem)
+            self.friendsManager.validateFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connectionSocket)
