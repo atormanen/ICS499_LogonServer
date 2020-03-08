@@ -104,6 +104,7 @@ class DB:
 
     def signin(self, username, token, tokenCreationTime):
         result = self.dbUpdate(self.builder.signin(username,token,tokenCreationTime))
+        print(result)
         return result
 
     def getToken(self,username):

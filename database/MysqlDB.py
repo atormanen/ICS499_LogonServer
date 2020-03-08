@@ -18,8 +18,8 @@ class MysqlDB:
         return selectStatement
 
     def validateUserExists(self,username):
-        return "SELECT EXISTS(SLECT username FROM user WHERE username = " +\
-            username + " );"
+        return "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
+            username + "');"
 
     def validateUsernameAvailable(self,username):
         return "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
@@ -56,9 +56,10 @@ class MysqlDB:
         return querry
 
     def signin(self, username, token, tokenExpiration):
-        querry = "UPDATE user SET token_expiration='"+tokenExpiration + \
+        querry = "UPDATE user SET token_creation='"+tokenExpiration + \
                     "',signon_token='" + token + "' WHERE username = " + \
                     "'" + username + "';"
+        print(querry)
         return querry
 
     def getToken(self,username):
