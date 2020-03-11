@@ -16,7 +16,7 @@ class ProcessRequest:
     #from the queue as they are inserted from the listener
     def __init__(self, requestQueue):
         #self.database = DB('admin','ICS4992020','chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com','userdb')
-        self.database = DB('app','123','192.168.1.174','userdb')
+        self.database = DB('app','123','192.168.1.106','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
         self.accountManager = AccountManagement(self.database)
