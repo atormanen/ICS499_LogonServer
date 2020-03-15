@@ -6,17 +6,18 @@ from database.MysqlDB import MysqlDB
 #uses the querryBuilder class which holds the actual mysql syntax.
 class DB:
 
-    def __init__(self, user, password, host, database):
+    def __init__(self, user, password, reader, writer, database):
         self.builder = MysqlDB()
         self.user = user
         self.password = password
-        self.host = host
+        self.reader = reader
+        self.writer = writer
         self.database = database
 
     def dbInsert(self, statement):
         try:
             mydb = mysql.connector.connect(user=self.user, password=self.password,
-                                  host=self.host,
+                                  host=self.writer,
                                   database=self.database,
                                   auth_plugin='mysql_native_password')
             cursor = mydb.cursor()
@@ -37,7 +38,7 @@ class DB:
         try:
             result = ''
             mydb = mysql.connector.connect(user=self.user, password=self.password,
-                                  host=self.host,
+                                  host=self.reader,
                                   database=self.database,
                                   auth_plugin='mysql_native_password')
             cursor = mydb.cursor()
@@ -56,7 +57,7 @@ class DB:
     def dbUpdate(self, statement):
         try:
             mydb = mysql.connector.connect(user=self.user, password=self.password,
-                                  host=self.host,
+                                  host=self.writer,
                                   database=self.database,
                                   auth_plugin='mysql_native_password')
             cursor = mydb.cursor()
