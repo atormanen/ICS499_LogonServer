@@ -39,5 +39,6 @@ class Signin:
             else:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
+                print(signonToken)
                 return signonToken
         return False
