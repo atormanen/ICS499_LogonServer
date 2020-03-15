@@ -22,4 +22,8 @@ class Responder:
         connectionSocket.send(status.encode())
 
     def sendResponse(self, msgItem):
-        msgItem.connectionSocket.send(msgItem.responseObj.encode())
+        try:
+            msgItem.connectionSocket.send(msgItem.responseObj.encode())
+        except ConnectionResetError as e:
+            #This is expected
+            print("ERROR: Connection reset error")
