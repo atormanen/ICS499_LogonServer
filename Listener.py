@@ -15,6 +15,7 @@ class Listener:
     def __init__(self, requestQueue):
         self.requestQueue = requestQueue
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.bufferSize = 1024
         self.portNumber = 12345
         self.serverIp = ''
