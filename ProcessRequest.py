@@ -36,6 +36,7 @@ class ProcessRequest:
 
         if parsedData["requestType"] == "signin":
             token = self.signin.signin(parsedData)
+            print(parsedData)
             reqItem.signinResponse(token)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "createAccount":

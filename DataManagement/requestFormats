@@ -60,6 +60,7 @@ sendFriendRequest
 {
   "requestType":"sendFriendRequest",
   "username":"testaccount1344",
+  "signonToken":"asdfasdgadfg",
   "friendsUsername":"freindsname"
 }
 
@@ -73,6 +74,7 @@ acceptFriendRequest
 {
   "requestType":"validateFriendRequest",
   "username":"testaccount1344",
+  "signonToken":"asdfasdgadfg",
   "friendsUsername":"freindsname"
 }
 
