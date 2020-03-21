@@ -71,8 +71,8 @@ class Listener:
         except (IndexError):
             print("error")
 
-        if not (full_msg[0] == "{"):
-            print("error")
+        #if not (full_msg[0] == "{"):
+        #    print("error")
         try:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
