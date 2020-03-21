@@ -67,7 +67,7 @@ class Listener:
                 rcvd_msg = ''
                 bufferExceeded = True
         try:
-            print("TEST ",self.reqCount,"  ",full_msg[1::])
+            print("TEST ",self.reqCount,"  ",full_msg[2::])
         except (IndexError):
             print("error")
 
