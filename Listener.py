@@ -72,6 +72,7 @@ class Listener:
                 full_msg = full_msg[2::]
         except (IndexError):
             #print("error")
+            return
 
 
         try:
