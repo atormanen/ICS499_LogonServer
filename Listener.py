@@ -66,7 +66,8 @@ class Listener:
             elif len(rcvd_msg) == self.bufferSize:
                 rcvd_msg = ''
                 bufferExceeded = True
-        print("TEST ",self.reqCount,"  ",full_msg)
+        print("TEST ",self.reqCount,"  ",full_msg[0])
+
         try:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
