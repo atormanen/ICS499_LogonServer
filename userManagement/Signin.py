@@ -8,6 +8,7 @@ class Signin:
         self.token = Tokens()
 
     def validatePassword(self, username, password):
+        print(self.db.validateUserExists(username))
         if(self.db.validateUserExists(username)):
             dbPassword = self.db.getPasswordFor(username)
             dbPassword = dbPassword[0][0]
