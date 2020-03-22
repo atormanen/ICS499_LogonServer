@@ -87,6 +87,7 @@ class DB:
         print(username)
         statement = self.builder.validateUserExists(username)
         result = self.dbFetch(statement)
+        print(result)
         result = [0][0]
         return result
 
