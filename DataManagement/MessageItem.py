@@ -19,6 +19,8 @@ class MessageItem:
                     "token":""
         }
         response["token"] = token
+        if not(token):
+             response["status"] = "fail"
         self.responseObj = json.dumps(response)
 
     def createAccountResponse(self,status,reason='null'):
