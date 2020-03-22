@@ -88,7 +88,7 @@ class DB:
         statement = self.builder.validateUserExists(username)
         result = self.dbFetch(statement)
         print(result)
-        result = [0][0]
+        result = [0]
         return result
 
     #Returns 1\true if exits, false\0 if not
