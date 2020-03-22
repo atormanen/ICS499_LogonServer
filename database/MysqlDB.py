@@ -20,7 +20,6 @@ class MysqlDB:
     def validateUserExists(self,username):
         statement = "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
             username + "');"
-        print(statement)
         return statement
 
     def getLastUserId(self):
