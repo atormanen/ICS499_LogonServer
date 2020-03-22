@@ -18,8 +18,10 @@ class MysqlDB:
         return selectStatement
 
     def validateUserExists(self,username):
-        return "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
+        statement "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
             username + "');"
+        print(statement)
+        return statement
 
     def validateUsernameAvailable(self,username):
         return "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
