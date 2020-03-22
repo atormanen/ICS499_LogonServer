@@ -82,7 +82,9 @@ class DB:
     def incrementSigninFailed(self):
         return False
 
+    #Returns 1\true if exits, false\0 if not
     def validateUserExists(self, username):
+        print(username)
         statement = self.builder.validateUserExists(username)
         result = self.dbFetch(statement)
         result = [0][0]

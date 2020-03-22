@@ -23,10 +23,6 @@ class MysqlDB:
         print(statement)
         return statement
 
-    def validateUsernameAvailable(self,username):
-        return "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
-            username + "' );"
-
     def getLastUserId(self):
         return "SELECT MAX(user_id) FROM user;"
 
