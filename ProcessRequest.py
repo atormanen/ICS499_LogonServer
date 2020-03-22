@@ -36,7 +36,7 @@ class ProcessRequest:
 
         if parsedData["requestType"] == "signin":
             token = self.signin.signin(parsedData)
-            print("Signin" + token)
+            print("Signin" + str(token))
             print(parsedData)
             reqItem.signinResponse(token)
             self.responder.sendResponse(reqItem)
