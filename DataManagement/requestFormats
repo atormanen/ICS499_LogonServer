@@ -19,6 +19,23 @@ signin response
   "token","blahblahblah" - or null if failure
 }
 ********************************************************
+
+signout
+{
+  "requestType":"signout",
+  "username":"ATormanen",
+  "signonToken":"token"
+}
+
+signout response
+{
+  "reqeustType":"siginin",
+  "status":"succes" --- or failure
+}
+
+
+
+********************************************************
 createAccount
 {
   "requestType":"createAccount",

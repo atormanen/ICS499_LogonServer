@@ -63,6 +63,9 @@ class ProcessRequest:
             #call friends management to validate friend request
             self.friendsManager.validateFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
+        elif parsedData["requestType"] == "signout":
+            self.signin.signout(parsedData)
+            self.responder.sendResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connectionSocket)
 

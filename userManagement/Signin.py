@@ -43,3 +43,15 @@ class Signin:
                 print(signonToken)
                 return signonToken
         return False
+
+    def signout(self, parsedData, reqItem):
+        username = parsedData["username"]
+        signonToken = parsedData["signonToken"]
+
+        savedToken = self.db.getToken()
+
+        if(signonToken == savedToken):
+            self.db.logout(username)
+            reqItem.signoutResponse("succuss")
+        else:
+            reqItem.signoutResponse("failure")

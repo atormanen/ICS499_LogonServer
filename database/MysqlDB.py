@@ -82,3 +82,7 @@ class MysqlDB:
                     " WHERE friend_id = " + str(friendId) + " AND user_id = " +\
                     str(userId) + ";"
         return querry
+
+    def logout(self, username):
+        querry = "UPDATE user SET signon_token = 'null' WHERE username = '" + \
+                username + "';"

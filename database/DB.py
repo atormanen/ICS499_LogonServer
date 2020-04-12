@@ -156,3 +156,6 @@ class DB:
         userId = userId[0][0]
         result = self.dbUpdate(self.builder.acceptFriendRequest(userId, friendsId, acceptedRequest))
         return result
+
+    def logout(self, username):
+        self.dbUpdate(self.builder.logout(username))

@@ -77,3 +77,11 @@ class MessageItem:
         response["status"] = status
         response["reason"] = reason
         self.responseObj = json.dumps(response)
+
+    def signoutResponse(self, status):
+        response = {
+                    "requestType":"sendFriendRequest",
+                    "status":""
+        }
+        response["status"] = status
+        self.responseObj = json.dumps(response)
