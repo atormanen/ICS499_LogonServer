@@ -86,3 +86,5 @@ class MysqlDB:
     def logout(self, username):
         querry = "UPDATE user SET signon_token = 'null' WHERE username = '" + \
                 username + "';"
+        print(querry)
+        return querry
