@@ -21,7 +21,7 @@ class ValidateRequest:
             return False
         elif parsedData["requestType"] == "validateFriendRequest":
             return False
-         parsedData["requestType"] == "signout":
+        elif parsedData["requestType"] == "signout":
             return False
         else:
             #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
