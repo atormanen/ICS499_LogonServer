@@ -35,6 +35,9 @@ class Signin:
             if(self.tokenUpToDate(username)):
                 #Bundle the tocken into the response package
                 signonToken = self.db.getToken(username)
+                if(signonToken == 'null'):
+                    signonToken = self.token.getToken()
+                    self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 signonToken = signonToken[0][0]
                 return signonToken
             else:
