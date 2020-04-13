@@ -15,7 +15,7 @@ signin
 signin response
 {
   "reqeustType":"siginin",
-  "status":"succes", --- or failure
+  "status":"success", --- or failure
   "token","blahblahblah" - or null if failure
 }
 ********************************************************

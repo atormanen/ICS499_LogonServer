@@ -52,6 +52,6 @@ class Signin:
 
         if(signonToken == savedToken):
             self.db.logout(username)
-            reqItem.signoutResponse("succuss")
+            reqItem.signoutResponse("success")
         else:
             reqItem.signoutResponse("failure")

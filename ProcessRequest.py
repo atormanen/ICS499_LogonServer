@@ -43,7 +43,7 @@ class ProcessRequest:
         elif parsedData["requestType"] == "createAccount":
             result = self.accountManager.createAccount(reqItem.parsedData)
             if result == True:
-                reqItem.createAccountResponse('succus')
+                reqItem.createAccountResponse('success')
             elif result == False:
                 reqItem.createAccountResponse('fail')
             self.responder.sendResponse(reqItem)
