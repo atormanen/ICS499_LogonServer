@@ -26,7 +26,7 @@ class ProcessRequest:
         self.friendsManager = FriendsManagement(self.database)
         self.reqValidation = ValidateRequest()
         self.responder = Responder()
-        self.leaderboard = Leaderboard()
+        self.leaderboard = Leaderboard(self.database)
 
     ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
