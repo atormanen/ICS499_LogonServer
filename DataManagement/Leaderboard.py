@@ -43,7 +43,8 @@ class Leaderboard:
             user["score"] = resp[i][5]
             user["longest_win_streak"] = resp[i][6]
             user["shortest_game"] = resp[i][7]
-            userDict[str("user" + i)] = user
+            userStr = "user" + str(i)
+            userDict[userStr] = user
             i = i + 1
 
         jsonObj = json.dumps(userDict)
