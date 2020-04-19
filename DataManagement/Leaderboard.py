@@ -51,4 +51,4 @@ class Leaderboard:
         jsonObj = json.dumps(userDict)
         print(jsonObj)
 
-        reqItem.mostChessGamesWonResponse(numberOfGames, jsonObj)
+        reqItem.mostChessGamesWonResponse(numberOfGames, userDict)
