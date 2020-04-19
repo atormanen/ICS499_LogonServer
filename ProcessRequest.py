@@ -69,7 +69,7 @@ class ProcessRequest:
             self.signin.signout(parsedData)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getMostChessGamesWon":
-            self.leaderboard.getMostGamesWon(reqItem, parsedData["numberOfGames"])
+            self.leaderboard.getMostChessGamesWon(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getLongestWinStreak":
             self.leaderboard.getLongestWinStreak(reqItem, parsedData["numberOfGames"])
