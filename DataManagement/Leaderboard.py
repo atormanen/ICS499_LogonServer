@@ -35,14 +35,14 @@ class Leaderboard:
                     "longest_win_streak":"",
                     "shortest_game":""
             }
-            user["username"] = resp[i][0]
-            user["user_id"] = resp[i][1]
-            user["games_played"] = resp[i][2]
-            user["games_won"] = resp[i][3]
-            user["games_resigned"] = resp[i][4]
-            user["score"] = resp[i][5]
-            user["longest_win_streak"] = resp[i][6]
-            user["shortest_game"] = resp[i][7]
+            user["username"] = item[i][0]
+            user["user_id"] = item[i][1]
+            user["games_played"] = item[i][2]
+            user["games_won"] = item[i][3]
+            user["games_resigned"] = item[i][4]
+            user["score"] = item[i][5]
+            user["longest_win_streak"] = item[i][6]
+            user["shortest_game"] = item[i][7]
             userStr = "user" + str(i)
             userDict[userStr] = user
             print(user)
