@@ -161,7 +161,7 @@ class DB:
         self.dbUpdate(self.builder.logout(username))
 
     def getMostChessGamesWon(self, numberOfGames):
-        resutl = self.dbFetch(self.builder.getMostGamesWon(numberOfGames))
+        result = self.dbFetch(self.builder.getMostGamesWon(numberOfGames))
         return result
 
     def getLongestWinStreak(self, numberOfGames):
