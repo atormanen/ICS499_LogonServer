@@ -23,6 +23,10 @@ class ValidateRequest:
             return False
         elif parsedData["requestType"] == "signout":
             return False
+        elif parsedData["requestType"] == "getMostChessGamesWon":
+            return False
+        elif parsedData["requestType"] == "getLongestWinStreak":
+            return False
         else:
             #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
             return True
