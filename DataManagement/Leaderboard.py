@@ -25,7 +25,6 @@ class Leaderboard:
         print(resp)
         i = 0
         for item in resp:
-
             user = {
                     "username":"",
                     "user_id":"",
@@ -46,10 +45,8 @@ class Leaderboard:
             user["shortest_game"] = item[7]
             userStr = "user" + str(i)
             userDict[userStr] = user
-            print(userDict[userStr])
             i = i + 1
 
         jsonObj = json.dumps(userDict)
-        print(jsonObj)
 
-        reqItem.mostChessGamesWonResponse(numberOfGames, resp)
+        reqItem.mostChessGamesWonResponse(numberOfGames, jsonObj)
