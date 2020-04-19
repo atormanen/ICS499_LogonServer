@@ -47,8 +47,4 @@ class Leaderboard:
             userDict[userStr] = user
             i = i + 1
 
-        print(userDict)
-        jsonObj = json.dumps(userDict)
-        print(jsonObj)
-
         reqItem.mostChessGamesWonResponse(numberOfGames, userDict)
