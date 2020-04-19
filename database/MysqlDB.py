@@ -90,9 +90,7 @@ class MysqlDB:
         return querry
 
     def getMostGamesWon(self, numberOfGames):
-        querry = "select user.username, user_statistics.* from user\
-        inner join user_statistics on user.user_id = user_statistics.user_id\
-        order by games_won desc limit" + str(numberOfGames) + ";"
+        querry = "select user.username, user_statistics.* from user inner join user_statistics on user.user_id = user_statistics.user_id order by games_won desc limit" + str(numberOfGames) + ";"
         print(querry)
         return querry
 
