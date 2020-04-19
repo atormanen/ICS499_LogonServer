@@ -159,3 +159,11 @@ class DB:
 
     def logout(self, username):
         self.dbUpdate(self.builder.logout(username))
+
+    def getMostChessGamesWon(self, numberOfGames):
+        resutl = self.dbFetch(self.builder.getMostGamesWon(numberOfGames))
+        return result
+
+    def getLongestWinStreak(self, numberOfGames):
+        resutl = self.dbFetch(self.builder.getLongestWinStreak(numberOfGames))
+        return result

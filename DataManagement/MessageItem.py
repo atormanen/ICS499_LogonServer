@@ -15,7 +15,7 @@ class MessageItem:
     def signinResponse(self,token):
         response = {
                     "requestType":"signin",
-                    "status":"succes",
+                    "status":"success",
                     "token":""
         }
         response["token"] = token
@@ -85,3 +85,25 @@ class MessageItem:
         }
         response["status"] = status
         self.responseObj = json.dumps(response)
+
+    def longestWinStreakResponse(self, numberOfGames, data):
+        response = {
+                    "requestType":"getLongestWinStreak",
+                    "numberOfGames":"",
+                    "data":""
+        }
+        response["numberOfGames"] = numberOfGames
+        response["data"] = data
+        self.responseObj = json.dumps(response)
+        print(self.responseObj)
+
+    def mostChessGamesWonResponse(self, numberOfGames, data):
+        response = {
+                    "requestType":"getMostChessGamesWon",
+                    "numberOfGames":"",
+                    "data":""
+        }
+        response["numberOfGames"] = numberOfGames
+        response["data"] = data
+        self.responseObj = json.dumps(response)
+        print(self.responseObj)

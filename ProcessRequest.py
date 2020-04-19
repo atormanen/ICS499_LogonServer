@@ -66,6 +66,14 @@ class ProcessRequest:
         elif parsedData["requestType"] == "signout":
             self.signin.signout(parsedData)
             self.responder.sendResponse(reqItem)
+        elif parsedData["requestType"] == "getMostChessGamesWon":
+            resp = self.database.getMostChessGamesWon(parsedData["numberOfGames"])
+            reqItem.mostChessGamesWonResponse(parsedData["numberOfGames"], resp)
+            self.responder.sendResponse(reqItem)
+        elif parsedData["requestType"] == "getLongestWinStreak":
+            resp = self.database.getLongestWinStreak(parsedData["numberOfGames"])
+            reqItem.longestWinStreakResponse(parsedData["numberOfGames"], resp)
+            self.responder.sendResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connectionSocket)
 

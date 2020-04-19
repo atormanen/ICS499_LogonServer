@@ -72,6 +72,26 @@ getFriendsListResponse
   "requestType":"getFriendsList",
   "status":"succus"
 }
+
+getLongestWinStreak
+{
+  "requestType":"getLongestWinStreak",
+  "numberOfGames":""
+}
+
+getMostChessGamesWon
+{
+  "requestType":"getMostChessGamesWon",
+  "numberOfGames":""
+}
+
+getMostChessGamesWon\getLongestWinStreak response
+{
+  "requestType":"getMostChessGamesWon",
+  "numberOfGames":"",
+  "data":""
+}
+
 ********************************************************
 sendFriendRequest
 {

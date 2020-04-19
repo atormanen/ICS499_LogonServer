@@ -39,7 +39,7 @@ class Signin:
                 print(signonToken)
                 if(signonToken == 'null'):
                     signonToken = self.token.getToken()
-                    self.db.signin(username, signonToken, self.token.getTokenCreationTime())  
+                    self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 return signonToken
             else:
                 signonToken = self.token.getToken()
@@ -52,7 +52,7 @@ class Signin:
         username = parsedData["username"]
         signonToken = parsedData["signonToken"]
 
-        savedToken = self.db.getToken()
+        savedToken = self.db.getToken(username)
 
         if(signonToken == savedToken):
             self.db.logout(username)
