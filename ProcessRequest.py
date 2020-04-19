@@ -8,6 +8,7 @@ from DataManagement.MessageItem import MessageItem
 import os
 from userManagement.FriendsManagement import FriendsManagement
 from userManagement.Tokens import Tokens
+from Leaderboard import Leaderboard
 
 class ProcessRequest:
 
@@ -25,6 +26,7 @@ class ProcessRequest:
         self.friendsManager = FriendsManagement(self.database)
         self.reqValidation = ValidateRequest()
         self.responder = Responder()
+        self.Leaderboard = Leaderboard()
 
     ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
@@ -67,12 +69,10 @@ class ProcessRequest:
             self.signin.signout(parsedData)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getMostChessGamesWon":
-            resp = self.database.getMostChessGamesWon(parsedData["numberOfGames"])
-            reqItem.mostChessGamesWonResponse(parsedData["numberOfGames"], resp)
+            self.Leaderboard.getMostGamesWon(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getLongestWinStreak":
-            resp = self.database.getLongestWinStreak(parsedData["numberOfGames"])
-            reqItem.longestWinStreakResponse(parsedData["numberOfGames"], resp)
+            self.Leaderboard.getLongestWinStreak(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connectionSocket)

@@ -95,7 +95,6 @@ class MessageItem:
         response["numberOfGames"] = numberOfGames
         response["data"] = data
         self.responseObj = json.dumps(response)
-        print(self.responseObj)
 
     def mostChessGamesWonResponse(self, numberOfGames, data):
         response = {
@@ -106,4 +105,3 @@ class MessageItem:
         response["numberOfGames"] = numberOfGames
         response["data"] = data
         self.responseObj = json.dumps(response)
-        print(self.responseObj)
