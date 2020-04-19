@@ -103,5 +103,5 @@ class MessageItem:
                     "data":""
         }
         response["numberOfGames"] = numberOfGames
-        response["data"] = data
+        response["data"] = str(data)
         self.responseObj = json.dumps(response)
