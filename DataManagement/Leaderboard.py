@@ -14,7 +14,7 @@ class Leaderboard:
 
 
     def getMostChessGamesWon(self, reqItem, numberOfGames):
-        resp = self.database.getMostChessGamesWon(numberOfGames)
+        resp = self.db.getMostChessGamesWon(numberOfGames)
 
         print(resp)
 
