@@ -19,6 +19,9 @@ class Leaderboard:
         resp = self.db.getMostChessGamesWon(numberOfGames)
 
         print(type(resp))
+        userDict = {
+                    "user0":"users"
+        }
 
         for item in resp:
             i = 0
@@ -40,8 +43,10 @@ class Leaderboard:
             user["score"] = resp[i][5]
             user["longest_win_streak"] = resp[i][6]
             user["shortest_game"] = resp[i][7]
-            responseObj = json.dumps(user)
+            userDict[str("user" + i)] = user
             i = i + 1
-        print(responseObj)
+
+        jsonObj = json.dumps(userDict)
+        print(jsonObj)
 
         reqItem.mostChessGamesWonResponse(numberOfGames, resp)
