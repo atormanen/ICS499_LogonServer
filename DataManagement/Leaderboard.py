@@ -45,7 +45,7 @@ class Leaderboard:
             user["shortest_game"] = item[7]
             userStr = "user" + str(i)
             userDict[userStr] = user
-            print(user)
+            print(userDict[userStr])
             i = i + 1
 
         jsonObj = json.dumps(userDict)
