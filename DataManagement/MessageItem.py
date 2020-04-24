@@ -56,7 +56,7 @@ class MessageItem:
                     "requestType":"getFriendsList",
                     "list":""
         }
-        response["list"] = str(friendsList)
+        response["list"] = str(friendsList[0])
         self.responseObj = json.dumps(response)
 
 
