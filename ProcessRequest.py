@@ -66,7 +66,7 @@ class ProcessRequest:
             self.friendsManager.validateFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "signout":
-            self.signin.signout(parsedData)
+            self.signin.signout(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getMostChessGamesWon":
             self.leaderboard.getMostChessGamesWon(reqItem, parsedData["numberOfGames"])
