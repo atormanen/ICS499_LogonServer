@@ -165,5 +165,5 @@ class DB:
         return result
 
     def getLongestWinStreak(self, numberOfGames):
-        resutl = self.dbFetch(self.builder.getLongestWinStreak(numberOfGames))
+        result = self.dbFetch(self.builder.getLongestWinStreak(numberOfGames))
         return result
