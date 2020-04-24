@@ -52,11 +52,25 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def getFriendsListResponse(self, friendsList):
+        friendDict = {
+                    "friend0":"friends"
+        }
+
+        i = 0
+        for item in friendsList:
+            user = {
+                    "username":""
+            }
+            user["username"] = friendsList[0][1]
+
+            friedStr = "friend" + str(i)
+            friendDict[friedStr] = user
+            i = i + 1
         response = {
                     "requestType":"getFriendsList",
-                    "list":""
+                    "friends":""
         }
-        response["list"] = str(friendsList[0][1])
+        response["friends"] = str(friendDict)
         self.responseObj = json.dumps(response)
 
 
