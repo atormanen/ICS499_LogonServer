@@ -60,6 +60,7 @@ class Listener:
                 try:
                     rcvd_msg = connectionSocket.recv(self.bufferSize).decode()
                 except UnicodeDecodeError:
+                    print(recv_msg)
                     print("UnicodeDecodeError")
             full_msg += rcvd_msg
             if(len(rcvd_msg) == 0):
