@@ -47,7 +47,7 @@ class MysqlDB:
                     inner join  friend_list \
                     on user.user_id = friend_list.friend_id \
                     where friend_list.user_id = " + str(id) + \
-                    "AND request_accepted = 1;"
+                    " AND request_accepted = 1;"
         return querry
 
     def getUserId(self, username):
