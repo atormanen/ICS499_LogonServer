@@ -97,7 +97,7 @@ class Listener:
             try:
                 connectionSocket, addr = self.serverSocket.accept()
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
-                #thread.start()
+                thread.start()
                 #is thread.join nececary?
                 #thread.join()
             except IOError:
