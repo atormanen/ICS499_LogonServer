@@ -61,7 +61,7 @@ class MessageItem:
             user = {
                     "username":""
             }
-            user["username"] = friendsList[0][1]
+            user["username"] = item[0][1]
 
             friedStr = "friend" + str(i)
             friendDict[friedStr] = user
