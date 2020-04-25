@@ -68,8 +68,10 @@ class MessageItem:
             i = i + 1
         response = {
                     "requestType":"getFriendsList",
+                    "count":""
                     "friends":""
         }
+        response["count"] = length(friendsList)
         response["friends"] = str(friendDict)
         self.responseObj = json.dumps(response)
 
