@@ -86,7 +86,7 @@ class DB:
             result = True
         except mysql.connector.Error as error:
             ## TODO: Log error to Log
-            print("Error updating data to db")
+            print("Error deleting data to db")
             result = False
         finally:
             if(mydb.is_connected()):
