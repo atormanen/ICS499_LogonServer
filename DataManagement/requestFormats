@@ -119,3 +119,11 @@ acceptFriendRequest
   "requestType":"validateFriendRequest",
   "status":"succus"
 }
+
+********************************************************
+
+acceptFriendRequest
+{
+  "requestType":"getFriendRequests",
+  "username":"testaccount1344"
+}

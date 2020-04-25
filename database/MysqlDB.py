@@ -46,11 +46,16 @@ class MysqlDB:
                     from user \
                     inner join  friend_list \
                     on user.user_id = friend_list.friend_id \
-                    where friend_list.user_id = " + str(id) + ";"
+                    where friend_list.user_id = " + str(id) + \
+                    "AND request_accepted = 1;"
         return querry
 
     def getUserId(self, username):
         querry = "SELECT user_id FROM user WHERE username = '" + username + "';"
+        return querry
+
+    def getUserFromId(self, userId):
+        querry = "SELECT username FROM user WHERE user_id = '" + str(userId) + "';"
         return querry
 
     def getUserStats(self, id):
@@ -85,6 +90,16 @@ class MysqlDB:
 
     def removeFriend(self, userId, friendId):
         querry = "DELETE FROM friend_list WHERE friend_id = " + str(friendId) + " AND user_id = " + str(userId) + ";"
+        print(querry)
+        return querry
+
+    def checkForFreindRequests(self, userId):
+        querry = "select user.user_id, user.username \
+                    from user \
+                    inner join  friend_list \
+                    on user.user_id = friend_list.friend_id \
+                    where friend_list.user_id = " + str(id) + \
+                    "AND request_accepted = 0;"
         print(querry)
         return querry
 

@@ -51,7 +51,7 @@ class MessageItem:
         response["longest_win_streak"] = stats[5]
         self.responseObj = json.dumps(response)
 
-    def getFriendsListResponse(self, friendsList):
+    def getFriendsListResponse(self, friendsList, request = "getFriendsList"):
         friendDict = {
                     "friend0":"friends"
         }
@@ -71,9 +71,13 @@ class MessageItem:
                     "count":"",
                     "friends":""
         }
+        response["requestType"] = request
         response["count"] = len(friendsList)
         response["friends"] = str(friendDict)
         self.responseObj = json.dumps(response)
+
+    def getFreindRequestResp(self, friendsList):
+        self.getFriendsListResponse(friendsList, "getFriendRequests")
 
 
     def acceptFriendReqResponse(self,status):
