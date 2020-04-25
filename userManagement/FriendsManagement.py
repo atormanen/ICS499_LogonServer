@@ -33,6 +33,8 @@ class FriendsManagement:
                     reqItem.sendFriendReqResponse("success")
                 else:
                     reqItem.sendFriendReqResponse("fail")
+            else:
+                reqItem.sendFriendReqResponse("fail")
         #reqItem.acceptFriendReqResponse(result)
 
     def validateFriendRequest(self, parsedData, reqItem):
