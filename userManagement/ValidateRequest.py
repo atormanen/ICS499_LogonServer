@@ -13,6 +13,8 @@ class ValidateRequest:
         elif parsedData["requestType"] == "createAccount":
             #self.sendBadRequest(connectionSocket)
             return False
+        elif parsedData["requestType"] == "changePassword":
+            return False
         elif parsedData["requestType"] == "getUserStats":
             return False
         elif parsedData["requestType"] == "getFriendsList":

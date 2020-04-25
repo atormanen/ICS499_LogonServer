@@ -52,6 +52,25 @@ createAccount response
   "status":"succes" --- or failure
   "reason":"uname exests..."
 }
+
+********************************************************
+
+changePassword
+{
+  "requestType":"changePassword",
+  "username":"ATormanen",
+  "signon_token":"",
+  "old_password":"",
+  "new_password"
+}
+
+changePasswordResponse
+{
+  "requestType":"changePassword",
+  "status":"success"
+}
+
+
 ********************************************************
 getUserStats
 {

@@ -134,3 +134,11 @@ class MessageItem:
         response["numberOfGames"] = numberOfGames
         response["data"] = str(data)
         self.responseObj = json.dumps(response)
+
+    def changePasswordResponse(self, status):
+        response = {
+                    "requestType":"changePassword",
+                    "status":""
+        }
+        response["status"] = status
+        self.responseObj = json.dumps(response)

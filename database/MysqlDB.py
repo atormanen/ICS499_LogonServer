@@ -17,6 +17,11 @@ class MysqlDB:
             username + "';"
         return selectStatement
 
+    def changePassword(self, username, password):
+        querry = "UPDATE user SET password = " + str(password) + " WHERE username = '" + str(username) +"';"
+        print(querry)
+        return querry
+
     def validateUserExists(self,username):
         statement = "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
             username + "');"

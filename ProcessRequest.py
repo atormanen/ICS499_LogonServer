@@ -53,6 +53,10 @@ class ProcessRequest:
             #call Account Management to get user stats
             self.accountManager.getUserStats(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
+        elif parsedData["requestType"] == "changePassword":
+            #call Account Management to get user stats
+            self.accountManager.changePassword(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getFriendsList":
             #call FriendsManager to retrieve friends list
             self.friendsManager.getFriendsList(parsedData, reqItem)

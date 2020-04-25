@@ -102,6 +102,10 @@ class DB:
     def incrementSigninFailed(self):
         return False
 
+    def changePassword(self, username, password):
+        status = self.dbUpdate(self.builder.changePassword(username, password))
+        return status
+
     #Returns 1\true if exits, false\0 if not
     def validateUserExists(self, username):
         statement = self.builder.validateUserExists(username)
