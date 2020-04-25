@@ -189,12 +189,12 @@ class DB:
         result = self.dbDelete(self.builder.removeFriend(userId, friendsId))
         return result
 
-    def checkForFreindRequests(self, username):
+    def checkForFriendRequests(self, username):
         userId = self.dbFetch(self.builder.getUserId(username))
         if(userId == False):
             return False
         userId = userId[0][0]
-        result = self.dbFetch(self.builder.checkForFreindRequests(userId))
+        result = self.dbFetch(self.builder.checkForFriendRequests(userId))
         return result
 
     def logout(self, username):

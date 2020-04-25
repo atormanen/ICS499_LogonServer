@@ -67,6 +67,7 @@ class ProcessRequest:
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getFriendRequests":
             #call friends management to validate friend request
+            print("processing getFriendRequests")
             self.friendsManager.getFreindRequests(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "removeFriend":

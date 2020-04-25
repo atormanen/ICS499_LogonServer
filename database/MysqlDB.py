@@ -93,7 +93,7 @@ class MysqlDB:
         print(querry)
         return querry
 
-    def checkForFreindRequests(self, userId):
+    def checkForFriendRequests(self, userId):
         querry = "select user.user_id, user.username \
                     from user \
                     inner join  friend_list \
