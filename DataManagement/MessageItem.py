@@ -94,6 +94,15 @@ class MessageItem:
         response["reason"] = reason
         self.responseObj = json.dumps(response)
 
+    def removeFriendResponse(self, status):
+        response = {
+                    "requestType":"removeFriend",
+                    "status":""
+        }
+        response["status"] = status
+        self.responseObj = json.dumps(response)
+
+
     def signoutResponse(self, status):
         response = {
                     "requestType":"sendFriendRequest",

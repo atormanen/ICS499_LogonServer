@@ -74,6 +74,26 @@ class DB:
                 mydb.close()
             return result
 
+    def dbDelete(self, statement):
+        try:
+            mydb = mysql.connector.connect(user=self.user, password=self.password,
+                                  host=self.writer,
+                                  database=self.database,
+                                  auth_plugin='mysql_native_password')
+            cursor = mydb.cursor()
+            cursor.execute(statement)
+            mydb.commit()
+            result = True
+        except mysql.connector.Error as error:
+            ## TODO: Log error to Log
+            print("Error updating data to db")
+            result = False
+        finally:
+            if(mydb.is_connected()):
+                cursor.close()
+                mydb.close()
+            return result
+
 
     def getPasswordFor(self, username):
         result = self.dbFetch(self.builder.getPasswordFor(username))
@@ -156,6 +176,19 @@ class DB:
         userId = userId[0][0]
         result = self.dbUpdate(self.builder.acceptFriendRequest(userId, friendsId, acceptedRequest))
         return result
+
+    def removeFriend(self, username, friendsUsername):
+        userId = self.dbFetch(self.builder.getUserId(username))
+        friendsId = self.dbFetch(self.builder.getUserId(friendsUsername))
+        if(userId == False):
+            return False
+        if(friendsId == False):
+            return False
+        friendsId = friendsId[0][0]
+        userId = userId[0][0]
+        result = self.dbDelete(self.builder.removeFriend(userId, friendsId))
+        return result
+
 
     def logout(self, username):
         self.dbUpdate(self.builder.logout(username))

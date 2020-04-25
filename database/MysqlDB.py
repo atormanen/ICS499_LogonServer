@@ -83,6 +83,10 @@ class MysqlDB:
                     str(userId) + ";"
         return querry
 
+    def removeFriend(self, userId, friendId):
+        querry = "DELETE FROM friend_list WHERE friend_id =" + friendId + "AND userId = " + userId + ";"
+        return querry
+
     def logout(self, username):
         querry = "UPDATE user SET signon_token = 'null' WHERE username = '" + \
                 username + "';"

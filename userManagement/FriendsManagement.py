@@ -53,3 +53,12 @@ class FriendsManagement:
     def denyFriendRequest(self):
 
         return False
+
+    def removeFriend(self, parsedData, reqItem):
+        username = parsedData["username"]
+        friendsUsername = parsedData["friendsUsername"]
+        if(self.validateUsername(friendsUsername)):
+            result = self.db.removeFriend(username, friendsUsername)
+            reqItem.removeFriendResponse("success")
+        else:
+            reqItem.removeFriendResponse("fail")
