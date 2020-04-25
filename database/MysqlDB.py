@@ -84,7 +84,7 @@ class MysqlDB:
         return querry
 
     def removeFriend(self, userId, friendId):
-        querry = "DELETE FROM friend_list WHERE friend_id = " + str(friendId) + " AND userId = " + str(userId) + ";"
+        querry = "DELETE FROM friend_list WHERE friend_id = " + str(friendId) + " AND user_id = " + str(userId) + ";"
         print(querry)
         return querry
 
