@@ -25,12 +25,15 @@ class FriendsManagement:
         #send a freind req
         username = parsedData["username"]
         friendsUsername = parsedData["friendsUsername"]
-        result = False
+
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
                 result = self.db.sendFriendRequest(username, friendsUsername)
-                reqItem.sendFriendReqResponse(result)
-        reqItem.acceptFriendReqResponse(result)
+                if(result == True):
+                    reqItem.sendFriendReqResponse("success")
+                else:
+                    reqItem.sendFriendReqResponse("fail")
+        #reqItem.acceptFriendReqResponse(result)
 
     def validateFriendRequest(self, parsedData, reqItem):
         username = parsedData["username"]
