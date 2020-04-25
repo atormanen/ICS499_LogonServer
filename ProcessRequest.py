@@ -65,6 +65,10 @@ class ProcessRequest:
             #call friends management to validate friend request
             self.friendsManager.validateFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
+        elif parsedData["requestType"] == "getFriendRequests":
+            #call friends management to validate friend request
+            self.friendsManager.checkForFreindRequests(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "removeFriend":
             self.friendsManager.removeFriend(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
