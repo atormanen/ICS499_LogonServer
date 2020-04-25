@@ -62,6 +62,7 @@ class Listener:
                 except UnicodeDecodeError:
                     print(rcvd_msg)
                     print("UnicodeDecodeError")
+                    self.sendBadRequest(connectionSocket)
             full_msg += rcvd_msg
             if(len(rcvd_msg) == 0):
                 break
