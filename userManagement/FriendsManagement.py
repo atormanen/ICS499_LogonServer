@@ -15,7 +15,7 @@ class FriendsManagement:
         friendsList = self.db.getFriendsList(parsedData["username"])
         reqItem.getFriendsListResponse(friendsList)
 
-    def getFreindRequestResp(self, parsedData, reqItem):
+    def getFriendRequests(self, parsedData, reqItem):
         friendList = self.db.checkForFriendRequests(parsedData["username"])
         print("friendList: " + friendList)
         reqItem.getFriendRequestsResp(friendList)
