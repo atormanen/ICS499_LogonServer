@@ -55,7 +55,7 @@ class AccountManagement:
         oldPassword = parsedData["old_password"]
         newPassword = parsedData["new_password"]
         print(parsedData)
-        if(self.validatePassword(username, password)):
+        if(self.validatePassword(username, oldPassword)):
             if(self.tokenUpToDate(username)):
                 savedPassword = self.db.getPassword(username)
                 if(savedPassword == oldPassword):
