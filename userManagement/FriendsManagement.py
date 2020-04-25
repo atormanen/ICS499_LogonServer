@@ -51,9 +51,6 @@ class FriendsManagement:
                 result = self.db.acceptFriendRequest(username, friendsUsername, True)
         reqItem.acceptFriendReqResponse(result)
 
-    def checkForFreindRequests(self):
-
-        return False
 
     def denyFriendRequest(self):
 
