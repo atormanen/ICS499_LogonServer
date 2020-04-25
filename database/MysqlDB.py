@@ -18,7 +18,7 @@ class MysqlDB:
         return selectStatement
 
     def changePassword(self, username, password):
-        querry = "UPDATE user SET password = " + str(password) + " WHERE username = '" + str(username) +"';"
+        querry = "UPDATE user SET password = '" + str(password) + "' WHERE username = '" + str(username) +"';"
         print(querry)
         return querry
 
