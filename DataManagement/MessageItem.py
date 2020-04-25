@@ -68,7 +68,7 @@ class MessageItem:
             i = i + 1
         response = {
                     "requestType":"getFriendsList",
-                    "count":""
+                    "count":"",
                     "friends":""
         }
         response["count"] = length(friendsList)
