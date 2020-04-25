@@ -58,6 +58,7 @@ class Listener:
                     break
             else:
                 try:
+                    print("received msg")
                     rcvd_msg = connectionSocket.recv(self.bufferSize).decode('utf-8','ignore')
                 except UnicodeDecodeError:
                     print(rcvd_msg)
