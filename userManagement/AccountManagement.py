@@ -60,6 +60,7 @@ class AccountManagement:
         if(self.validatePassword(username, oldPassword)):
             if(self.tokenUpToDate(username)):
                 savedPassword = self.db.getPasswordFor(username)
+                savedPassword = savedPassword[0][0]
                 print("saved password: " + str(savedPassword))
                 print("new password: " + str(newPassword))
 
