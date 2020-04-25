@@ -54,7 +54,7 @@ class AccountManagement:
         signonToken = parsedData["signon_token"]
         oldPassword = parsedData["old_password"]
         newPassword = parsedData["new_password"]
-
+        print(parsedData)
         if(self.validatePassword(username, password)):
             if(self.tokenUpToDate(username)):
                 savedPassword = self.db.getPassword(username)
@@ -62,8 +62,11 @@ class AccountManagement:
                     self.db.changePassword(username, newPassword)
                     reqItem.changePasswordResponse("success")
                 else:
+                    print("passwords do not match")
                     reqItem.changePasswordResponse("fail")
             else:
+                print("token is not up to date")
                 reqItem.changePasswordResponse("fail")
         else:
+            print("password validation failed")
             reqItem.changePasswordResponse("fail")
