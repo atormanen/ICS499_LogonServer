@@ -76,7 +76,7 @@ class MessageItem:
         response["friends"] = str(friendDict)
         self.responseObj = json.dumps(response)
 
-    def getFreindRequestResp(self, friendsList):
+    def getFriendRequestResp(self, friendsList):
         self.getFriendsListResponse(friendsList, "getFriendRequests")
 
 
