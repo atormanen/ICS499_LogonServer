@@ -55,6 +55,7 @@ class ProcessRequest:
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "changePassword":
             #call Account Management to get user stats
+            print("change password request called")
             self.accountManager.changePassword(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getFriendsList":
