@@ -95,11 +95,11 @@ class MysqlDB:
 
     def checkForFriendRequests(self, userId):
         querry = "select user.user_id, user.username \
-                    from user \
-                    inner join  friend_list \
-                    on user.user_id = friend_list.friend_id \
-                    where friend_list.user_id = " + str(id) + \
-                    "AND request_accepted = 0;"
+        from user \
+        inner join friend_list \
+        on user.user_id = friend_list.friend_id \
+        where friend_list.user_id = " + str(userId) + \
+        "AND request_accepted = 0;"
         print(querry)
         return querry
 
