@@ -197,7 +197,7 @@ class DB:
         userId = self.dbFetch(self.builder.getUserId(username))
         if(userId == False):
             return False
-        userId = userId[0][0]
+        userId = userId[0]
         result = self.dbFetch(self.builder.checkForFriendRequests(userId))
         return result
 
