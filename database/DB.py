@@ -120,6 +120,20 @@ class DB:
         intResult = result[0][0]
         return intResult
 
+    #Returns 1\true if exits, false\0 if not
+    def checkIfFriendRequestExists(self, username, friendsUsername):
+        userId = self.dbFetch(self.builder.getUserId(username))
+        friendsId = self.dbFetch(self.builder.getUserId(friendsUsername))
+        if(userId == False):
+            return False
+        if(friendsId == False):
+            return False
+        userId = userId[0][0]
+        friendsId = friendsId[0][0]
+        result = self.dbFetch(self.builder.checkIfFriendRequestExists(userId, friendsId))
+        result = result[0][0]
+        return result
+
     def createUser(self, parsedData):
         id = self.dbFetch(self.builder.getLastUserId())
         id = str(id[0][0] + 1)

@@ -33,9 +33,13 @@ class FriendsManagement:
 
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
-                result = self.db.sendFriendRequest(username, friendsUsername)
-                if(result == True):
-                    reqItem.sendFriendReqResponse("success")
+                if(self.db.checkIfFriendRequestExists(username, friendsUsername) == 0):
+                    #Friend request does not exists so go and make a request
+                    result = self.db.sendFriendRequest(username, friendsUsername)
+                    if(result == True):
+                        reqItem.sendFriendReqResponse("success")
+                    else:
+                        reqItem.sendFriendReqResponse("fail")
                 else:
                     reqItem.sendFriendReqResponse("fail")
             else:

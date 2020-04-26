@@ -27,6 +27,12 @@ class MysqlDB:
             username + "');"
         return statement
 
+    def checkIfFriendRequestExists(self, userId, friendsId):
+        querry = "SELECT EXISTS(SELECT user_id FROM friend_list WHERE user_id = \
+        " + str(userId) + " friend_id = " + str(friendsId) + " AND request_accepted = 0);"
+        print(querry)
+        return querry
+
     def validateUsernameAvailable(self,username):
         statement = "SELECT EXISTS(SELECT username FROM user WHERE username = '" +\
             username + "');"
@@ -103,7 +109,7 @@ class MysqlDB:
         from user \
         inner join friend_list \
         on user.user_id = friend_list.friend_id \
-        where friend_list.user_id = " + str(userId) + \
+        where friend_list.friend_id = " + str(userId) + \
         " AND request_accepted = 0;"
         print(querry)
         return querry
