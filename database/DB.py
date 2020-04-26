@@ -208,6 +208,7 @@ class DB:
         print("UserId: " + str(userId))
         print("FriendsId: " + str(friendsId))
         result = self.dbDelete(self.builder.removeFriend(userId, friendsId))
+        self.dbDelete(self.builder.removeFriend(friendsId, userId))
         return result
 
     def checkForFriendRequests(self, username):
