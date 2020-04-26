@@ -131,8 +131,9 @@ class DB:
         userId = userId[0][0]
         friendsId = friendsId[0][0]
         result = self.dbFetch(self.builder.checkIfFriendRequestExists(userId, friendsId))
-        result = result[0][0]
-        return result
+        print(result)
+        intResult = result[0][0]
+        return intResult
 
     def createUser(self, parsedData):
         id = self.dbFetch(self.builder.getLastUserId())
