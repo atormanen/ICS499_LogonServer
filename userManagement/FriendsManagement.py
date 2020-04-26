@@ -63,6 +63,8 @@ class FriendsManagement:
     def removeFriend(self, parsedData, reqItem):
         username = parsedData["username"]
         friendsUsername = parsedData["friendsUsername"]
+        print("Username: " + username)
+        print("FriendsName: " + friendsUsername)
         if(self.validateUsername(friendsUsername)):
             result = self.db.removeFriend(username, friendsUsername)
             reqItem.removeFriendResponse("success")

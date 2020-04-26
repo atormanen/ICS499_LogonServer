@@ -205,6 +205,8 @@ class DB:
             return False
         friendsId = friendsId[0][0]
         userId = userId[0][0]
+        print("UserId: " + userId)
+        print("FriendsId: " + friendsId)
         result = self.dbDelete(self.builder.removeFriend(userId, friendsId))
         return result
 
