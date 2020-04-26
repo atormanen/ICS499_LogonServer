@@ -109,7 +109,7 @@ class MysqlDB:
         from user \
         inner join friend_list \
         on user.user_id = friend_list.friend_id \
-        where friend_list.user_id = " + str(userId) + \
+        where friend_list.friend_id = " + str(userId) + \
         " AND request_accepted = 0;"
         print(querry)
         return querry
