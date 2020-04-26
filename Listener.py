@@ -16,7 +16,7 @@ class Listener:
         self.requestQueue = requestQueue
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.bufferSize = 2048
+        self.bufferSize = 10240
         self.portNumber = 12345
         self.serverIp = ''
         self.reqCount = 0
@@ -58,7 +58,7 @@ class Listener:
                     break
             else:
                 try:
-                    
+
                     rcvd_msg = connectionSocket.recv(self.bufferSize).decode('utf-8','ignore')
                 except UnicodeDecodeError:
                     print(rcvd_msg)
