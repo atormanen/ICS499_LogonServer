@@ -108,7 +108,7 @@ class MysqlDB:
         querry = "select friend_list.user_id, user.username \
         from user \
         inner join friend_list \
-        on user.user_id = friend_list.friend_id \
+        on user.user_id = friend_list.user_id\
         where friend_list.friend_id = " + str(userId) + \
         " AND request_accepted = 0;"
         print(querry)
