@@ -53,12 +53,12 @@ class AccountManagement:
 
     def changePassword(self, parsedData, reqItem):
         username = parsedData["username"]
-        signonToken = parsedData["signon_token"]
+        #signonToken = parsedData["signon_token"]
         oldPassword = parsedData["old_password"]
         newPassword = parsedData["new_password"]
         print(parsedData)
         if(self.validatePassword(username, oldPassword)):
-            if(self.tokenUpToDate(username)):
+            if(True):
                 savedPassword = self.db.getPasswordFor(username)
                 savedPassword = savedPassword[0][0]
                 print("saved password: " + str(savedPassword))
