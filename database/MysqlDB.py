@@ -38,8 +38,8 @@ class MysqlDB:
     def createUser(self, id, parsedData):
         now = time.strftime('%Y-%m-%d %H-%M-%S')
         return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
-            "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + ",0,"\
-            "','" + parsedData["email"] + "',0,'" + parsedData["password"] +\
+            "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + "',0,"\
+            ",'" + parsedData["email"] + "',0,'" + parsedData["password"] +\
             "','" + now + "','" + "null" +\
              "');"
 
