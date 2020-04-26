@@ -29,7 +29,7 @@ class MysqlDB:
 
     def checkIfFriendRequestExists(self, userId, friendsId):
         querry = "SELECT EXISTS(SELECT user_id FROM friend_list WHERE user_id = \
-        " + str(userId) + " friend_id = " + str(friendsId) + " AND request_accepted = 0);"
+        " + str(userId) + " AND friend_id = " + str(friendsId) + " AND request_accepted = 0);"
         print(querry)
         return querry
 
