@@ -206,7 +206,7 @@ class DB:
         friendsId = friendsId[0][0]
         userId = userId[0][0]
         print("UserId: " + str(userId))
-        print("FriendsId: " + str(friendsId)
+        print("FriendsId: " + str(friendsId))
         result = self.dbDelete(self.builder.removeFriend(userId, friendsId))
         return result
 
