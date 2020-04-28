@@ -93,6 +93,12 @@ class MysqlDB:
                     ","+ str(friend_id) + ",0);"
         return querry
 
+    def addFriend(self, userId, friendId):
+        querry = "INSERT INTO friend_list VALUES(" + str(friendId) +\
+                    ","+ str(userId) + ",1);"
+        print(querry)
+        return querry
+
     #UserId and friendId are backwards... that is intentional
     def acceptFriendRequest(self, userId, friendId, acceptedRequest):
         querry = "UPDATE friend_list set request_accepted = " + str(acceptedRequest) +\
