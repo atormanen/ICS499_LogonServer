@@ -95,8 +95,8 @@ class MysqlDB:
 
     def acceptFriendRequest(self, userId, friendId, acceptedRequest):
         querry = "UPDATE friend_list set request_accepted = " + str(acceptedRequest) +\
-                    " WHERE friend_id = " + str(friendId) + " AND user_id = " +\
-                    str(userId) + ";"
+                    " WHERE friend_id = " + str(userId) + " AND user_id = " +\
+                    str(friendId) + ";"
         print(querry)
         return querry
 
