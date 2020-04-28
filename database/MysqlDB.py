@@ -97,6 +97,7 @@ class MysqlDB:
         querry = "UPDATE friend_list set request_accepted = " + str(acceptedRequest) +\
                     " WHERE friend_id = " + str(friendId) + " AND user_id = " +\
                     str(userId) + ";"
+        print(querry)
         return querry
 
     def removeFriend(self, userId, friendId):
