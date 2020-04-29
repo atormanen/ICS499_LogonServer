@@ -94,8 +94,8 @@ class MysqlDB:
         return querry
 
     def addFriend(self, userId, friendId):
-        querry = "INSERT INTO friend_list VALUES(" + str(friendId) +\
-                    ","+ str(userId) + ",1);"
+        querry = "INSERT INTO friend_list VALUES(" + str(userId) +\
+                    ","+ str(friendId) + ",1);"
         print(querry)
         return querry
 
