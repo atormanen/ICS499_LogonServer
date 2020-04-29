@@ -194,7 +194,7 @@ class DB:
         friendsId = friendsId[0][0]
         userId = userId[0][0]
         result = self.dbUpdate(self.builder.acceptFriendRequest(userId, friendsId, acceptedRequest))
-        self.dbUpdate(self.builder.addFriend(userId, friendId))
+        self.dbUpdate(self.builder.addFriend(userId, friendsId))
         return result
 
     def removeFriend(self, username, friendsUsername):
