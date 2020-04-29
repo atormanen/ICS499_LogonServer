@@ -158,7 +158,6 @@ class MessageItem:
                     "level":""
 
         }
-        response["numberOfGames"] = numberOfGames
         response["avatarStyle"] = data[0]
         response["chessboardStyle"] = data[1]
         response["chesspieceStyle"] = data[2]
