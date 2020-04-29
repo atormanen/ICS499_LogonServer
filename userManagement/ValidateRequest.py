@@ -31,6 +31,10 @@ class ValidateRequest:
             return False
         elif parsedData["requestType"] == "getFriendRequests":
             return False
+        elif parsedData["requestType"] == "getAccountInfo":
+            return False
+        elif parsedData["requestType"] == "saveAccountInfo":
+            return False
         elif parsedData["requestType"] == "getLongestWinStreak":
             return False
         else:

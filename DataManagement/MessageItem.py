@@ -76,6 +76,8 @@ class MessageItem:
         response["friends"] = str(friendDict)
         self.responseObj = json.dumps(response)
 
+
+
     def getFriendRequestsResp(self, friendsList):
         self.getFriendsListResponse(friendsList, "getFriendRequests")
 
@@ -141,4 +143,28 @@ class MessageItem:
                     "status":""
         }
         response["status"] = status
+        self.responseObj = json.dumps(response)
+
+    def getAccountInfoResponse(self, data):
+        response = {
+                    "requestType":"getAccountInfo",
+                    "avatarStyle":"",
+                    "chessboardStyle":"",
+                    "chesspieceStyle":"",
+                    "matchClockChoice":"",
+                    "automaticQueening":"",
+                    "disablePausing":"",
+                    "requireCommitPress":"",
+                    "level":""
+
+        }
+        response["numberOfGames"] = numberOfGames
+        response["avatarStyle"] = data[0]
+        response["chessboardStyle"] = data[1]
+        response["chesspieceStyle"] = data[2]
+        response["matchClockChoice"] = data[3]
+        response["automaticQueening"] = data[4]
+        response["disablePausing"] = data[5]
+        response["requireCommitPress"] = data[6]
+        response["level"] = data[7]
         self.responseObj = json.dumps(response)

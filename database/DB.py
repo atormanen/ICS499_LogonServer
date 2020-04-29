@@ -230,3 +230,7 @@ class DB:
     def getLongestWinStreak(self, numberOfGames):
         result = self.dbFetch(self.builder.getLongestWinStreak(numberOfGames))
         return result
+
+    def getAccountInfo(self, username):
+        result = self.dbFetch(self.builder.getAccountInfo(username))
+        return result

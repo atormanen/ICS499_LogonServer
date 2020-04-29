@@ -46,7 +46,7 @@ class MysqlDB:
         return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
             "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + "',0," + \
             "'" + parsedData["email"] + "',0,'" + parsedData["password"] +\
-            "','" + now + "','" + "null" +\
+            "','" + now + "','" + "null" + "0,0,0,0,0"\
              "');"
 
     def createUserStats(self, id):
@@ -137,5 +137,13 @@ class MysqlDB:
         querry = "select user.username, user_statistics.* from user \
         inner join user_statistics on user.user_id = user_statistics.user_id\
         order by longetst_win_streak desc limit" + str(numberOfGames) + ";"
+        print(querry)
+        return querry
+
+    def getAccountInfo(self, username):
+        querry = "SELECT user.signon_token, user.avatar_style, user.chess_board_style,\
+        user.match_clock_choice, user.disable_pausing, user.require_commit_press, user_statistics.level FROM user \
+        inner join user_statistics on user.user_id = user_statistics.user_id \
+        Where username = '" + str(username) + "';"
         print(querry)
         return querry
