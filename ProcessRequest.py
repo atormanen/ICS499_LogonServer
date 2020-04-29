@@ -91,7 +91,7 @@ class ProcessRequest:
             self.leaderboard.getLongestWinStreak(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "getAccountInfo":
-            self.leaderboard.getAccountInfo(parsedData, reqItem)
+            self.accountManager.getAccountInfo(parsedData, reqItem)
             self.responder.getAccountInfoResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connectionSocket)
