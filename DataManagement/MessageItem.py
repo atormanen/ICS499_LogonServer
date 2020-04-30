@@ -158,12 +158,12 @@ class MessageItem:
                     "level":""
 
         }
-        response["avatarStyle"] = data[0]
-        response["chessboardStyle"] = data[1]
-        response["chesspieceStyle"] = data[2]
-        response["matchClockChoice"] = data[3]
-        response["automaticQueening"] = data[4]
-        response["disablePausing"] = data[5]
-        response["requireCommitPress"] = data[6]
-        response["level"] = data[7]
+        response["avatarStyle"] = data[0][0]
+        response["chessboardStyle"] = data[0][1]
+        response["chesspieceStyle"] = data[0][2]
+        response["matchClockChoice"] = data[0][3]
+        response["automaticQueening"] = data[0][4]
+        response["disablePausing"] = data[0][5]
+        response["requireCommitPress"] = data[0][6]
+        response["level"] = data[0][7]
         self.responseObj = json.dumps(response)
