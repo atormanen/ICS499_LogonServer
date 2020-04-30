@@ -26,6 +26,10 @@ class MessageItem:
                     "requireCommitPress":"",
                     "level":""
         }
+        if not(token):
+            response["status"] = "fail"
+            self.responseObj = json.dumps(response)
+        response["token"] = token
         response["avatarStyle"] = data[0][0]
         response["chessboardStyle"] = data[0][1]
         response["chesspieceStyle"] = data[0][2]
@@ -34,9 +38,7 @@ class MessageItem:
         response["disablePausing"] = data[0][5]
         response["requireCommitPress"] = data[0][6]
         response["level"] = data[0][7]
-        response["token"] = token
-        if not(token):
-             response["status"] = "fail"
+        print(response)
         self.responseObj = json.dumps(response)
 
     def createAccountResponse(self,status,reason='null'):
