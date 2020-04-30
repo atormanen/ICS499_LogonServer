@@ -154,3 +154,5 @@ class MysqlDB:
         ", user.require_commit_press =  " + str(data["requireCommitPress"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = " + str(username) + ";"
         print(querry)
         return qurry
+
+    
