@@ -141,9 +141,12 @@ class MysqlDB:
         return querry
 
     def getAccountInfo(self, username):
-        querry = "SELECT user.signon_token, user.avatar, user.chess_board_style,\
-        user.match_clock_choice, user.disable_pausing, user.require_commit_press, user_statistics.level FROM user \
+        querry = "SELECT user.signon_token, user.avatar, user.chess_board_style,  user.chess_piece_style, \
+        user.match_clock_choice, user.automaticQueening, user.disable_pausing, user.require_commit_press, user_statistics.level FROM user \
         inner join user_statistics on user.user_id = user_statistics.user_id \
         Where username = '" + str(username) + "';"
         print(querry)
         return querry
+
+    def saveAccountInfo(self, username, data):
+        querry = "UPDATE user SET user.avatar = " + str(data["avatar_style"]) + ", user.chess_board_style = " + str(data["chessboardStyle"])
