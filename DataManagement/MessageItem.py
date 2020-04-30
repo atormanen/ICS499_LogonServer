@@ -129,7 +129,7 @@ class MessageItem:
 
     def signoutResponse(self, status):
         response = {
-                    "requestType":"sendFriendRequest",
+                    "requestType":"signout",
                     "status":""
         }
         response["status"] = status
