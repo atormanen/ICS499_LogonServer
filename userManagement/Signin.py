@@ -42,12 +42,12 @@ class Signin:
                 if(signonToken == 'null'):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
-                reqItem.signinResponse(token, data)
+                reqItem.signinResponse(signonToken, data)
             else:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 print(signonToken)
-                reqItem.signinResponse(token, data)
+                reqItem.signinResponse(signonToken, data)
         return False
 
     def signout(self, parsedData, reqItem):
