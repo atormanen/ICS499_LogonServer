@@ -28,7 +28,7 @@ class Signin:
             return False
         return True
 
-    def signin(self, parsedData):
+    def signin(self, parsedData, reqItem):
         username = parsedData["username"]
         password = parsedData["password"]
         data = self.getAccountInfo(parsedData)
