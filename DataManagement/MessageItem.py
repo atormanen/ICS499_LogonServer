@@ -12,12 +12,28 @@ class MessageItem:
         self.parsedData = parsedData
         self.responseObj = ''
 
-    def signinResponse(self,token):
+    def signinResponse(self,token, data):
         response = {
                     "requestType":"signin",
                     "status":"success",
-                    "token":""
+                    "token":"",
+                    "avatarStyle":"",
+                    "chessboardStyle":"",
+                    "chesspieceStyle":"",
+                    "matchClockChoice":"",
+                    "automaticQueening":"",
+                    "disablePausing":"",
+                    "requireCommitPress":"",
+                    "level":""
         }
+        response["avatarStyle"] = data[0][0]
+        response["chessboardStyle"] = data[0][1]
+        response["chesspieceStyle"] = data[0][2]
+        response["matchClockChoice"] = data[0][3]
+        response["automaticQueening"] = data[0][4]
+        response["disablePausing"] = data[0][5]
+        response["requireCommitPress"] = data[0][6]
+        response["level"] = data[0][7]
         response["token"] = token
         if not(token):
              response["status"] = "fail"

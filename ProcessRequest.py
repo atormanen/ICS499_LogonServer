@@ -37,10 +37,9 @@ class ProcessRequest:
         parsedData = reqItem.parsedData
 
         if parsedData["requestType"] == "signin":
-            token = self.signin.signin(parsedData)
+            token = self.signin.signin(parsedData, reqItem)
             print("Signin" + str(token))
             print(parsedData)
-            reqItem.signinResponse(token)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "createAccount":
             result = self.accountManager.createAccount(reqItem.parsedData)
@@ -90,9 +89,9 @@ class ProcessRequest:
         elif parsedData["requestType"] == "saveAccountInfo":
             self.accountManager.saveAccountInfo(parsedData, reqItem)
             self.responder.getAccountInfoResponse(reqItem)
-        elif parsedData["requestType"] == "getAccountInfo":
-            self.accountManager.getAccountInfo(parsedData, reqItem)
-            self.responder.sendResponse(reqItem)
+        #elif parsedData["requestType"] == "getAccountInfo":
+        #    self.accountManager.getAccountInfo(parsedData)
+        #    self.responder.sendResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connectionSocket)
 

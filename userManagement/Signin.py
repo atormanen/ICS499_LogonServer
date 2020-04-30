@@ -31,6 +31,8 @@ class Signin:
     def signin(self, parsedData):
         username = parsedData["username"]
         password = parsedData["password"]
+        data = self.getAccountInfo(parsedData)
+
         if(self.validatePassword(username, password)):
             if(self.tokenUpToDate(username)):
                 #Bundle the tocken into the response package
@@ -40,12 +42,12 @@ class Signin:
                 if(signonToken == 'null'):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
-                return signonToken
+                reqItem.signinResponse(parsedData, data)
             else:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 print(signonToken)
-                return signonToken
+                reqItem.signinResponse(parsedData, data)
         return False
 
     def signout(self, parsedData, reqItem):
@@ -59,3 +61,9 @@ class Signin:
             reqItem.signoutResponse("success")
         else:
             reqItem.signoutResponse("failure")
+
+    def getAccountInfo(self, parsedData):
+        username = parsedData["username"]
+        signonToken = parsedData["signonToken"]
+        data = self.db.getAccountInfo(username)
+        print(data)

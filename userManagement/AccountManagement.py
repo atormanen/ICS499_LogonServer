@@ -77,9 +77,4 @@ class AccountManagement:
             print("password validation failed")
             reqItem.changePasswordResponse("fail")
 
-    def getAccountInfo(self, parsedData, reqItem):
-        username = parsedData["username"]
-        signonToken = parsedData["signonToken"]
-        data = self.db.getAccountInfo(username)
-        print(data)
-        reqItem.getAccountInfoResponse(data)
+    
