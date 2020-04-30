@@ -67,3 +67,4 @@ class Signin:
         #signonToken = parsedData["signonToken"]
         data = self.db.getAccountInfo(username)
         print(data)
+        return data
