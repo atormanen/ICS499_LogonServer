@@ -153,4 +153,4 @@ class MysqlDB:
         ", match_clock_choice =  " + str(data["matchClockChoice"]) + ", user.automatic_queening = " + str(data["automaticQueening"]) + ", user.disable_pausing = " + str(data["disablePausing"]) +\
         ", user.require_commit_press =  " + str(data["requireCommitPress"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = " + str(username) + ";"
         print(querry)
-        return qurry
+        return querry
