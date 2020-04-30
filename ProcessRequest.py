@@ -92,7 +92,7 @@ class ProcessRequest:
             self.responder.getAccountInfoResponse(reqItem)
         elif parsedData["requestType"] == "getAccountInfo":
             self.accountManager.getAccountInfo(parsedData, reqItem)
-            self.responder.getAccountInfoResponse(reqItem)
+            self.responder.sendResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connectionSocket)
 
