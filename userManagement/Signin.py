@@ -42,7 +42,7 @@ class Signin:
                 if(signonToken == 'null'):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
-                reqItem.signinResponse(parsedData, data)
+                reqItem.signinResponse(token, data)
             else:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
@@ -57,12 +57,10 @@ class Signin:
 
         savedToken = self.db.getToken(username)
 
-        if(signonToken == savedToken):
-            self.db.logout(username)
-            self.db.saveAccountInfo(username, parsedData)
-            reqItem.signoutResponse("success")
-        else:
-            reqItem.signoutResponse("failure")
+        self.db.logout(username)
+        self.db.saveAccountInfo(username, parsedData)
+        reqItem.signoutResponse("success")
+
 
     def getAccountInfo(self, parsedData):
         username = parsedData["username"]
