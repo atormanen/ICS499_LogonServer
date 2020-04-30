@@ -234,3 +234,6 @@ class DB:
     def getAccountInfo(self, username):
         result = self.dbFetch(self.builder.getAccountInfo(username))
         return result
+
+    def saveAccountInfo(self, username, data):
+        self.dbUpdate(self.builder.saveAccountInfo(username, data))

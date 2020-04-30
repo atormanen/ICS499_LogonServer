@@ -148,6 +148,9 @@ class MysqlDB:
         print(querry)
         return querry
 
-    #def saveAccountInfo(self, username, data):
-    #    querry = "UPDATE user SET user.avatar = " + str(data["avatar_style"]) + ", user.chess_board_style = " + str(data["chessboardStyle"]) + ", chess_piece_style = " + str(data["chesspieceStyle"]) +\
-    #    user.avatar = " + str(data["avatar_style"]) + ", user.chess_board_style = " + str(data["chessboardStyle"]) + ", chess_piece_style = " + str(data["chesspieceStyle"])
+    def saveAccountInfo(self, username, data):
+        querry = "UPDATE user SET user.avatar = " + str(data["avatar_style"]) + ", user.chess_board_style = " + str(data["chessboardStyle"]) + ", chess_piece_style = " + str(data["chesspieceStyle"]) +\
+        ", match_clock_choice =  " + str(data["matchClockChoice"]) + ", user.automatic_queening = " + str(data["automaticQueening"]) + ", user.disable_pausing = " + str(data["disablePausing"]) +
+        ", user.require_commit_press =  " + str(data["requireCommitPress"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = " + str(username) + ";"
+        print(querry)
+        return qurry
