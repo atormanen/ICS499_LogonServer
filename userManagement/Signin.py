@@ -64,6 +64,6 @@ class Signin:
 
     def getAccountInfo(self, parsedData):
         username = parsedData["username"]
-        signonToken = parsedData["signonToken"]
+        #signonToken = parsedData["signonToken"]
         data = self.db.getAccountInfo(username)
         print(data)
