@@ -46,7 +46,7 @@ class MysqlDB:
         return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
             "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + "',0," + \
             "'" + parsedData["email"] + "',0,'" + parsedData["password"] +\
-            "','" + now + "','" + "null" + "0,0,0,0,0"\
+            "','" + now + "','" + "null'" + "0,0,0,0,0"\
              "');"
 
     def createUserStats(self, id):
