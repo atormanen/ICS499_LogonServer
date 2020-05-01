@@ -45,7 +45,7 @@ class MysqlDB:
         now = time.strftime('%Y-%m-%d %H-%M-%S')
         return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
             "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + \
-            "'" + parsedData["email"] + "',0,'" + parsedData["password"] + "','null'"\
+            "','" + parsedData["email"] + "',0,'" + parsedData["password"] + "','null'"\
             ",'" + now + "','" + "0,0,0,0,0,0,0"\
              "');"
     #id, username, firstname, lastname, email, avatar, ####, password, now, signonToken,
