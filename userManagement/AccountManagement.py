@@ -14,10 +14,27 @@ class AccountManagement:
             return True
         return False
 
+    def isPasswordValid(self, password):
+        upper_ctr, lower_ctr, number_ctr, special_ctr = 0, 0, 0, 0
+        for i in range(len(str)):
+            if str[i] >= 'A' and str[i] <= 'Z': upper_ctr += 1
+            elif str[i] >= 'a' and str[i] <= 'z': lower_ctr += 1
+            elif str[i] >= '0' and str[i] <= '9': number_ctr += 1
+            else: special_ctr += 1
+        numberOfGoodChar = upper_ctr + number_ctr + special_ctr
+
+        if(numberOfGoodChar >= 3):
+            return True
+        else:
+            return False
+
+
+
     def createAccount(self, parsedData):
 		#check if username exists
         #return false if username alread exists
         result = self.db.validateUsernameAvailable(parsedData["username"])
+
         #call mysqlDB to create CreateAccount
         if result == 0:
             self.db.createUser(parsedData)
@@ -76,5 +93,3 @@ class AccountManagement:
         else:
             print("password validation failed")
             reqItem.changePasswordResponse("fail")
-
-    
