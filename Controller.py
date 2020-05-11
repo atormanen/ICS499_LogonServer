@@ -9,7 +9,7 @@ import queue
 
 #Controller will initilaize all the objects and processes needed
 #for the applications. It will sping up a few request request processors
-#and then run the listener thread.  
+#and then run the listener thread.   
 class Controller:
 
     #requestQueue is shared queue among all processes
