@@ -9,6 +9,7 @@ import os
 from userManagement.FriendsManagement import FriendsManagement
 from userManagement.Tokens import Tokens
 from DataManagement.Leaderboard import Leaderboard
+from Manifest import Manifest
 
 class ProcessRequest:
 
@@ -16,9 +17,13 @@ class ProcessRequest:
     #will hold the shared request queue object. It will pull requests
     #from the queue as they are inserted from the listener
     def __init__(self, requestQueue):
-        reader = 'chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com'
-        writer = 'chessgamedb.cxwhpucd0m6k.us-east-2.rds.amazonaws.com'
-        self.database = DB('admin','ICS4992020', reader, writer,'userdb')
+        self.manifest = Manifest()
+        reader = self.manifest.database_reader
+        writer = self.manifest.database_writer
+        username = self.manifest.database_username
+        password = self.manifest.database_password
+        userDatabase = self.manifest.user_database_name
+        self.database = DB(username,password,reader,writer,userDatabase)
         #self.database = DB('app','123','192.168.1.106','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
