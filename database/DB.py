@@ -244,4 +244,4 @@ class DB:
             print("quarry is None")
         else:
             self.dbUpdate(querry)
-        
+            print(self.getAccountInfo(username))
