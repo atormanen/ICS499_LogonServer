@@ -63,7 +63,7 @@ class Listener:
 
                     rcvd_msg = connectionSocket.recv(self.bufferSize).decode('utf-8','replace')
                 except UnicodeDecodeError:
-                    print(rcvd_msg)
+                    print("rcvd_msg:",rcvd_msg)
                     print("UnicodeDecodeError")
                     self.sendBadRequest(connectionSocket)
             full_msg += rcvd_msg

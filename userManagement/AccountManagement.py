@@ -48,7 +48,7 @@ class AccountManagement:
         reqItem.getUSerStatsResponse(stats[0])
 
     def validatePassword(self, username, password):
-        print(self.db.validateUserExists(username))
+        print("validateUserExists result:",self.db.validateUserExists(username))
         if(self.db.validateUserExists(username)):
             dbPassword = self.db.getPasswordFor(username)
             dbPassword = dbPassword[0][0]
@@ -62,7 +62,7 @@ class AccountManagement:
         #if(tokenExpiration):
         #    return False
         currentTime = time.time()
-        print(tokenExpiration[0][0])
+        print("tokenExpiration:",tokenExpiration[0][0])
         timeDiference = currentTime - tokenExpiration[0][0]
         if(timeDiference > 86400):
             return False
@@ -73,9 +73,10 @@ class AccountManagement:
         #signonToken = parsedData["signon_token"]
         oldPassword = parsedData["old_password"]
         newPassword = parsedData["new_password"]
-        print(parsedData)
+        print("parsedData:",parsedData)
         if(self.validatePassword(username, oldPassword)):
-            if(True):
+            # TODO remove commented out code if it is not needed
+            # if(True):
                 savedPassword = self.db.getPasswordFor(username)
                 savedPassword = savedPassword[0][0]
                 print("saved password: " + str(savedPassword))
@@ -87,9 +88,23 @@ class AccountManagement:
                 else:
                     print("passwords do not match")
                     reqItem.changePasswordResponse("fail")
-            else:
-                print("token is not up to date")
-                reqItem.changePasswordResponse("fail")
+            # else:
+            #     print("token is not up to date")
+            #     reqItem.changePasswordResponse("fail")
         else:
             print("password validation failed")
             reqItem.changePasswordResponse("fail")
+
+    def saveAccountInfoByKey(self, parsedData, reqItem):
+        username = parsedData["username"]
+        signonToken = parsedData["signonToken"]
+        hash = parsedData["hash"]
+        key = parsedData["key"]
+        value = parsedData["value"]
+        type = parsedData["type"]
+        if(self.validatePassword(username, hash)):
+            self.db.saveAccountInfoByKey(username, key, value);
+            reqItem.saveAccountInfoByKeyResponse("success")
+        else:
+            print("authentification failed")
+            reqItem.saveAccountInfoByKeyResponse("fail")
