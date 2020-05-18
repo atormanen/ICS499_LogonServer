@@ -8,7 +8,7 @@ class Signin:
         self.token = Tokens()
 
     def validatePassword(self, username, password):
-        print(self.db.validateUserExists(username))
+        print("self.db.validateUserExists(username):",self.db.validateUserExists(username))
         if(self.db.validateUserExists(username)):
             dbPassword = self.db.getPasswordFor(username)
             dbPassword = dbPassword[0][0]
@@ -22,7 +22,7 @@ class Signin:
         #if(tokenExpiration):
         #    return False
         currentTime = time.time()
-        print(tokenExpiration[0][0])
+        print("tokenExpiration:",tokenExpiration[0][0])
         timeDiference = currentTime - tokenExpiration[0][0]
         if(timeDiference > 86400):
             return False
@@ -38,7 +38,7 @@ class Signin:
                 #Bundle the tocken into the response package
                 signonToken = self.db.getToken(username)
                 signonToken = signonToken[0][0]
-                print(signonToken)
+                print("signonToken:",signonToken)
                 if(signonToken == 'null'):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
@@ -46,14 +46,14 @@ class Signin:
             else:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
-                print(signonToken)
+                print("signonToken:",signonToken)
                 reqItem.signinResponse(signonToken, data)
         return False
 
     def signout(self, parsedData, reqItem):
         username = parsedData["username"]
         signonToken = parsedData["signonToken"]
-        print(parsedData)
+        print("parsedData",parsedData)
 
         savedToken = self.db.getToken(username)
 
@@ -66,5 +66,5 @@ class Signin:
         username = parsedData["username"]
         #signonToken = parsedData["signonToken"]
         data = self.db.getAccountInfo(username)
-        print(data)
+        print("data:",data)
         return data

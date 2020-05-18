@@ -48,7 +48,7 @@ class AccountManagement:
         reqItem.getUSerStatsResponse(stats[0])
 
     def validatePassword(self, username, password):
-        print(self.db.validateUserExists(username))
+        print("validateUserExists result:",self.db.validateUserExists(username))
         if(self.db.validateUserExists(username)):
             dbPassword = self.db.getPasswordFor(username)
             dbPassword = dbPassword[0][0]
@@ -62,7 +62,7 @@ class AccountManagement:
         #if(tokenExpiration):
         #    return False
         currentTime = time.time()
-        print(tokenExpiration[0][0])
+        print("tokenExpiration:",tokenExpiration[0][0])
         timeDiference = currentTime - tokenExpiration[0][0]
         if(timeDiference > 86400):
             return False
@@ -73,7 +73,7 @@ class AccountManagement:
         #signonToken = parsedData["signon_token"]
         oldPassword = parsedData["old_password"]
         newPassword = parsedData["new_password"]
-        print(parsedData)
+        print("parsedData:",parsedData)
         if(self.validatePassword(username, oldPassword)):
             # TODO remove commented out code if it is not needed
             # if(True):

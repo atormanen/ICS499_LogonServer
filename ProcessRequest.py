@@ -38,13 +38,13 @@ class ProcessRequest:
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)
             return
-            
+
         parsedData = reqItem.parsedData
 
         if parsedData["requestType"] == "signin":
             token = self.signin.signin(parsedData, reqItem)
             print("Signin" + str(token))
-            print(parsedData)
+            print("parsedData:",parsedData)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "createAccount":
             result = self.accountManager.createAccount(reqItem.parsedData)
