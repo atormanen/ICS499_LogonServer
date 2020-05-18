@@ -241,6 +241,6 @@ class DB:
     def saveAccountInfoByKey(self, username, key, value):
         querry = self.builder.saveAccountInfoByKey(username, key, value);
         if(querry is None):
-            print("quarry is None")
+            return
         else:
             self.dbUpdate(querry)
