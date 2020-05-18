@@ -165,7 +165,7 @@ class MysqlDB:
         print(querry)
         return querry
 
-    def getColumn(key):
+    def getColumn(self, key):
         columns = {
             # key : column
             "avatarStyle": "user.avatar",
@@ -178,4 +178,3 @@ class MysqlDB:
             "level":"user_statistics.level"
         }
         return columns.get(key)
-        
