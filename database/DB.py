@@ -237,3 +237,11 @@ class DB:
 
     def saveAccountInfo(self, username, data):
         self.dbUpdate(self.builder.saveAccountInfo(username, data))
+
+    def saveAccountInfoByKey(self, username, key, value):
+        querry = self.builder.saveAccountInfoByKey(username, key, value);
+        if(querry is None):
+            print("quarry is None")
+        else:
+            self.dbUpdate(querry)
+        

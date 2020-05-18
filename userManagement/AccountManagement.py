@@ -75,7 +75,8 @@ class AccountManagement:
         newPassword = parsedData["new_password"]
         print(parsedData)
         if(self.validatePassword(username, oldPassword)):
-            if(True):
+            # TODO remove commented out code if it is not needed
+            # if(True):
                 savedPassword = self.db.getPasswordFor(username)
                 savedPassword = savedPassword[0][0]
                 print("saved password: " + str(savedPassword))
@@ -87,9 +88,23 @@ class AccountManagement:
                 else:
                     print("passwords do not match")
                     reqItem.changePasswordResponse("fail")
-            else:
-                print("token is not up to date")
-                reqItem.changePasswordResponse("fail")
+            # else:
+            #     print("token is not up to date")
+            #     reqItem.changePasswordResponse("fail")
         else:
             print("password validation failed")
             reqItem.changePasswordResponse("fail")
+
+    def saveAccountInfo(self, parsedData, reqItem):
+        username = parsedData["username"]
+        signonToken = parsedData["signonToken"]
+        hash = parsedData["hash"]
+        key = parsedData["key"]
+        value = parsedData["value"]
+        type = parsedData["type"]
+        if(self.validatePassword(username, hash)):
+            self.db.saveAccountInfoByKey(username, key, value);
+            reqItem.saveAccountInfoResponse("success")
+        else:
+            print("authentification failed")
+            reqItem.saveAccountInfoResponse("fail")

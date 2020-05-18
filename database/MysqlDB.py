@@ -155,3 +155,27 @@ class MysqlDB:
         ", user.require_commit_press =  " + str(data["requireCommitPress"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = '" + str(username) + "';"
         print(querry)
         return querry
+
+    def saveAccountInfoByKey(self, username, key, value):
+
+        column = self.getColumn(key)
+        if(column is None):
+            return None
+        querry = "UPDATE user, user_statistics SET user." + str(column) + " = " + str(value) + " WHERE user.username = '" + str(username) + "';"
+        print(querry)
+        return querry
+
+    def getColumn(key):
+        columns = {
+            # key : column
+            "avatarStyle": "user.avatar",
+            "chessboardStyle":"user.chess_board_style",
+            "chesspieceStyle":"user.chess_piece_style",
+            "matchClockChoice":"user.match_clock_choice",
+            "automaticQueening":"user.automatic_queening",
+            "disablePausing":"user.disable_pausing",
+            "requireCommitPress":"user.require_commit_press",
+            "level":"user_statistics.level"
+        }
+        return columns.get(key)
+        
