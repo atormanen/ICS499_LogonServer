@@ -92,8 +92,9 @@ class ProcessRequest:
             self.leaderboard.getLongestWinStreak(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "saveAccountInfoByKey":
-           self.accountManager.saveAccountInfoByKey(parsedData, reqItem)
-           self.responder.getAccountInfoByKeyResponse(reqItem)
+            print("!!!!!!!!hit")
+            self.accountManager.saveAccountInfoByKey(parsedData, reqItem)
+            self.responder.getAccountInfoByKeyResponse(reqItem)
         # elif parsedData["requestType"] == "getAccountInfo":
         #    self.accountManager.getAccountInfo(parsedData)
         #    self.responder.sendResponse(reqItem)

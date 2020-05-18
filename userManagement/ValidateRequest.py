@@ -37,6 +37,8 @@ class ValidateRequest:
             return False
         elif parsedData["requestType"] == "getLongestWinStreak":
             return False
+        elif parsedData["requestType"] == "saveAccountInfoByKey":
+            return False
         else:
             #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
             return True
