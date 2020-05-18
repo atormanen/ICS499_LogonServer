@@ -38,7 +38,7 @@ class MessageItem:
         response["disablePausing"] = data[0][5]
         response["requireCommitPress"] = data[0][6]
         response["level"] = data[0][7]
-        print(response)
+        print("response:", response)
         self.responseObj = json.dumps(response)
 
     def createAccountResponse(self,status,reason='null'):
