@@ -104,7 +104,7 @@ class AccountManagement:
         type = parsedData["type"]
         if(self.validatePassword(username, hash)):
             self.db.saveAccountInfoByKey(username, key, value);
-            reqItem.saveAccountInfoResponse("success")
+            reqItem.saveAccountInfoByKeyResponse("success")
         else:
             print("authentification failed")
-            reqItem.saveAccountInfoResponse("fail")
+            reqItem.saveAccountInfoByKeyResponse("fail")
