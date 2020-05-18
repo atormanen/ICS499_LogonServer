@@ -95,7 +95,7 @@ class AccountManagement:
             print("password validation failed")
             reqItem.changePasswordResponse("fail")
 
-    def saveAccountInfo(self, parsedData, reqItem):
+    def saveAccountInfoByKey(self, parsedData, reqItem):
         username = parsedData["username"]
         signonToken = parsedData["signonToken"]
         hash = parsedData["hash"]
