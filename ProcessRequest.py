@@ -35,10 +35,12 @@ class ProcessRequest:
 
     ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
+        print("A")
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)
             return
 
+        print("B")
         parsedData = reqItem.parsedData
 
         if parsedData["requestType"] == "signin":
