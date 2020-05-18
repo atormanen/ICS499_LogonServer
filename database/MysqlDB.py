@@ -161,7 +161,7 @@ class MysqlDB:
         column = self.getColumn(key)
         if(column is None):
             return None
-        querry = "UPDATE user, user_statistics SET user." + str(column) + " = " + str(value) + " WHERE user.username = '" + str(username) + "';"
+        querry = "UPDATE user, user_statistics SET " + str(column) + " = " + str(value) + " WHERE user.username = '" + str(username) + "';"
         print(querry)
         return querry
 
