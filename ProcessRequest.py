@@ -96,7 +96,7 @@ class ProcessRequest:
         elif parsedData["requestType"] == "saveAccountInfoByKey":
             print("!!!!!!!!hit")
             self.accountManager.saveAccountInfoByKey(parsedData, reqItem)
-            self.responder.getAccountInfoByKeyResponse(reqItem)
+            self.responder.sendResponse(reqItem)
         # elif parsedData["requestType"] == "getAccountInfo":
         #    self.accountManager.getAccountInfo(parsedData)
         #    self.responder.sendResponse(reqItem)
