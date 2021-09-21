@@ -1,2 +1,3 @@
 #!/bin/bash
-sudo /usr/bin/python3 /var/jar_logon_server/ICS499_LogonServer/Controller.py &
+cd /var/jar_logon_server/ICS499_LogonServer/
+sudo /usr/bin/python3 Controller.py &
