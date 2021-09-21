@@ -17,13 +17,14 @@ class ProcessRequest:
     #will hold the shared request queue object. It will pull requests
     #from the queue as they are inserted from the listener
     def __init__(self, requestQueue):
-        self.manifest = Manifest()
-        reader = self.manifest.database_reader
-        writer = self.manifest.database_writer
-        username = self.manifest.database_username
-        password = self.manifest.database_password
-        userDatabase = self.manifest.user_database_name
-        self.database = DB(username,password,reader,writer,userDatabase)
+        f = open('params.json','r')
+        data = json.loads(f.read())
+        f.close()
+        reader, writer = data['db_host']
+        username = data['db_username']
+        password = data['db_password']
+        db_name = data['db_name']
+        self.database = DB(username, password, reader, writer, db_name)
         #self.database = DB('app','123','192.168.1.106','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
