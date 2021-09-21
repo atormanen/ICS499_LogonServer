@@ -6,6 +6,7 @@ from threading import Thread
 from DataManagement.Responder import Responder
 from DataManagement.MessageItem import MessageItem
 import os
+import json
 from userManagement.FriendsManagement import FriendsManagement
 from userManagement.Tokens import Tokens
 from DataManagement.Leaderboard import Leaderboard
