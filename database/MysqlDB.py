@@ -43,11 +43,14 @@ class MysqlDB:
 
     def createUser(self, id, parsedData):
         now = time.strftime('%Y-%m-%d %H-%M-%S')
-        return "INSERT INTO user VALUES("+ str(id) +",'" + parsedData["username"] +\
-            "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + \
-            "','" + parsedData["email"] + "',0,'" + parsedData["password"] + "','null'"\
-            ",'" + now + "',"\
-             ");"
+        id = str(id)
+        username = parsedData["username"]
+        fname = parsedData["firstName"]
+        lname = parsedData["lastName"]
+        email = parsedData["email"]
+        password = parsedData["password"]
+        sql_staement = f"INSERT INTO user VALUES({id},'{fname}','{lname}','{email}',0,'{password}',null,{now})"
+        return sql_staement
     #id, username, firstname, lastname, email, avatar, ####, password, now, signonToken,
 
     def createUserStats(self, id):
