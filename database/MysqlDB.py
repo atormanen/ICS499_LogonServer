@@ -49,7 +49,7 @@ class MysqlDB:
         lname = parsedData["lastName"]
         email = parsedData["email"]
         password = parsedData["password"]
-        sql_staement = f"INSERT INTO user VALUES({id},'{fname}','{lname}','{email}',0,'{password}',null,'{now}');"
+        sql_staement = f"INSERT INTO user VALUES({id},'{username}','{fname}','{lname}','{email}',0,'{password}',null,'{now}');"
         return sql_staement
     #id, username, firstname, lastname, email, avatar, ####, password, now, signonToken,
 
