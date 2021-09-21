@@ -21,7 +21,8 @@ class ProcessRequest:
         f = open('./params.json','r')
         data = json.loads(f.read())
         f.close()
-        reader, writer = data['db_host']
+        reader = data['db_host'] 
+        writer = data['db_host']
         username = data['db_username']
         password = data['db_password']
         db_name = data['db_name']
