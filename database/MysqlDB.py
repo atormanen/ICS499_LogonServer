@@ -43,15 +43,15 @@ class MysqlDB:
 
     def createUser(self, id, parsedData):
         now = time.strftime('%Y-%m-%d %H-%M-%S')
-        return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
+        return "INSERT INTO user VALUES("+ str(id) +",'" + parsedData["username"] +\
             "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + \
             "','" + parsedData["email"] + "',0,'" + parsedData["password"] + "','null'"\
-            ",'" + now + "'," + "0,0,0,0,0,0,0"\
+            ",'" + now + "',"\
              ");"
     #id, username, firstname, lastname, email, avatar, ####, password, now, signonToken,
 
     def createUserStats(self, id):
-        return "INSERT INTO user_statistics VALUES("+ id +" ,0,0,0,0,0,1);"
+        return "INSERT INTO user_statistics VALUES("+ str(id) +" ,0,0,0,0,0,1);"
 
     def getFriendsList(self, id):
         querry = "select user.user_id, user.username \
