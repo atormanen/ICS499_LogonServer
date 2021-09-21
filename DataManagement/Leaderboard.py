@@ -6,12 +6,6 @@ class Leaderboard:
 
     def getLongestWinStreak(self, reqItem, numberOfGames):
         resp = self.db.getLongestWinStreak(numberOfGames)
-
-
-
-
-
-
         reqItem.longestWinStreakResponse(numberOfGames, resp)
 
 
