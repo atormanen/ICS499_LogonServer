@@ -12,11 +12,11 @@ class Leaderboard:
     def getMostChessGamesWon(self, reqItem, numberOfGames):
         resp = self.db.getMostChessGamesWon(numberOfGames)
 
-        print(type(resp))
+        print("type(resp):",type(resp))
         userDict = {
                     "user0":"users"
         }
-        print(resp)
+        print("resp:",resp)
         i = 0
         for item in resp:
             user = {

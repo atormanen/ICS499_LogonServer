@@ -131,7 +131,7 @@ class DB:
         userId = userId[0][0]
         friendsId = friendsId[0][0]
         result = self.dbFetch(self.builder.checkIfFriendRequestExists(userId, friendsId))
-        print(result)
+        print("result:",result)
         intResult = result[0][0]
         return intResult
 
@@ -139,14 +139,14 @@ class DB:
         id = self.dbFetch(self.builder.getLastUserId())
         id = str(id[0][0] + 1)
         statement = self.builder.createUser(id,parsedData)
-        print(statement)
+        print("statement:",statement)
         self.dbInsert(statement)
         result = self.dbInsert(self.builder.createUserStats(id))
         return result
 
     def signin(self, username, token, tokenCreationTime):
         result = self.dbUpdate(self.builder.signin(username,token,tokenCreationTime))
-        print(result)
+        print("result:",result)
         return result
 
     def getToken(self,username):
@@ -237,3 +237,10 @@ class DB:
 
     def saveAccountInfo(self, username, data):
         self.dbUpdate(self.builder.saveAccountInfo(username, data))
+
+    def saveAccountInfoByKey(self, username, key, value):
+        querry = self.builder.saveAccountInfoByKey(username, key, value);
+        if(querry is None):
+            return
+        else:
+            self.dbUpdate(querry)

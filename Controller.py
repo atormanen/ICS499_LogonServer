@@ -6,14 +6,16 @@ from threading import Thread
 from ProcessRequest import ProcessRequest
 import os
 import queue
+from Manifest import Manifest
 
 #Controller will initilaize all the objects and processes needed
 #for the applications. It will sping up a few request request processors
-#and then run the listener thread. 
+#and then run the listener thread.
 class Controller:
 
     #requestQueue is shared queue among all processes
     def __init__(self):
+        self.manifest = Manifest()
         self.requestQueue = multiprocessing.Queue()
         self.listener = Listener(self.requestQueue)
 
@@ -24,7 +26,7 @@ class Controller:
 
     def createRequestProcessors(self):
         processes = []
-        for i in range(os.cpu_count()):
+        for i in range(self.manifest.number_of_request_processors):
             #print('Createing processes %d' % i)
             processes.append(Process(target=self.createRequestProcessor))
         for i in processes:

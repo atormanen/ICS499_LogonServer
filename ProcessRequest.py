@@ -9,6 +9,7 @@ import os
 from userManagement.FriendsManagement import FriendsManagement
 from userManagement.Tokens import Tokens
 from DataManagement.Leaderboard import Leaderboard
+from Manifest import Manifest
 
 class ProcessRequest:
 
@@ -44,7 +45,7 @@ class ProcessRequest:
         if parsedData["requestType"] == "signin":
             token = self.signin.signin(parsedData, reqItem)
             print("Signin" + str(token))
-            print(parsedData)
+            print("parsedData:",parsedData)
             self.responder.sendResponse(reqItem)
         elif parsedData["requestType"] == "createAccount":
             result = self.accountManager.createAccount(reqItem.parsedData)
@@ -91,10 +92,10 @@ class ProcessRequest:
         elif parsedData["requestType"] == "getLongestWinStreak":
             self.leaderboard.getLongestWinStreak(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        #elif parsedData["requestType"] == "saveAccountInfo":
-        #    self.accountManager.saveAccountInfo(parsedData, reqItem)
-        #    self.responder.getAccountInfoResponse(reqItem)
-        #elif parsedData["requestType"] == "getAccountInfo":
+        elif parsedData["requestType"] == "saveAccountInfoByKey":
+            self.accountManager.saveAccountInfoByKey(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
+        # elif parsedData["requestType"] == "getAccountInfo":
         #    self.accountManager.getAccountInfo(parsedData)
         #    self.responder.sendResponse(reqItem)
         else:
