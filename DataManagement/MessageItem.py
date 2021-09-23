@@ -171,6 +171,14 @@ class MessageItem:
         response["status"] = status
         self.responseObj = json.dumps(response)
 
+    def saveAccountInfoByKeyResponse(self, status):
+        response = {
+                    "request_type"saveAccountInfoByKey",
+                    "status":""
+        }
+        response["status"] = status
+        self.responseObj = json.dumps(response)
+
     def getAccountInfoResponse(self, data):
         response = {
                     "request_type":"getAccountInfo",

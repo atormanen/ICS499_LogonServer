@@ -52,7 +52,7 @@ class Signin:
 
     def signout(self, parsedData, reqItem):
         username = parsedData["username"]
-        signonToken = parsedData["signon_token"]
+        signonToken = parsedData["signonToken"]
         print("parsedData",parsedData)
 
         savedToken = self.db.getToken(username)
@@ -64,7 +64,7 @@ class Signin:
 
     def getAccountInfo(self, parsedData):
         username = parsedData["username"]
-        #signonToken = parsedData["signon_token"]
+        #signonToken = parsedData["signonToken"]
         data = self.db.getAccountInfo(username)
         print("data:",data)
         return data

@@ -39,6 +39,8 @@ class ValidateRequest:
             return False
         elif parsedData["request_type"] == "saveAccountInfoByKey":
             return False
+        elif parsedData["requestType"] == "saveAccountInfoByKey":
+            return False
         else:
             #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
             return True
