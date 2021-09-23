@@ -97,7 +97,7 @@ class AccountManagement:
 
     def saveAccountInfoByKey(self, parsedData, reqItem):
         username = parsedData["username"]
-        signonToken = parsedData["signonToken"]
+        signonToken = parsedData["signon_token"]
         hash = parsedData["hash"]
         key = parsedData["key"]
         value = parsedData["value"]

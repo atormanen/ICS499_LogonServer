@@ -29,7 +29,7 @@ class FriendsManagement:
     def sendFriendRequest(self, parsedData, reqItem):
         #send a freind req
         username = parsedData["username"]
-        friendsUsername = parsedData["friendsUsername"]
+        friendsUsername = parsedData["friends_username"]
 
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
@@ -48,7 +48,7 @@ class FriendsManagement:
 
     def validateFriendRequest(self, parsedData, reqItem):
         username = parsedData["username"]
-        friendsUsername = parsedData["friendsUsername"]
+        friendsUsername = parsedData["friends_username"]
         result = False
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
@@ -62,7 +62,7 @@ class FriendsManagement:
 
     def removeFriend(self, parsedData, reqItem):
         username = parsedData["username"]
-        friendsUsername = parsedData["friendsUsername"]
+        friendsUsername = parsedData["friends_username"]
         print("Username: " + username)
         print("FriendsName: " + friendsUsername)
         if(self.validateUsername(friendsUsername)):

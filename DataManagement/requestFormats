@@ -6,15 +6,15 @@ User must be signed in for getUserStats, sendFriendRequest,and validateFriendReq
 ********************************************************
 signin
 {
-  "requestType":"signin",
+  "request_type":"signin",
   "username":"ATormanen",
   "password":"testpass",
-  "publicKey":"pub key here"
+  "public_key":"pub key here"
 }
 
 signin response
 {
-  "reqeustType":"siginin",
+  "reqeust_type":"siginin",
   "status":"success", --- or failure
   "token","blahblahblah" - or null if failure
 }
@@ -22,14 +22,14 @@ signin response
 
 signout
 {
-  "requestType":"signout",
+  "request_type":"signout",
   "username":"ATormanen",
-  "signonToken":"token"
+  "signon_token":"token"
 }
 
 signout response
 {
-  "reqeustType":"siginin",
+  "reqeust_type":"siginin",
   "status":"succes" --- or failure
 }
 
@@ -38,17 +38,17 @@ signout response
 ********************************************************
 createAccount
 {
-  "requestType":"createAccount",
+  "request_type":"createAccount",
   "username":"testaccount1344",
-  "firstName":"test",
-  "lastName":"accoutn12",
+  "first_name":"test",
+  "last_lame":"accoutn12",
   "email":"testaccount12@yahoo.com",
   "password":"test649845634684sdfsdf"
 }
 
 createAccount response
 {
-  "requestType":"createAccount",
+  "request_type":"createAccount",
   "status":"succes" --- or failure
   "reason":"uname exests..."
 }
@@ -57,7 +57,7 @@ createAccount response
 
 changePassword
 {
-  "requestType":"changePassword",
+  "request_type":"changePassword",
   "username":"ATormanen",
   "signon_token":"",
   "old_password":"",
@@ -66,7 +66,7 @@ changePassword
 
 changePasswordResponse
 {
-  "requestType":"changePassword",
+  "request_type":"changePassword",
   "status":"success"
 }
 
@@ -74,7 +74,7 @@ changePasswordResponse
 ********************************************************
 getUserStats
 {
-  "requestType":"getUserStats",
+  "request_type":"getUserStats",
   "username":"testaccount1344",
 }
 
@@ -82,60 +82,60 @@ return user stats
 ********************************************************
 getFriendsList
 {
-  "requestType":"getFriendsList",
+  "request_type":"getFriendsList",
   "username":"testaccount1344",
 }
 
 getFriendsListResponse
 {
-  "requestType":"getFriendsList",
+  "request_type":"getFriendsList",
   "status":"succus"
 }
 
 getLongestWinStreak
 {
-  "requestType":"getLongestWinStreak",
-  "numberOfGames":""
+  "request_type":"getLongestWinStreak",
+  "number_of_games":""
 }
 
 getMostChessGamesWon
 {
-  "requestType":"getMostChessGamesWon",
-  "numberOfGames":""
+  "request_type":"getMostChessGamesWon",
+  "number_of_games":""
 }
 
 getMostChessGamesWon\getLongestWinStreak response
 {
-  "requestType":"getMostChessGamesWon",
-  "numberOfGames":"",
+  "request_type":"getMostChessGamesWon",
+  "number_of_games":"",
   "data":""
 }
 
 ********************************************************
 sendFriendRequest
 {
-  "requestType":"sendFriendRequest",
+  "request_type":"sendFriendRequest",
   "username":"testaccount1344",
-  "signonToken":"asdfasdgadfg",
-  "friendsUsername":"freindsname"
+  "signon_token":"asdfasdgadfg",
+  "friends_username":"freindsname"
 }
 
 freind request sendRequestedData
 {
-  "requestType":"sendFriendRequest",
+  "request_type":"sendFriendRequest",
   "status":"succus"
 }
 ********************************************************
 acceptFriendRequest
 {
-  "requestType":"validateFriendRequest",
+  "request_type":"validateFriendRequest",
   "username":"testaccount1344",
-  "signonToken":"asdfasdgadfg",
-  "friendsUsername":"freindsname"
+  "signon_token":"asdfasdgadfg",
+  "friends_username":"freindsname"
 }
 
 {
-  "requestType":"validateFriendRequest",
+  "request_type":"validateFriendRequest",
   "status":"succus"
 }
 
@@ -143,6 +143,6 @@ acceptFriendRequest
 
 acceptFriendRequest
 {
-  "requestType":"getFriendRequests",
+  "request_type":"getFriendRequests",
   "username":"testaccount1344"
 }

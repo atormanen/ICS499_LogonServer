@@ -44,7 +44,7 @@ class MysqlDB:
     def createUser(self, id, parsedData):
         now = time.strftime('%Y-%m-%d %H-%M-%S')
         return "INSERT INTO user VALUES("+ id +",'" + parsedData["username"] +\
-            "','" +parsedData["firstName"] + "','" + parsedData["lastName"] + \
+            "','" +parsedData["first_name"] + "','" + parsedData["last_name"] + \
             "','" + parsedData["email"] + "',0,'" + parsedData["password"] + "','null'"\
             ",'" + now + "'," + "0,0,0,0,0,0,0"\
              ");"
@@ -151,8 +151,8 @@ class MysqlDB:
 
     def saveAccountInfo(self, username, data):
         querry = "UPDATE user, user_statistics SET user.avatar = " + str(data["avatarStyle"]) + ", user.chess_board_style = " + str(data["chessboardStyle"]) + ", user.chess_piece_style = " + str(data["chesspieceStyle"]) +\
-        ", user.match_clock_choice =  " + str(data["matchClockChoice"]) + ", user.automatic_queening = " + str(data["automaticQueening"]) + ", user.disable_pausing = " + str(data["disablePausing"]) +\
-        ", user.require_commit_press =  " + str(data["requireCommitPress"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = '" + str(username) + "';"
+        ", user.match_clock_choice =  " + str(data["match_clock_choice"]) + ", user.automatic_queening = " + str(data["automaticQueening"]) + ", user.disable_pausing = " + str(data["disablePausing"]) +\
+        ", user.require_commit_press =  " + str(data["require_commit_press"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = '" + str(username) + "';"
         print("querry:",querry)
         return querry
 
@@ -168,13 +168,13 @@ class MysqlDB:
     def getColumn(self, key):
         columns = {
             # key : column
-            "avatarStyle": "user.avatar",
-            "chessboardStyle":"user.chess_board_style",
-            "chesspieceStyle":"user.chess_piece_style",
-            "matchClockChoice":"user.match_clock_choice",
-            "automaticQueening":"user.automatic_queening",
-            "disablePausing":"user.disable_pausing",
-            "requireCommitPress":"user.require_commit_press",
+            "avatar_style": "user.avatar",
+            "chessboard_style":"user.chess_board_style",
+            "chesspiece_style":"user.chess_piece_style",
+            "matchClock_shoice":"user.match_clock_choice",
+            "automatic_queening":"user.automatic_queening",
+            "disable_pausing":"user.disable_pausing",
+            "require_commit_press":"user.require_commit_press",
             "level":"user_statistics.level"
         }
         return columns.get(key)

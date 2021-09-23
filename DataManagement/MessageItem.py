@@ -14,36 +14,36 @@ class MessageItem:
 
     def signinResponse(self,token, data):
         response = {
-                    "requestType":"signin",
+                    "request_type":"signin",
                     "status":"success",
                     "token":"",
-                    "avatarStyle":"",
-                    "chessboardStyle":"",
-                    "chesspieceStyle":"",
-                    "matchClockChoice":"",
-                    "automaticQueening":"",
-                    "disablePausing":"",
-                    "requireCommitPress":"",
+                    "avatar_style":"",
+                    "chessboard_style":"",
+                    "chesspiece_style":"",
+                    "match_clock_choice":"",
+                    "automatic_queening":"",
+                    "disable_pausing":"",
+                    "require_commit_press":"",
                     "level":""
         }
         if not(token):
             response["status"] = "fail"
             self.responseObj = json.dumps(response)
         response["token"] = token
-        response["avatarStyle"] = data[0][0]
-        response["chessboardStyle"] = data[0][1]
-        response["chesspieceStyle"] = data[0][2]
-        response["matchClockChoice"] = data[0][3]
-        response["automaticQueening"] = data[0][4]
-        response["disablePausing"] = data[0][5]
-        response["requireCommitPress"] = data[0][6]
+        response["avatar_style"] = data[0][0]
+        response["chessboard_style"] = data[0][1]
+        response["chesspiece_style"] = data[0][2]
+        response["match_clock_choice"] = data[0][3]
+        response["automatic_queening"] = data[0][4]
+        response["disable_pausing"] = data[0][5]
+        response["require_commit_press"] = data[0][6]
         response["level"] = data[0][7]
         print("response:", response)
         self.responseObj = json.dumps(response)
 
     def createAccountResponse(self,status,reason='null'):
         response = {
-                    "requestType":"createAccount",
+                    "request_type":"createAccount",
                     "status":"",
                     "reason":""
         }
@@ -53,18 +53,18 @@ class MessageItem:
 
     def getUSerStatsResponse(self, stats):
         response = {
-                    "requestType":"getUserStats",
-                    "userId":"",
-                    "gamesPlayed":"",
-                    "gamesWon":"",
-                    "gamesResigned":"",
+                    "request_type":"getUserStats",
+                    "user_id":"",
+                    "games_played":"",
+                    "games_won":"",
+                    "games_resigned":"",
                     "score":"",
                     "longest_win_streak":""
         }
-        response["userId"] = stats[0]
-        response["gamesPlayed"] = stats[1]
-        response["gamesWon"] = stats[2]
-        response["gamesResigned"] = stats[3]
+        response["user_id"] = stats[0]
+        response["games_played"] = stats[1]
+        response["games_won"] = stats[2]
+        response["games_resigned"] = stats[3]
         response["score"] = stats[4]
         response["longest_win_streak"] = stats[5]
         self.responseObj = json.dumps(response)
@@ -85,11 +85,11 @@ class MessageItem:
             friendDict[friedStr] = user
             i = i + 1
         response = {
-                    "requestType":"getFriendsList",
+                    "request_type":"getFriendsList",
                     "count":"",
                     "friends":""
         }
-        response["requestType"] = request
+        response["request_type"] = request
         response["count"] = len(friendsList)
         response["friends"] = str(friendDict)
         self.responseObj = json.dumps(response)
@@ -102,7 +102,7 @@ class MessageItem:
 
     def acceptFriendReqResponse(self,status):
         response = {
-                    "requestType":"validateFriendRequest",
+                    "request_type":"validateFriendRequest",
                     "status":""
         }
         response["status"] = status
@@ -110,7 +110,7 @@ class MessageItem:
 
     def sendFriendReqResponse(self,status,reason='null'):
         response = {
-                    "requestType":"sendFriendRequest",
+                    "request_type":"sendFriendRequest",
                     "status":"",
                     "reason":""
         }
@@ -120,7 +120,7 @@ class MessageItem:
 
     def removeFriendResponse(self, status):
         response = {
-                    "requestType":"removeFriend",
+                    "request_type":"removeFriend",
                     "status":""
         }
         response["status"] = status
@@ -129,7 +129,7 @@ class MessageItem:
 
     def signoutResponse(self, status):
         response = {
-                    "requestType":"signout",
+                    "request_type":"signout",
                     "status":""
         }
         response["status"] = status
@@ -137,27 +137,27 @@ class MessageItem:
 
     def longestWinStreakResponse(self, numberOfGames, data):
         response = {
-                    "requestType":"getLongestWinStreak",
-                    "numberOfGames":"",
+                    "request_type":"getLongestWinStreak",
+                    "number_of_games":"",
                     "data":""
         }
-        response["numberOfGames"] = numberOfGames
+        response["number_of_games"] = numberOfGames
         response["data"] = data
         self.responseObj = json.dumps(response)
 
     def mostChessGamesWonResponse(self, numberOfGames, data):
         response = {
-                    "requestType":"getMostChessGamesWon",
-                    "numberOfGames":"",
+                    "request_type":"getMostChessGamesWon",
+                    "number_of_games":"",
                     "data":""
         }
-        response["numberOfGames"] = numberOfGames
+        response["number_of_games"] = numberOfGames
         response["data"] = str(data)
         self.responseObj = json.dumps(response)
 
     def changePasswordResponse(self, status):
         response = {
-                    "requestType":"changePassword",
+                    "request_type":"changePassword",
                     "status":""
         }
         response["status"] = status
@@ -165,7 +165,7 @@ class MessageItem:
 
     def saveAccountInfoByKeyResponse(self, status):
         response = {
-                    "requestType":"saveAccountInfoByKey",
+                    "request_type":"saveAccountInfoByKey",
                     "status":""
         }
         response["status"] = status
@@ -173,23 +173,23 @@ class MessageItem:
 
     def getAccountInfoResponse(self, data):
         response = {
-                    "requestType":"getAccountInfo",
-                    "avatarStyle":"",
-                    "chessboardStyle":"",
-                    "chesspieceStyle":"",
-                    "matchClockChoice":"",
-                    "automaticQueening":"",
-                    "disablePausing":"",
-                    "requireCommitPress":"",
+                    "request_type":"getAccountInfo",
+                    "avatar_style":"",
+                    "chessboard_style":"",
+                    "chesspiece_style":"",
+                    "match_clock_choice":"",
+                    "automatic_queening":"",
+                    "disable_pausing":"",
+                    "require_commit_press":"",
                     "level":""
 
         }
-        response["avatarStyle"] = data[0][0]
-        response["chessboardStyle"] = data[0][1]
-        response["chesspieceStyle"] = data[0][2]
-        response["matchClockChoice"] = data[0][3]
-        response["automaticQueening"] = data[0][4]
-        response["disablePausing"] = data[0][5]
-        response["requireCommitPress"] = data[0][6]
+        response["avatar_style"] = data[0][0]
+        response["chessboard_style"] = data[0][1]
+        response["chesspiece_style"] = data[0][2]
+        response["match_clock_choice"] = data[0][3]
+        response["automatic_queening"] = data[0][4]
+        response["disable_pausing"] = data[0][5]
+        response["require_commit_press"] = data[0][6]
         response["level"] = data[0][7]
         self.responseObj = json.dumps(response)
