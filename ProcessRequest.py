@@ -44,60 +44,60 @@ class ProcessRequest:
 
         parsedData = reqItem.parsedData
 
-        if parsedData["requestType"] == "signin":
+        if parsedData["request_type"] == "signin":
             token = self.signin.signin(parsedData, reqItem)
             print("Signin" + str(token))
             print("parsedData:",parsedData)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "createAccount":
+        elif parsedData["request_type"] == "createAccount":
             result = self.accountManager.createAccount(reqItem.parsedData)
             if result == True:
                 reqItem.createAccountResponse('success')
             elif result == False:
                 reqItem.createAccountResponse('fail')
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "getUserStats":
+        elif parsedData["request_type"] == "getUserStats":
             #call Account Management to get user stats
             self.accountManager.getUserStats(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "changePassword":
+        elif parsedData["request_type"] == "changePassword":
             #call Account Management to get user stats
             print("change password request called")
             self.accountManager.changePassword(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "getFriendsList":
+        elif parsedData["request_type"] == "getFriendsList":
             #call FriendsManager to retrieve friends list
             self.friendsManager.getFriendsList(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "sendFriendRequest":
+        elif parsedData["request_type"] == "sendFriendRequest":
             #call FriendsManager to send friend request
             self.friendsManager.sendFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "validateFriendRequest":
+        elif parsedData["request_type"] == "validateFriendRequest":
             #call friends management to validate friend request
             self.friendsManager.validateFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "getFriendRequests":
+        elif parsedData["request_type"] == "getFriendRequests":
             #call friends management to validate friend request
             print("processing getFriendRequests")
             self.friendsManager.getFriendRequests(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "removeFriend":
+        elif parsedData["request_type"] == "removeFriend":
             self.friendsManager.removeFriend(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "signout":
+        elif parsedData["request_type"] == "signout":
             self.signin.signout(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "getMostChessGamesWon":
+        elif parsedData["request_type"] == "getMostChessGamesWon":
             self.leaderboard.getMostChessGamesWon(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "getLongestWinStreak":
+        elif parsedData["request_type"] == "getLongestWinStreak":
             self.leaderboard.getLongestWinStreak(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        elif parsedData["requestType"] == "saveAccountInfoByKey":
+        elif parsedData["request_type"] == "saveAccountInfoByKey":
             self.accountManager.saveAccountInfoByKey(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        # elif parsedData["requestType"] == "getAccountInfo":
+        # elif parsedData["request_type"] == "getAccountInfo":
         #    self.accountManager.getAccountInfo(parsedData)
         #    self.responder.sendResponse(reqItem)
         else:

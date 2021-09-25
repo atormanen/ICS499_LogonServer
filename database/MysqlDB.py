@@ -45,8 +45,8 @@ class MysqlDB:
         now = time.strftime('%Y-%m-%d %H-%M-%S')
         id = str(id)
         username = parsedData["username"]
-        fname = parsedData["firstName"]
-        lname = parsedData["lastName"]
+        fname = parsedData["first_name"]
+        lname = parsedData["last_name"]
         email = parsedData["email"]
         password = parsedData["password"]
         sql_staement = f"INSERT INTO user VALUES({id},'{username}','{fname}','{lname}','{email}',0,'{password}',null,'{now}');"
@@ -171,13 +171,13 @@ class MysqlDB:
     def getColumn(self, key):
         columns = {
             # key : column
-            "avatarStyle": "user.avatar",
-            "chessboardStyle":"user.chess_board_style",
-            "chesspieceStyle":"user.chess_piece_style",
-            "matchClockChoice":"user.match_clock_choice",
-            "automaticQueening":"user.automatic_queening",
-            "disablePausing":"user.disable_pausing",
-            "requireCommitPress":"user.require_commit_press",
+            "avatar_style": "user.avatar",
+            "chessboard_style":"user.chess_board_style",
+            "chesspiece_style":"user.chess_piece_style",
+            "match_clock_choice":"user.match_clock_choice",
+            "automatic_queening":"user.automatic_queening",
+            "disable_pausing":"user.disable_pausing",
+            "require_commit_press":"user.require_commit_press",
             "level":"user_statistics.level"
         }
         return columns.get(key)
