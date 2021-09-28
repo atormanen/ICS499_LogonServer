@@ -190,7 +190,7 @@ class MessageItem:
     def saveAccountInfoByKeyResponse(self, status):
         self.log_function_name()
         response = {
-                    "request_type"saveAccountInfoByKey",
+                    "request_type":"saveAccountInfoByKey",
                     "status":""
         }
         response["status"] = status
