@@ -17,5 +17,5 @@ logger.addHandler(file_handler)
 logger.addHandler(console_handler)
 
 #logger.setLevel(logging.INFO)
-logger.setLevel(verbose_level)
-#logger.setLevel(logging.DEBUG)
+#logger.setLevel(verbose_level)
+logger.setLevel(logging.DEBUG)

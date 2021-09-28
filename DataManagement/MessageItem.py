@@ -35,6 +35,7 @@ class MessageItem:
         if not(token):
             response["status"] = "fail"
             self.responseObj = json.dumps(response)
+        logger.debug(json.dumps(response))
         response["token"] = token
         response["avatar_style"] = data[0][0]
         response["chessboard_style"] = data[0][1]
