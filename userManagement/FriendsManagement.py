@@ -1,32 +1,40 @@
+from global_logger import logger, VERBOSE
+
 #Friends management will handle the mechanics of sending freinds reqeusts,
 #handeling friends lists, and accepting fiend requests
 class FriendsManagement:
+
+    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
     def __init__(self, database):
         self.db = database
 
     def validateUsername(self, username):
+        self.log_function_name()
         if(self.db.validateUserExists(username)):
             return True
         return False
 
     def getFriendsList(self, parsedData, reqItem):
+        self.log_function_name()
 		#connect to mysqldb to get FriendsList
         friendsList = self.db.getFriendsList(parsedData["username"])
         reqItem.getFriendsListResponse(friendsList)
 
     def getFriendRequests(self, parsedData, reqItem):
+        self.log_function_name()
         friendList = self.db.checkForFriendRequests(parsedData["username"])
-        print("friendList: " + str(friendList))
         reqItem.getFriendRequestsResp(friendList)
 
     def getUserStats(self, username):
+        self.log_function_name()
         if(self.validateUsername(username)):
             stats = self.db.getUserStats(username)
             return stats
         return False
 
     def sendFriendRequest(self, parsedData, reqItem):
+        self.log_function_name()
         #send a freind req
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
@@ -47,6 +55,7 @@ class FriendsManagement:
         #reqItem.acceptFriendReqResponse(result)
 
     def validateFriendRequest(self, parsedData, reqItem):
+        self.log_function_name()
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
         result = False
@@ -57,14 +66,13 @@ class FriendsManagement:
 
 
     def denyFriendRequest(self):
-
+        self.log_function_name()
         return False
 
     def removeFriend(self, parsedData, reqItem):
+        self.log_function_name()
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
-        print("Username: " + username)
-        print("FriendsName: " + friendsUsername)
         if(self.validateUsername(friendsUsername)):
             result = self.db.removeFriend(username, friendsUsername)
             reqItem.removeFriendResponse("success")

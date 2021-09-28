@@ -1,3 +1,4 @@
+from global_logger import logger, VERBOSE
 import socket
 import sys
 #from _thread import *
@@ -11,6 +12,8 @@ from Manifest import Manifest
 #Class listener is used to listen on a servers ip address and port portNumber
 #12345 for incoming requests.
 class Listener:
+
+    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
     hostname = socket.gethostname()
 
     def __init__(self, requestQueue):
@@ -24,11 +27,12 @@ class Listener:
         self.reqCount = 0
 
     def createSocket(self):
+        self.log_function_name()
         self.serverSocket.bind((self.serverIp,self.portNumber))
         self.serverSocket.listen(5)
-        #print("Server Initialized on ", self.serverIp, ":", self.portNumber)
 
     def set_ip(self):
+        self.log_function_name()
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             # doesn't even have to be reachable
@@ -42,11 +46,12 @@ class Listener:
 
 
     def sendBadRequest(self,connectionSocket):
-        #print("Error-bad request")
+        self.log_function_name()
         msg = "{'ERROR':'BAD REQUEST'}"
         connectionSocket.send(msg.encode())
 
     def processRequest(self,connectionSocket):
+        self.log_function_name()
         full_msg = ''
         rcvd_msg = ''
         bufferExceeded = False
@@ -63,8 +68,6 @@ class Listener:
 
                     rcvd_msg = connectionSocket.recv(self.bufferSize).decode('utf-8','replace')
                 except UnicodeDecodeError:
-                    print("rcvd_msg:",rcvd_msg)
-                    print("UnicodeDecodeError")
                     self.sendBadRequest(connectionSocket)
             full_msg += rcvd_msg
             if(len(rcvd_msg) == 0):
@@ -75,11 +78,10 @@ class Listener:
                 rcvd_msg = ''
                 bufferExceeded = True
         try:
-            #print("TEST ",self.reqCount,"  ",full_msg[2::])
             if not (full_msg[0] == "{"):
                 full_msg = full_msg[2::]
-        except (IndexError):
-            #print("error")
+        except IndexError as error:
+            logger.error(error)
             return
 
 
@@ -87,7 +89,6 @@ class Listener:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
             self.sendBadRequest(connectionSocket)
-            #print("Badd req from listener")
             return
         msgItem = MessageItem(connectionSocket,parsedData)
         self.requestQueue.put(msgItem)
@@ -95,16 +96,12 @@ class Listener:
 
     def listen(self):
         while True:
-            #print(counter)
             self.reqCount = self.reqCount + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
-                #is thread.join nececary?
-                #thread.join()
             except IOError:
-                #print('IOError')
                 connectionSocket.close()
 
     def createListener(self):

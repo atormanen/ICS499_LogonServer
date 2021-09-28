@@ -1,3 +1,4 @@
+from global_logger import logger, VERBOSE
 import os
 class Manifest:
 

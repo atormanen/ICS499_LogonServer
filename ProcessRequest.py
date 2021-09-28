@@ -11,8 +11,11 @@ from userManagement.FriendsManagement import FriendsManagement
 from userManagement.Tokens import Tokens
 from DataManagement.Leaderboard import Leaderboard
 from Manifest import Manifest
+from global_logger import logger, VERBOSE
 
 class ProcessRequest:
+
+    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
     #PrecessReqeust is set up to be a seperate process in the OS and
     #will hold the shared request queue object. It will pull requests
@@ -21,7 +24,7 @@ class ProcessRequest:
         f = open('./params.json','r')
         data = json.loads(f.read())
         f.close()
-        reader = data['db_host'] 
+        reader = data['db_host']
         writer = data['db_host']
         username = data['db_username']
         password = data['db_password']
@@ -38,6 +41,7 @@ class ProcessRequest:
 
     ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
+        self.log_function_name()
         if self.reqValidation.isBadRequest(reqItem.parsedData):
             self.responder.sendBadRequest(reqItem.connectionSocket)
             return
@@ -46,8 +50,6 @@ class ProcessRequest:
 
         if parsedData["request_type"] == "signin":
             token = self.signin.signin(parsedData, reqItem)
-            print("Signin" + str(token))
-            print("parsedData:",parsedData)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "createAccount":
             result = self.accountManager.createAccount(reqItem.parsedData)
@@ -62,7 +64,6 @@ class ProcessRequest:
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "changePassword":
             #call Account Management to get user stats
-            print("change password request called")
             self.accountManager.changePassword(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "getFriendsList":
@@ -79,7 +80,6 @@ class ProcessRequest:
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "getFriendRequests":
             #call friends management to validate friend request
-            print("processing getFriendRequests")
             self.friendsManager.getFriendRequests(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "removeFriend":
@@ -107,6 +107,7 @@ class ProcessRequest:
     #The process thread will block on requestQueue.get() until something
     #arrives.
     def processRequests(self):
+        self.log_function_name()
         while True:
             requestItem = self.requestQueue.get()
             #Decrypt parsedData

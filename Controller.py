@@ -1,3 +1,4 @@
+from global_logger import logger, VERBOSE
 from Listener import Listener
 from database.DB import DB
 from multiprocessing import Process
@@ -13,6 +14,8 @@ from Manifest import Manifest
 #and then run the listener thread.
 class Controller:
 
+    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
+
     #requestQueue is shared queue among all processes
     def __init__(self):
         self.manifest = Manifest()
@@ -21,10 +24,12 @@ class Controller:
 
 
     def createRequestProcessor(self):
+        self.log_function_name()
         req = ProcessRequest(self.requestQueue)
         req.processRequests()
 
     def createRequestProcessors(self):
+        self.log_function_name()
         processes = []
         for i in range(self.manifest.number_of_request_processors):
             #print('Createing processes %d' % i)
@@ -33,6 +38,7 @@ class Controller:
             i.start()
 
     def createListener(self):
+        self.log_function_name()
         self.listener.createListener()
         #self.listener.listen()
         thread = Thread(target=self.listener.listen)

@@ -1,22 +1,26 @@
 import json
+from global_logger import logger, VERBOSE
 
 class Leaderboard:
+
+    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
+
     def __init__(self, database):
         self.db = database
 
     def getLongestWinStreak(self, reqItem, numberOfGames):
+        self.log_function_name()
         resp = self.db.getLongestWinStreak(numberOfGames)
         reqItem.longestWinStreakResponse(numberOfGames, resp)
 
 
     def getMostChessGamesWon(self, reqItem, numberOfGames):
+        self.log_function_name()
         resp = self.db.getMostChessGamesWon(numberOfGames)
 
-        print("type(resp):",type(resp))
         userDict = {
                     "user0":"users"
         }
-        print("resp:",resp)
         i = 0
         for item in resp:
             user = {

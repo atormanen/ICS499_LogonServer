@@ -1,4 +1,5 @@
 import json
+from global_logger import logger, VERBOSE
 #Message item is a wrapper class to hold the data of each reqeust.
 #It holds the json object that was sent to the server as well as
 #the socket
@@ -7,12 +8,16 @@ import json
 #Too much happening here
 
 class MessageItem:
+
+    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
+
     def __init__(self,connectionSocket, parsedData):
         self.connectionSocket = connectionSocket
         self.parsedData = parsedData
         self.responseObj = ''
 
     def signinResponse(self,token, data):
+        self.log_function_name()
         response = {
                     "request_type":"signin",
                     "status":"success",
@@ -38,10 +43,10 @@ class MessageItem:
         response["disable_pausing"] = data[0][5]
         response["require_commit_press"] = data[0][6]
         response["level"] = data[0][7]
-        print("response:", response)
         self.responseObj = json.dumps(response)
 
     def createAccountResponse(self,status,reason='null'):
+        self.log_function_name()
         response = {
                     "request_type":"createAccount",
                     "status":"",
@@ -52,6 +57,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def getUSerStatsResponse(self, stats):
+        self.log_function_name()
         response = {
                     "request_type":"getUserStats",
                     "user_id":"",
@@ -70,6 +76,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def getFriendsListResponse(self, friendsList, request = "getFriendsList"):
+        self.log_function_name()
         friendDict = {
                     "friend0":"friends"
         }
@@ -97,10 +104,12 @@ class MessageItem:
 
 
     def getFriendRequestsResp(self, friendsList):
+        self.log_function_name()
         self.getFriendsListResponse(friendsList, "getFriendRequests")
 
 
     def acceptFriendReqResponse(self,status):
+        self.log_function_name()
         response = {
                     "request_type":"validateFriendRequest",
                     "status":""
@@ -109,6 +118,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def sendFriendReqResponse(self,status,reason='null'):
+        self.log_function_name()
         response = {
                     "request_type":"sendFriendRequest",
                     "status":"",
@@ -119,6 +129,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def removeFriendResponse(self, status):
+        self.log_function_name()
         response = {
                     "request_type":"removeFriend",
                     "status":""
@@ -128,6 +139,7 @@ class MessageItem:
 
 
     def signoutResponse(self, status):
+        self.log_function_name()
         response = {
                     "request_type":"signout",
                     "status":""
@@ -136,6 +148,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def longestWinStreakResponse(self, numberOfGames, data):
+        self.log_function_name()
         response = {
                     "request_type":"getLongestWinStreak",
                     "number_of_games":"",
@@ -146,6 +159,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def mostChessGamesWonResponse(self, numberOfGames, data):
+        self.log_function_name()
         response = {
                     "request_type":"getMostChessGamesWon",
                     "number_of_games":"",
@@ -156,6 +170,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def changePasswordResponse(self, status):
+        self.log_function_name()
         response = {
                     "request_type":"changePassword",
                     "status":""
@@ -164,6 +179,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def saveAccountInfoByKeyResponse(self, status):
+        self.log_function_name()
         response = {
                     "request_type":"saveAccountInfoByKey",
                     "status":""
@@ -172,6 +188,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def saveAccountInfoByKeyResponse(self, status):
+        self.log_function_name()
         response = {
                     "request_type"saveAccountInfoByKey",
                     "status":""
@@ -180,6 +197,7 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
     def getAccountInfoResponse(self, data):
+        self.log_function_name()
         response = {
                     "request_type":"getAccountInfo",
                     "avatar_style":"",

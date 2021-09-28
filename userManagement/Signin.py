@@ -1,14 +1,18 @@
+from global_logger import logger, VERBOSE
+
 #Signin will handle the mechanics of signing a user in
 from userManagement.Tokens import Tokens
 import time
 class Signin:
+
+    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
     def __init__(self, db):
         self.db = db
         self.token = Tokens()
 
     def validatePassword(self, username, password):
-        print("self.db.validateUserExists(username):",self.db.validateUserExists(username))
+        self.log_function_name()
         if(self.db.validateUserExists(username)):
             dbPassword = self.db.getPasswordFor(username)
             dbPassword = dbPassword[0][0]
@@ -18,17 +22,18 @@ class Signin:
         return False
 
     def tokenUpToDate(self,username):
+        self.log_function_name()
         tokenExpiration = self.db.getTokenCreationTime(username)
         #if(tokenExpiration):
         #    return False
         currentTime = time.time()
-        print("tokenExpiration:",tokenExpiration[0][0])
         timeDiference = currentTime - tokenExpiration[0][0]
         if(timeDiference > 86400):
             return False
         return True
 
     def signin(self, parsedData, reqItem):
+        self.log_function_name()
         username = parsedData["username"]
         password = parsedData["password"]
         data = self.getAccountInfo(parsedData)
@@ -38,7 +43,6 @@ class Signin:
                 #Bundle the tocken into the response package
                 signonToken = self.db.getToken(username)
                 signonToken = signonToken[0][0]
-                print("signonToken:",signonToken)
                 if(signonToken == 'null'):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
@@ -46,15 +50,14 @@ class Signin:
             else:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
-                print("signonToken:",signonToken)
                 reqItem.signinResponse(signonToken, data)
         return False
 
     def signout(self, parsedData, reqItem):
+        self.log_function_name()
+        self.log_function_name()
         username = parsedData["username"]
         signonToken = parsedData["signonToken"]
-        print("parsedData",parsedData)
-
         savedToken = self.db.getToken(username)
 
         self.db.logout(username)
@@ -63,8 +66,8 @@ class Signin:
 
 
     def getAccountInfo(self, parsedData):
+        self.log_function_name()
         username = parsedData["username"]
         #signonToken = parsedData["signonToken"]
         data = self.db.getAccountInfo(username)
-        print("data:",data)
         return data
