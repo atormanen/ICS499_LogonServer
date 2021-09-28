@@ -19,6 +19,7 @@ class DB:
         self.database = database
 
     def dbInsert(self, statement):
+        logger.debug(f"func dbInsert -> statement: {statement}")
         try:
             mydb = mysql.connector.connect(user=self.user, password=self.password,
                                   host=self.writer,
@@ -36,9 +37,11 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
+                logger.debug(f"result: {result}")
             return result
 
     def dbFetch(self, statement):
+        logger.debug(f"func dbFetch -> statement: {statement}")
         try:
             result = ''
             mydb = mysql.connector.connect(user=self.user, password=self.password,
@@ -55,9 +58,11 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
+                logger.debug(f"result: {result}")
             return result
 
     def dbUpdate(self, statement):
+        logger.debug(f"func dbUpdate -> statement: {statement}")
         try:
             mydb = mysql.connector.connect(user=self.user, password=self.password,
                                   host=self.writer,
@@ -74,9 +79,11 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
+                logger.debug(f"result: {result}")
             return result
 
     def dbDelete(self, statement):
+        logger.debug(f"func dbDelete -> statement: {statement}")
         try:
             mydb = mysql.connector.connect(user=self.user, password=self.password,
                                   host=self.writer,
@@ -93,6 +100,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
+                logger.debug(f"result: {result}")
             return result
 
 
