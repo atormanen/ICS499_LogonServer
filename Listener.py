@@ -8,6 +8,7 @@ from ProcessRequest import *
 from multiprocessing import Process
 from DataManagement.MessageItem import MessageItem
 from Manifest import Manifest
+import inspect
 
 #Class listener is used to listen on a servers ip address and port portNumber
 #12345 for incoming requests.

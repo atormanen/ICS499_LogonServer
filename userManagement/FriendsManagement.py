@@ -1,4 +1,5 @@
 from global_logger import logger, VERBOSE
+import inspect
 
 #Friends management will handle the mechanics of sending freinds reqeusts,
 #handeling friends lists, and accepting fiend requests

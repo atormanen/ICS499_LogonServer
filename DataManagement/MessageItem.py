@@ -1,5 +1,6 @@
 import json
 from global_logger import logger, VERBOSE
+import inspect
 #Message item is a wrapper class to hold the data of each reqeust.
 #It holds the json object that was sent to the server as well as
 #the socket

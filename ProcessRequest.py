@@ -12,6 +12,7 @@ from userManagement.Tokens import Tokens
 from DataManagement.Leaderboard import Leaderboard
 from Manifest import Manifest
 from global_logger import logger, VERBOSE
+import inspect
 
 class ProcessRequest:
 

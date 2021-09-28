@@ -8,6 +8,7 @@ from ProcessRequest import ProcessRequest
 import os
 import queue
 from Manifest import Manifest
+import inspect
 
 #Controller will initilaize all the objects and processes needed
 #for the applications. It will sping up a few request request processors
