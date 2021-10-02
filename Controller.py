@@ -38,7 +38,7 @@ class Controller:
             processes.append(Process(target=self.createRequestProcessor))
         for i in processes:
             i.start()
-            
+
 
     def createListener(self):
         self.log_function_name()
@@ -48,8 +48,6 @@ class Controller:
         thread.start()
         thread.join()
 
-def main():
-    print('inside main')
 
 if __name__ == '__main__':
     logger.info('')
@@ -58,4 +56,3 @@ if __name__ == '__main__':
     c = Controller()
     c.createRequestProcessors()
     c.createListener()
-    main()

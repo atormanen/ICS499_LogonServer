@@ -37,7 +37,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
     def dbFetch(self, statement):
@@ -58,7 +58,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
     def dbUpdate(self, statement):
@@ -79,7 +79,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
     def dbDelete(self, statement):
@@ -100,7 +100,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
 
