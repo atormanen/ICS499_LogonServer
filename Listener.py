@@ -97,10 +97,12 @@ class Listener:
 
 
     def listen(self):
+        self.log_function_name()
         while True:
             self.reqCount = self.reqCount + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
+                logger.debug(f"received message from {str(addr)}")
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
             except IOError as error:
