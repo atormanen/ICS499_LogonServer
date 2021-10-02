@@ -99,7 +99,7 @@ class Listener:
             self.sendBadRequest(connectionSocket)
             return
         msgItem = MessageItem(connectionSocket,parsedData)
-        logger.debug(f"message item: {msgItem}")
+        logger.debug(f"message item: {parsedData}")
         self.requestQueue.put(msgItem)
 
 
