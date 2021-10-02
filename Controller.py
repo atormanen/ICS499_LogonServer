@@ -42,7 +42,7 @@ class Controller:
     def createListener(self):
         self.log_function_name()
         self.info('creating request listener')
-        self.listener.createListener()
+        #self.listener.createListener()
         thread = Thread(target=self.listener.listen)
         thread.start()
         thread.join()
