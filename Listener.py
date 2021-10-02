@@ -45,7 +45,8 @@ class Listener:
             IP = '127.0.0.1'
         finally:
             s.close()
-            self.serverIp = IP
+            #self.serverIp = IP
+            self.serverIp = '18.191.38.171'
             logger.info(f"server ip set to: {self.serverIp}")
 
 
