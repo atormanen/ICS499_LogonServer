@@ -6,7 +6,7 @@ VERBOSE = 15
 verbose_level = 'VERBOSE'
 log_file = './logs/logon_server.log'
 
-log_formatter = logging.Formatter("%(levelname)-7.7s %(process)-9.9d %(threadName)-12.12s %(asctime)s: %(message)s")
+log_formatter = logging.Formatter("%(levelname)-7.7s %(process)-12.12d %(processName)-12.12s %(threadName)-12.12s %(asctime)s: %(message)s")
 logger = logging.getLogger()
 logging.addLevelName(VERBOSE, verbose_level)
 
