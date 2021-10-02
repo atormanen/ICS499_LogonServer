@@ -110,5 +110,6 @@ class Listener:
                 connectionSocket.close()
 
     def createListener(self):
+        self.log_function_name()
         self.set_ip()
         self.createSocket()
