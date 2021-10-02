@@ -29,8 +29,10 @@ class Listener:
 
     def createSocket(self):
         self.log_function_name()
+        logger.info('creating server socker listener')
         self.serverSocket.bind((self.serverIp,self.portNumber))
         self.serverSocket.listen(5)
+        logger.debug(f"server socket: {str(self.serverSocket)}")
 
     def set_ip(self):
         self.log_function_name()
@@ -44,6 +46,7 @@ class Listener:
         finally:
             s.close()
             self.serverIp = IP
+            logger.info(f"server ip set to: {self.serverIp}")
 
 
     def sendBadRequest(self,connectionSocket):
