@@ -1,4 +1,5 @@
 #!/bin/bash
+systemctl stop jar_logon.service
 git stash
 git fetch
 git pull
