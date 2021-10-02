@@ -51,6 +51,9 @@ def main():
     print('inside main')
 
 if __name__ == '__main__':
+    logger.info('')
+    logger.info('starting logon server')
+    logger.info('')
     c = Controller()
     c.createRequestProcessors()
     c.createListener()
