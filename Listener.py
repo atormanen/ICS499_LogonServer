@@ -30,8 +30,11 @@ class Listener:
     def createSocket(self):
         self.log_function_name()
         logger.info('creating server socker listener')
-        self.serverSocket.bind((self.serverIp,self.portNumber))
-        self.serverSocket.listen(5)
+        try:
+            self.serverSocket.bind((self.serverIp,self.portNumber))
+            self.serverSocket.listen(5)
+        except OSError as error:
+            logger.error(error)
         logger.debug(f"server socket: {str(self.serverSocket)}")
 
     def set_ip(self):
