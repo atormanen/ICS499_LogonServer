@@ -54,8 +54,8 @@ class Signin:
                 reqItem.signinResponse(signonToken, data)
         return False
 
+
     def signout(self, parsedData, reqItem):
-        self.log_function_name()
         self.log_function_name()
         username = parsedData["username"]
         signonToken = parsedData["signonToken"]

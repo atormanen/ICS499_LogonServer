@@ -33,6 +33,7 @@ class Controller:
         self.log_function_name()
         processes = []
         for i in range(self.manifest.number_of_request_processors):
+            logger.info(f"creating request processor {str(i)}")
             #print('Createing processes %d' % i)
             processes.append(Process(target=self.createRequestProcessor))
         for i in processes:
@@ -40,18 +41,15 @@ class Controller:
 
     def createListener(self):
         self.log_function_name()
+        self.info('creating request listener')
         self.listener.createListener()
         #self.listener.listen()
         thread = Thread(target=self.listener.listen)
         thread.start()
         thread.join()
 
-def main():
-    print('inside main')
-
 
 if __name__ == '__main__':
     c = Controller()
     c.createRequestProcessors()
     c.createListener()
-    main()
