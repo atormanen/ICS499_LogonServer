@@ -38,7 +38,7 @@ class Controller:
             processes.append(Process(target=self.createRequestProcessor))
         for i in processes:
             i.start()
-            i.join()
+            
 
     def createListener(self):
         self.log_function_name()
