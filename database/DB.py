@@ -146,6 +146,7 @@ class DB:
         userId = userId[0][0]
         friendsId = friendsId[0][0]
         result = self.dbFetch(self.builder.checkIfFriendRequestExists(userId, friendsId))
+        logger.debug(type(result))
         intResult = result[0][0]
         return intResult
 
