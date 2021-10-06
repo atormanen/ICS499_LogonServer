@@ -52,6 +52,7 @@ class Signin:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 reqItem.signinResponse(signonToken, data)
+        logger.debug(f"signin failed for user {username}")
         reqItem().signinResponseFailed()
 
 
