@@ -53,7 +53,7 @@ class MessageItem:
         response = {
                     "request_type":"signin",
                     "status":"fail",
-                    "reason", str(reason)
+                    "reason": str(reason)
         }
         self.responseObj = json.dumps(response)
 
