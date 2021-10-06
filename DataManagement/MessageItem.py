@@ -47,6 +47,7 @@ class MessageItem:
         response["level"] = data[0][7]
         self.responseObj = json.dumps(response)
 
+
     def createAccountResponse(self,status,reason='null'):
         self.log_function_name()
         response = {

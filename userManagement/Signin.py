@@ -52,7 +52,7 @@ class Signin:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 reqItem.signinResponse(signonToken, data)
-        return False
+        reqItem(None, None)
 
 
     def signout(self, parsedData, reqItem):
