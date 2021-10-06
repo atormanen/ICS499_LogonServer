@@ -146,8 +146,7 @@ class MysqlDB:
 
     def logout(self, username):
         self.log_function_name()
-        querry = "UPDATE user SET signon_token = 'null' WHERE username = '" + \
-                username + "';"
+        querry = f"UPDATE user SET signon_token = {None} WHERE username = {username};"
         return querry
 
     def getMostGamesWon(self, numberOfGames):
