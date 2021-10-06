@@ -62,7 +62,7 @@ class Signin:
     def signout(self, parsedData, reqItem):
         self.log_function_name()
         username = parsedData["username"]
-        signonToken = parsedData["signonToken"]
+        signonToken = parsedData["signon_token"]
         savedToken = self.db.getToken(username)
 
         self.db.logout(username)
