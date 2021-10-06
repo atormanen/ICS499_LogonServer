@@ -152,7 +152,10 @@ class DB:
     def createUser(self, parsedData):
         self.log_function_name()
         id = self.dbFetch(self.builder.getLastUserId())
-        id = str(id[0][0] + 1)
+        if(id == [(None)]):
+            id = 1
+        else:
+            id = str(id[0][0] + 1)
         statement = self.builder.createUser(id,parsedData)
         self.dbInsert(statement)
         result = self.dbInsert(self.builder.createUserStats(id))
