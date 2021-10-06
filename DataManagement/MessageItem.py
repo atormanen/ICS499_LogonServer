@@ -48,11 +48,12 @@ class MessageItem:
         self.responseObj = json.dumps(response)
 
 
-    def signinResponseFailed(self):
+    def signinResponseFailed(self, reason):
         self.log_function_name()
         response = {
                     "request_type":"signin",
-                    "status":"fail"
+                    "status":"fail",
+                    "reason", str(reason)
         }
         self.responseObj = json.dumps(response)
 
