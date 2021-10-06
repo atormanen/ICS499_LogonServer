@@ -65,7 +65,7 @@ class MysqlDB:
 
     def createUserStats(self, id):
         self.log_function_name()
-        return "INSERT INTO user_statistics VALUES("+ str(id) + ",0,0,0,0,0,1,1);"
+        return "INSERT INTO user_statistics VALUES("+ str(id) + ",0,0,0,0,0,null,1);"
 
     def getFriendsList(self, id):
         self.log_function_name()
