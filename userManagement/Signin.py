@@ -46,7 +46,7 @@ class Signin:
                 #Bundle the tocken into the response package
                 signonToken = self.db.getToken(username)
                 signonToken = signonToken[0][0]
-                if(signonToken == 'null'):
+                if(signonToken == None):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 reqItem.signinResponse(signonToken, data)
