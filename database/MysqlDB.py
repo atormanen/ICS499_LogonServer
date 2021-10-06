@@ -171,9 +171,9 @@ class MysqlDB:
 
     def saveAccountInfo(self, username, data):
         self.log_function_name()
-        querry = "UPDATE user, user_statistics SET user.avatar = " + str(data["avatarStyle"]) + ", user.chess_board_style = " + str(data["chessboardStyle"]) + ", user.chess_piece_style = " + str(data["chesspieceStyle"]) +\
-        ", user.match_clock_choice =  " + str(data["matchClockChoice"]) + ", user.automatic_queueing = " + str(data["automaticQueening"]) + ", user.disable_pausing = " + str(data["disablePausing"]) +\
-        ", user.require_commit_press =  " + str(data["requireCommitPress"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = '" + str(username) + "';"
+        querry = "UPDATE user, user_statistics SET user.avatar = " + str(data["avatar_style"]) + ", user.chess_board_style = " + str(data["chess_board_style"]) + ", user.chess_piece_style = " + str(data["chess_piece_style"]) +\
+        ", user.match_clock_choice =  " + str(data["match_clock_choice"]) + ", user.automatic_queueing = " + str(data["automatic_queueing"]) + ", user.disable_pausing = " + str(data["disable_pausing"]) +\
+        ", user.require_commit_press =  " + str(data["require_commit_press"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = '" + str(username) + "';"
         return querry
 
     def saveAccountInfoByKey(self, username, key, value):
