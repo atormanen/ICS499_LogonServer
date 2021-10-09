@@ -15,16 +15,19 @@ class Responder:
 
     def sendBadRequest(self,connectionSocket):
         self.log_function_name()
+        logger.verbose(f"bad request")
         msg = "ERROR - BAD REQUEST"
         connectionSocket.send(msg.encode('utf-8'))
-        #connectionSocket.close()
+        connectionSocket.close()
 
     def sendRequestedData(self,connectionSocket,reqestedData):
         self.log_function_name()
+        logger.error('sendRequestedData is deprecated... do not use!')
         connectionSocket.send(requestedData.encode())
 
     def sendAccountCreationStatus(self, connectionSocket,status):
         self.log_function_name()
+        logger.error('sendAccountCreationStatus is deprecated... do not use!')
         status = '' + status
         connectionSocket.send(status.encode())
 
@@ -33,5 +36,4 @@ class Responder:
         try:
             msgItem.connectionSocket.send(msgItem.responseObj.encode())
         except ConnectionResetError as e:
-            #This is expected
-            logger.error('connection request error')
+            logger.error(e)
