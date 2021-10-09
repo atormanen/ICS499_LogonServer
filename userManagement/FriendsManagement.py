@@ -95,7 +95,7 @@ class FriendsManagement:
             reqItem.removeFriendResponse('fail','username is not valid')
             return
 
-        if not(self.tokenUpToDate(username)):
+        if not(self.validateToken(username)):
             reqItem.removeFriendResponse('fail', 'invalid token')
             return
 
