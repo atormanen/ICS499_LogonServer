@@ -141,11 +141,12 @@ class MessageItem:
         response["reason"] = reason
         self.responseObj = json.dumps(response)
 
-    def removeFriendResponse(self, status):
+    def removeFriendResponse(self, status, reason=None):
         self.log_function_name()
         response = {
                     "request_type":"removeFriend",
-                    "status":""
+                    "status":"",
+                    "reason":reason
         }
         response["status"] = status
         self.responseObj = json.dumps(response)
