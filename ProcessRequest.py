@@ -51,6 +51,7 @@ class ProcessRequest:
 
         if parsedData["request_type"] == "signin":
             token = self.signin.signin(parsedData, reqItem)
+            logger.debug(f"{reqItem.responseObj}")
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "createAccount":
             result = self.accountManager.createAccount(reqItem.parsedData)
@@ -112,4 +113,10 @@ class ProcessRequest:
         while True:
             requestItem = self.requestQueue.get()
             #Decrypt parsedData
-            self.proccesRequestType(requestItem)
+            try:
+                self.proccesRequestType(requestItem)
+            except Exception as e:
+                logger.error('invalid request')
+            finally:
+                requestItem.invalidRequest()
+                self.responder.sendResponse(requestItem)

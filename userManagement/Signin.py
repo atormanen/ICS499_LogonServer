@@ -30,7 +30,9 @@ class Signin:
         currentTime = time.time()
         timeDiference = currentTime - tokenExpiration[0][0]
         if(timeDiference > 86400):
+            logger.debug(f"token expired for user {username}")
             return False
+        logger.debug(f"token is valid for user {username}")
         return True
 
     def signin(self, parsedData, reqItem):
@@ -44,7 +46,8 @@ class Signin:
                 #Bundle the tocken into the response package
                 signonToken = self.db.getToken(username)
                 signonToken = signonToken[0][0]
-                if(signonToken == 'null'):
+                logger.debug(type(signonToken))
+                if(signonToken == None):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 reqItem.signinResponse(signonToken, data)
@@ -52,13 +55,15 @@ class Signin:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
                 reqItem.signinResponse(signonToken, data)
-        return False
+        else:
+            logger.debug(f"signin failed for user {username}")
+            reqItem.signinResponseFailed('invalid password')
+
 
     def signout(self, parsedData, reqItem):
         self.log_function_name()
-        self.log_function_name()
         username = parsedData["username"]
-        signonToken = parsedData["signonToken"]
+        signonToken = parsedData["signon_token"]
         savedToken = self.db.getToken(username)
 
         self.db.logout(username)

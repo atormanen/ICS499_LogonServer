@@ -14,11 +14,13 @@ class AccountManagement:
     def __init__(self, mysqlDB):
         self.db = mysqlDB
 
+
     def validateUsername(self, username):
         self.log_function_name()
         if(self.db.validateUserExists(username)):
             return True
         return False
+
 
     def isPasswordValid(self, password):
         self.log_function_name()
@@ -36,7 +38,6 @@ class AccountManagement:
             return False
 
 
-
     def createAccount(self, parsedData):
         self.log_function_name()
 		#check if username exists
@@ -51,10 +52,12 @@ class AccountManagement:
             return False
         #if account createion succussful return true otherwise False
 
+
     def getUserStats(self, parsedData, reqItem):
         self.log_function_name()
         stats = self.db.getUserStats(parsedData["username"])
         reqItem.getUSerStatsResponse(stats[0])
+
 
     def validatePassword(self, username, password):
         self.log_function_name()
@@ -66,6 +69,7 @@ class AccountManagement:
                 return True
         return False
 
+
     def tokenUpToDate(self,username):
         self.log_function_name()
         tokenExpiration = self.db.getTokenCreationTime(username)
@@ -76,6 +80,7 @@ class AccountManagement:
         if(timeDiference > 86400):
             return False
         return True
+
 
     def changePassword(self, parsedData, reqItem):
         self.log_function_name()
@@ -99,6 +104,7 @@ class AccountManagement:
             #     reqItem.changePasswordResponse("fail")
         else:
             reqItem.changePasswordResponse("fail")
+
 
     def saveAccountInfoByKey(self, parsedData, reqItem):
         self.log_function_name()

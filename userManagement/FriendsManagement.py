@@ -1,5 +1,6 @@
 from global_logger import logger, VERBOSE
 import inspect
+import time
 
 #Friends management will handle the mechanics of sending freinds reqeusts,
 #handeling friends lists, and accepting fiend requests
@@ -9,6 +10,22 @@ class FriendsManagement:
 
     def __init__(self, database):
         self.db = database
+
+
+    def validateToken(self,username):
+        self.log_function_name()
+        tokenExpiration = self.db.getTokenCreationTime(username)
+        token = self.db.getToken(username)
+        if(token == None):
+            return False
+        currentTime = time.time()
+        timeDiference = currentTime - tokenExpiration[0][0]
+        if(timeDiference > 86400):
+            logger.debug(f"token expired for user {username}")
+            return False
+        logger.debug(f"token is valid for user {username}")
+        return True
+
 
     def validateUsername(self, username):
         self.log_function_name()
@@ -74,8 +91,17 @@ class FriendsManagement:
         self.log_function_name()
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
+
+        if(self.validateUsername(username) == False):
+            reqItem.removeFriendResponse('fail','username is not valid')
+            return
+
+        if not(self.validateToken(username)):
+            reqItem.removeFriendResponse('fail', 'invalid token')
+            return
+
         if(self.validateUsername(friendsUsername)):
             result = self.db.removeFriend(username, friendsUsername)
             reqItem.removeFriendResponse("success")
         else:
-            reqItem.removeFriendResponse("fail")
+            reqItem.removeFriendResponse("fail", 'friends username not valid')

@@ -37,7 +37,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
     def dbFetch(self, statement):
@@ -58,7 +58,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
     def dbUpdate(self, statement):
@@ -79,7 +79,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
     def dbDelete(self, statement):
@@ -100,7 +100,7 @@ class DB:
             if(mydb.is_connected()):
                 cursor.close()
                 mydb.close()
-                logger.debug(f"result: {result}")
+            logger.debug(f"result: {result}")
             return result
 
 
@@ -146,13 +146,18 @@ class DB:
         userId = userId[0][0]
         friendsId = friendsId[0][0]
         result = self.dbFetch(self.builder.checkIfFriendRequestExists(userId, friendsId))
+        logger.debug(type(result))
         intResult = result[0][0]
         return intResult
 
     def createUser(self, parsedData):
         self.log_function_name()
         id = self.dbFetch(self.builder.getLastUserId())
-        id = str(id[0][0] + 1)
+        id = id[0][0]
+        if(id == None):
+            id = 1
+        else:
+            id = str(id + 1)
         statement = self.builder.createUser(id,parsedData)
         self.dbInsert(statement)
         result = self.dbInsert(self.builder.createUserStats(id))

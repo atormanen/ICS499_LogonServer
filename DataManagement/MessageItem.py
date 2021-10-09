@@ -17,6 +17,14 @@ class MessageItem:
         self.parsedData = parsedData
         self.responseObj = ''
 
+
+    def invalidRequest(self):
+        self.log_function_name()
+        response = {
+                    "status":"fail - invalid request. please double check request syntax"
+        }
+        self.responseObj = json.dumps(response)
+
     def signinResponse(self,token, data):
         self.log_function_name()
         response = {
@@ -46,6 +54,17 @@ class MessageItem:
         response["require_commit_press"] = data[0][6]
         response["level"] = data[0][7]
         self.responseObj = json.dumps(response)
+
+
+    def signinResponseFailed(self, reason):
+        self.log_function_name()
+        response = {
+                    "request_type":"signin",
+                    "status":"fail",
+                    "reason": str(reason)
+        }
+        self.responseObj = json.dumps(response)
+
 
     def createAccountResponse(self,status,reason='null'):
         self.log_function_name()
@@ -130,11 +149,12 @@ class MessageItem:
         response["reason"] = reason
         self.responseObj = json.dumps(response)
 
-    def removeFriendResponse(self, status):
+    def removeFriendResponse(self, status, reason=None):
         self.log_function_name()
         response = {
                     "request_type":"removeFriend",
-                    "status":""
+                    "status":"",
+                    "reason":reason
         }
         response["status"] = status
         self.responseObj = json.dumps(response)

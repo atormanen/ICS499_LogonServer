@@ -59,13 +59,13 @@ class MysqlDB:
         lname = parsedData["last_name"]
         email = parsedData["email"]
         password = parsedData["password"]
-        sql_staement = f"INSERT INTO user VALUES({id},'{username}','{fname}','{lname}','{email}',0,'{password}',null,'{now}');"
+        sql_staement = f"INSERT INTO user VALUES({id},'{username}','{fname}','{lname}','{email}',0,'{password}',null,'{now}',1,1,1,1,False,True,1);"
         return sql_staement
     #id, username, firstname, lastname, email, avatar, ####, password, now, signonToken,
 
     def createUserStats(self, id):
         self.log_function_name()
-        return "INSERT INTO user_statistics VALUES("+ str(id) +" ,0,0,0,0,0,1);"
+        return "INSERT INTO user_statistics VALUES("+ str(id) + ",0,0,0,0,0,null,1);"
 
     def getFriendsList(self, id):
         self.log_function_name()
@@ -146,8 +146,7 @@ class MysqlDB:
 
     def logout(self, username):
         self.log_function_name()
-        querry = "UPDATE user SET signon_token = 'null' WHERE username = '" + \
-                username + "';"
+        querry = f"UPDATE user SET signon_token = null WHERE username = '{username}';"
         return querry
 
     def getMostGamesWon(self, numberOfGames):
@@ -165,16 +164,16 @@ class MysqlDB:
     def getAccountInfo(self, username):
         self.log_function_name()
         querry = "SELECT user.avatar, user.chess_board_style,  user.chess_piece_style, \
-        user.match_clock_choice, user.automatic_queening, user.disable_pausing, user.require_commit_press, user_statistics.level FROM user \
+        user.match_clock_choice, user.automatic_queueing, user.disable_pausing, user.require_commit_press, user_statistics.level FROM user \
         inner join user_statistics on user.user_id = user_statistics.user_id \
         Where username = '" + str(username) + "';"
         return querry
 
     def saveAccountInfo(self, username, data):
         self.log_function_name()
-        querry = "UPDATE user, user_statistics SET user.avatar = " + str(data["avatarStyle"]) + ", user.chess_board_style = " + str(data["chessboardStyle"]) + ", user.chess_piece_style = " + str(data["chesspieceStyle"]) +\
-        ", user.match_clock_choice =  " + str(data["matchClockChoice"]) + ", user.automatic_queening = " + str(data["automaticQueening"]) + ", user.disable_pausing = " + str(data["disablePausing"]) +\
-        ", user.require_commit_press =  " + str(data["requireCommitPress"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = '" + str(username) + "';"
+        querry = "UPDATE user, user_statistics SET user.avatar = " + str(data["avatar_style"]) + ", user.chess_board_style = " + str(data["chess_board_style"]) + ", user.chess_piece_style = " + str(data["chess_piece_style"]) +\
+        ", user.match_clock_choice =  " + str(data["match_clock_choice"]) + ", user.automatic_queueing = " + str(data["automatic_queueing"]) + ", user.disable_pausing = " + str(data["disable_pausing"]) +\
+        ", user.require_commit_press =  " + str(data["require_commit_press"]) + ", user_statistics.level = " + str(data["level"]) + " WHERE user.username = '" + str(username) + "';"
         return querry
 
     def saveAccountInfoByKey(self, username, key, value):
@@ -193,7 +192,7 @@ class MysqlDB:
             "chessboard_style":"user.chess_board_style",
             "chesspiece_style":"user.chess_piece_style",
             "match_clock_choice":"user.match_clock_choice",
-            "automatic_queening":"user.automatic_queening",
+            "automatic_queueing":"user.automatic_queueing",
             "disable_pausing":"user.disable_pausing",
             "require_commit_press":"user.require_commit_press",
             "level":"user_statistics.level"

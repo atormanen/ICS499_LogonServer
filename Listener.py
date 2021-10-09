@@ -29,8 +29,13 @@ class Listener:
 
     def createSocket(self):
         self.log_function_name()
-        self.serverSocket.bind((self.serverIp,self.portNumber))
-        self.serverSocket.listen(5)
+        logger.info('creating server socker listener')
+        try:
+            self.serverSocket.bind((self.serverIp,self.portNumber))
+            self.serverSocket.listen(5)
+        except OSError as error:
+            logger.error(error)
+        logger.debug(f"server socket: {str(self.serverSocket)}")
 
     def set_ip(self):
         self.log_function_name()
@@ -44,6 +49,8 @@ class Listener:
         finally:
             s.close()
             self.serverIp = IP
+            #self.serverIp = '18.191.38.171'
+            logger.info(f"server ip set to: {self.serverIp}")
 
 
     def sendBadRequest(self,connectionSocket):
@@ -85,26 +92,31 @@ class Listener:
             logger.error(error)
             return
 
-
         try:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
+            logger.error(f"unable to load message into json: {parsedData}")
             self.sendBadRequest(connectionSocket)
             return
         msgItem = MessageItem(connectionSocket,parsedData)
+        logger.debug(f"message item: {parsedData}")
         self.requestQueue.put(msgItem)
 
 
     def listen(self):
+        self.log_function_name()
         while True:
             self.reqCount = self.reqCount + 1
             try:
                 connectionSocket, addr = self.serverSocket.accept()
+                logger.debug(f"received message from {str(addr)}")
                 thread = Thread(target=self.processRequest,args=(connectionSocket,))
                 thread.start()
-            except IOError:
+            except IOError as error:
+                logger.error(error)
                 connectionSocket.close()
 
     def createListener(self):
+        self.log_function_name()
         self.set_ip()
         self.createSocket()
