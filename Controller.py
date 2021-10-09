@@ -53,6 +53,9 @@ if __name__ == '__main__':
     logger.info('')
     logger.info('starting logon server')
     logger.info('')
-    c = Controller()
-    c.createRequestProcessors()
-    c.createListener()
+    try:
+        c = Controller()
+        c.createRequestProcessors()
+        c.createListener()
+    except Exception as e:
+        logger.error(e)
