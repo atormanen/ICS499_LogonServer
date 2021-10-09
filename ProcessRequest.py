@@ -116,4 +116,5 @@ class ProcessRequest:
             try:
                 self.proccesRequestType(requestItem)
             except Exception as e:
-                logger.error(traceback.format_exc())
+                logger.error('invalid request')
+                requestItem.invalidRequest

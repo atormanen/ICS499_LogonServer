@@ -17,6 +17,14 @@ class MessageItem:
         self.parsedData = parsedData
         self.responseObj = ''
 
+
+    def invalidRequest(self, request_type):
+        self.log_function_name()
+        response = {
+                    "status":"fail - invalid request. please double check request syntax"
+        }
+        self.responseObj = json.dumps(response)
+
     def signinResponse(self,token, data):
         self.log_function_name()
         response = {
