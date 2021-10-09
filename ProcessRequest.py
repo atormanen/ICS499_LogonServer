@@ -113,4 +113,7 @@ class ProcessRequest:
         while True:
             requestItem = self.requestQueue.get()
             #Decrypt parsedData
-            self.proccesRequestType(requestItem)
+            try:
+                self.proccesRequestType(requestItem)
+            except Exception as e:
+                logger.error(e)
