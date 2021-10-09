@@ -18,7 +18,7 @@ class MessageItem:
         self.responseObj = ''
 
 
-    def invalidRequest(self, request_type):
+    def invalidRequest(self):
         self.log_function_name()
         response = {
                     "status":"fail - invalid request. please double check request syntax"
