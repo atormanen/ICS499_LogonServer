@@ -65,6 +65,9 @@ class Signin:
         username = parsedData["username"]
         signonToken = parsedData["signon_token"]
         savedToken = self.db.getToken(username)
+        if(savedToken == None):
+            reqItem.signoutResponse('fail', 'currently not logged in')
+            return
 
         self.db.logout(username)
         self.db.saveAccountInfo(username, parsedData)

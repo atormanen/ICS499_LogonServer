@@ -54,11 +54,7 @@ class ProcessRequest:
             logger.debug(f"{reqItem.responseObj}")
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "createAccount":
-            result = self.accountManager.createAccount(reqItem.parsedData)
-            if result == True:
-                reqItem.createAccountResponse('success')
-            elif result == False:
-                reqItem.createAccountResponse('fail')
+            self.accountManager.createAccount(reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "getUserStats":
             #call Account Management to get user stats
