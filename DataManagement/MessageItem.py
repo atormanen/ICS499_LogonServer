@@ -103,7 +103,7 @@ class MessageItem:
         i = 0
         for item in friendsList:
             user = {
-                    "username":""
+                    "username": item[1]
             }
             friends_list.append(user)
             i = i + 1
@@ -128,10 +128,10 @@ class MessageItem:
         self.log_function_name()
         response = {
                     "request_type":"validateFriendRequest",
-                    "status":""
+                    "status": status
         }
-        response["status"] = status
         self.responseObj = json.dumps(response)
+
 
     def sendFriendReqResponse(self,status,reason='null'):
         self.log_function_name()
