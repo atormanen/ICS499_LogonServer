@@ -76,10 +76,11 @@ class FriendsManagement:
         self.log_function_name()
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
-        result = False
+        result = 'fail'
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
-                result = self.db.acceptFriendRequest(username, friendsUsername, True)
+                self.db.acceptFriendRequest(username, friendsUsername, True)
+                result = 'success'
         reqItem.acceptFriendReqResponse(result)
 
 
