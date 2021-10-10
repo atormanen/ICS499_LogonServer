@@ -82,9 +82,9 @@ class FriendsManagement:
         friendList = self.db.checkForFriendRequests(parsedData["username"])
         friend_in_list = False
         for friend in friendList[0]:
-            if(friend[1] == friendsUsername)
-            friend_in_list = True
-            break
+            if(friend[1] == friendsUsername):
+                friend_in_list = True
+                break
 
         if not(friend_in_list):
             reqItem.acceptFriendRequest('fail', 'friend is not friend request list')
