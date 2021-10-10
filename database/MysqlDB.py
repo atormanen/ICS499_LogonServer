@@ -11,13 +11,6 @@ class MysqlDB:
     def __init__(self):
         self.tableName = 'test'
 
-    def buildQuery(self, data):
-        raise NotImplementedError('needs to be fixed')  # TODO remove when fixed
-        # self.log_function_name()
-        # now = time.strftime('%Y-%m-%d %H-%M-%S')
-        # parsedData = json.loads(data)
-        # return insertStatement  # FIXME
-
     def getPasswordFor(self, username):
         self.log_function_name()
         selectStatement = "SELECT password FROM user WHERE username ='" + \
