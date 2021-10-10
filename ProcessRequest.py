@@ -80,6 +80,10 @@ class ProcessRequest:
             #call friends management to validate friend request
             self.friendsManager.getFriendRequests(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
+        elif parsedData["request_type"] == "revokeFriendRequest":
+            raise NotImplementedError('revokeFriendRequest has not been implemented yet')
+            self.friendsManager.getFriendRequests(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "removeFriend":
             self.friendsManager.removeFriend(parsedData, reqItem)
             self.responder.sendResponse(reqItem)

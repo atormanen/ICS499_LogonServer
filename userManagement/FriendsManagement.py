@@ -124,3 +124,14 @@ class FriendsManagement:
             reqItem.removeFriendResponse("success")
         else:
             reqItem.removeFriendResponse("fail", 'friends username not valid')
+
+
+    def revokeFriendRequest(self, parsedData, reqItem):
+        self.log_function_name()
+        username = parsedData["username"]
+        friendsUsername = parsedData["friends_username"]
+        # check if there is an active friend request
+
+        # validate usernames
+
+        # remove friend request
