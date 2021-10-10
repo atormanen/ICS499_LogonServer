@@ -72,11 +72,16 @@ class FriendsManagement:
                 reqItem.sendFriendReqResponse("fail")
         #reqItem.acceptFriendReqResponse(result)
 
+
     def validateFriendRequest(self, parsedData, reqItem):
         self.log_function_name()
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
         result = 'fail'
+
+        friendList = self.db.checkForFriendRequests(parsedData["username"])
+        logger.debug(friendList)
+
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
                 self.db.acceptFriendRequest(username, friendsUsername, True)
