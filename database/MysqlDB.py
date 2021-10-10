@@ -1,7 +1,7 @@
 import inspect
 import time
 
-from global_logger import logger
+from global_logger import logger, VERBOSE
 
 # TODO: change MysqlDB to db and change querry builder to mysqlQuerry
 class MysqlDB:
