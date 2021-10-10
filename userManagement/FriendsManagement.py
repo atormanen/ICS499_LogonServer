@@ -83,6 +83,7 @@ class FriendsManagement:
 
         if(len(friendList) == 0):
             reqItem.acceptFriendReqResponse('fail', 'friend is not friend request list')
+            return
 
         friend_in_list = False
         for friend in friendList[0]:
@@ -92,6 +93,7 @@ class FriendsManagement:
 
         if not(friend_in_list):
             reqItem.acceptFriendReqResponse('fail', 'friend is not friend request list')
+            return
 
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
