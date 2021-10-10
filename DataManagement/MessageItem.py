@@ -124,11 +124,12 @@ class MessageItem:
         self.getFriendsListResponse(friendsList, 'getFriendRequests')
 
 
-    def acceptFriendReqResponse(self, status):
+    def acceptFriendReqResponse(self, status, reason= None):
         self.log_function_name()
         response = {
                     'request_type':'validateFriendRequest',
-                    'status': status
+                    'status': status,
+                    'reason': None
         }
         self.responseObj = json.dumps(response)
 
