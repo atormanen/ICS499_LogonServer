@@ -129,7 +129,7 @@ class MessageItem:
         response = {
                     'request_type':'validateFriendRequest',
                     'status': status,
-                    'reason': None
+                    'reason': reason
         }
         self.responseObj = json.dumps(response)
 
