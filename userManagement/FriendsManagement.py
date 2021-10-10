@@ -86,7 +86,7 @@ class FriendsManagement:
             return
 
         friend_in_list = False
-        for friend in friendList[0]:
+        for friend in friendList:
             if(friend[1] == friendsUsername):
                 friend_in_list = True
                 break
