@@ -82,7 +82,7 @@ class FriendsManagement:
         friendList = self.db.checkForFriendRequests(parsedData["username"])
 
         if(len(friendList) == 0):
-            reqItem.acceptFriendRequest('fail', 'friend is not friend request list')
+            reqItem.acceptFriendReqResponse('fail', 'friend is not friend request list')
 
         friend_in_list = False
         for friend in friendList[0]:
@@ -91,7 +91,7 @@ class FriendsManagement:
                 break
 
         if not(friend_in_list):
-            reqItem.acceptFriendRequest('fail', 'friend is not friend request list')
+            reqItem.acceptFriendReqResponse('fail', 'friend is not friend request list')
 
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
