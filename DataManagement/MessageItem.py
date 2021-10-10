@@ -98,6 +98,7 @@ class MessageItem:
 
     def getFriendsListResponse(self, friendsList, request = "getFriendsList"):
         self.log_function_name()
+        friends_list = []
         friendDict = {
                     "friend0":"friends"
         }
@@ -109,17 +110,18 @@ class MessageItem:
             }
             user["username"] = item[1]
 
-            friedStr = "friend" + str(i)
-            friendDict[friedStr] = user
+            #friedStr = "friend" + str(i)
+            #friendDict[friedStr] = user
+            friends_list.append(user)
             i = i + 1
         response = {
                     "request_type":"getFriendsList",
                     "count":"",
-                    "friends":""
+                    "friends": []
         }
         response["request_type"] = request
         response["count"] = len(friendsList)
-        response["friends"] = str(friendDict)
+        response["friends"] = friends_list
         self.responseObj = json.dumps(response)
 
 
