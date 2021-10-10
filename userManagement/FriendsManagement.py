@@ -92,7 +92,7 @@ class FriendsManagement:
                 break
 
         if not(friend_in_list):
-            reqItem.acceptFriendReqResponse('fail', 'friend is not friend request list')
+            reqItem.acceptFriendReqResponse('fail', 'friend is not in friend request list')
             return
 
         if(self.validateUsername(username)):
