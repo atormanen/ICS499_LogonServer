@@ -134,7 +134,7 @@ class MysqlDB:
     def checkForFriendRequests(self, user_id):
         self.log_function_name()
         querry = f'SELECT user.user_id, user.username FROM user \
-        INNER JOIN friend_list ON user.user_id = friend_list.friend_id WHERE friend_list.user_id = {str(user_id)} \
+        INNER JOIN friend_list ON user.user_id = friend_list.friend_id WHERE friend_list.friend_id = {str(user_id)} \
         AND request_accepted = 0;'
         return querry
 
