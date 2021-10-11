@@ -23,4 +23,3 @@ class Manifest:
         #Set the number of request processor processes that will be available
         #to work requests as they come in.
         self.number_of_request_processors = os.cpu_count()
-        #self.number_of_request_processors = 2
