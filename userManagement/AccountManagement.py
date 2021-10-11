@@ -42,7 +42,6 @@ class AccountManagement:
         parsedData = reqItem.parsedData
         self.log_function_name()
 		#check if username exists
-        #return false if username alread exists
         result = self.db.validateUsernameAvailable(parsedData["username"])
 
         #call mysqlDB to create CreateAccount
