@@ -72,14 +72,33 @@ class FriendsManagement:
                 reqItem.sendFriendReqResponse("fail")
         #reqItem.acceptFriendReqResponse(result)
 
+
     def validateFriendRequest(self, parsedData, reqItem):
         self.log_function_name()
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
-        result = False
+        result = 'fail'
+
+        friendList = self.db.checkForFriendRequests(parsedData["username"])
+
+        if(len(friendList) == 0):
+            reqItem.acceptFriendReqResponse('fail', 'friend is not in friend request list')
+            return
+
+        friend_in_list = False
+        for friend in friendList:
+            if(friend[1] == friendsUsername):
+                friend_in_list = True
+                break
+
+        if not(friend_in_list):
+            reqItem.acceptFriendReqResponse('fail', 'friend is not in friend request list')
+            return
+
         if(self.validateUsername(username)):
             if(self.validateUsername(friendsUsername)):
-                result = self.db.acceptFriendRequest(username, friendsUsername, True)
+                self.db.acceptFriendRequest(username, friendsUsername, True)
+                result = 'success'
         reqItem.acceptFriendReqResponse(result)
 
 
@@ -105,3 +124,16 @@ class FriendsManagement:
             reqItem.removeFriendResponse("success")
         else:
             reqItem.removeFriendResponse("fail", 'friends username not valid')
+
+
+    def revokeFriendRequest(self, parsedData, reqItem):
+        # FIXME
+        raise NotImplementedError('revokeFriendRequest has not been implemented yet')
+        self.log_function_name()
+        username = parsedData["username"]
+        friendsUsername = parsedData["friends_username"]
+        # check if there is an active friend request
+
+        # validate usernames
+
+        # remove friend request
