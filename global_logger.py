@@ -18,6 +18,6 @@ console_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
 
-logger.setLevel(logging.INFO)
+#logger.setLevel(logging.INFO)
 #logger.setLevel(verbose_level)
-#logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
