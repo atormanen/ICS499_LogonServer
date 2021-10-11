@@ -33,16 +33,19 @@ class FriendsManagement:
             return True
         return False
 
+
     def getFriendsList(self, parsedData, reqItem):
         self.log_function_name()
 		#connect to mysqldb to get FriendsList
         friendsList = self.db.getFriendsList(parsedData["username"])
         reqItem.getFriendsListResponse(friendsList)
 
+
     def getFriendRequests(self, parsedData, reqItem):
         self.log_function_name()
         friendList = self.db.checkForFriendRequests(parsedData["username"])
         reqItem.getFriendRequestsResp(friendList)
+
 
     def getUserStats(self, username):
         self.log_function_name()
@@ -50,6 +53,7 @@ class FriendsManagement:
             stats = self.db.getUserStats(username)
             return stats
         return False
+
 
     def sendFriendRequest(self, parsedData, reqItem):
         self.log_function_name()
@@ -105,6 +109,7 @@ class FriendsManagement:
     def denyFriendRequest(self):
         self.log_function_name()
         return False
+
 
     def removeFriend(self, parsedData, reqItem):
         self.log_function_name()

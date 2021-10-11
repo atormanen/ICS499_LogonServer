@@ -11,6 +11,7 @@ class ValidateRequest:
     def __init__(self):
         self.num = 0
 
+
     def isBadRequest(self,parsedData):
         self.log_function_name()
         if parsedData["request_type"] == "signin":

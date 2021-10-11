@@ -13,16 +13,19 @@ class Tokens:
     def __init__(self):
         self.t = ""
 
+
     def generateToken(self):
         self.log_function_name()
         token = ''.join(random.SystemRandom().choice(string.ascii_uppercase +\
                         string.digits) for _ in range(30))
         return token
 
+
     def getTokenCreationTime(self):
         self.log_function_name()
         now = time.strftime('%Y-%m-%d %H-%M-%S')
         return now
+
 
     def getToken(self):
         self.log_function_name()

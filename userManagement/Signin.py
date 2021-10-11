@@ -12,6 +12,7 @@ class Signin:
         self.db = db
         self.token = Tokens()
 
+
     def validatePassword(self, username, password):
         self.log_function_name()
         if(self.db.validateUserExists(username)):
@@ -21,6 +22,7 @@ class Signin:
             if(password == dbPassword):
                 return True
         return False
+
 
     def tokenUpToDate(self,username):
         self.log_function_name()
@@ -34,6 +36,7 @@ class Signin:
             return False
         logger.debug(f"token is valid for user {username}")
         return True
+
 
     def signin(self, parsedData, reqItem):
         self.log_function_name()

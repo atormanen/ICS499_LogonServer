@@ -14,13 +14,14 @@ from Manifest import Manifest
 from global_logger import logger, VERBOSE
 import inspect
 
+
+# ProcessReqeust is set up to be a seperate process in the OS and
+# will hold the shared request queue object. It will pull requests
+# from the queue as they are inserted from the listener
 class ProcessRequest:
 
     log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
-    #PrecessReqeust is set up to be a seperate process in the OS and
-    #will hold the shared request queue object. It will pull requests
-    #from the queue as they are inserted from the listener
     def __init__(self, requestQueue):
         f = open('./params.json','r')
         data = json.loads(f.read())
@@ -31,7 +32,6 @@ class ProcessRequest:
         password = data['db_password']
         db_name = data['db_name']
         self.database = DB(username, password, reader, writer, db_name)
-        #self.database = DB('app','123','192.168.1.106','userdb')
         self.requestQueue = requestQueue
         self.signin = Signin(self.database)
         self.accountManager = AccountManagement(self.database)
@@ -39,6 +39,7 @@ class ProcessRequest:
         self.reqValidation = ValidateRequest()
         self.responder = Responder()
         self.leaderboard = Leaderboard(self.database)
+
 
     ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
@@ -107,13 +108,13 @@ class ProcessRequest:
             self.responder.sendBadRequest(reqItem.connectionSocket)
 
 
-    #The process thread will block on requestQueue.get() until something
-    #arrives.
+    # the process thread will block on requestQueue.get() until something
+    # arrives
     def processRequests(self):
         self.log_function_name()
         while True:
             requestItem = self.requestQueue.get()
-            #Decrypt parsedData
+            # TODO: Decrypt parsedData?
             try:
                 self.proccesRequestType(requestItem)
             except Exception as e:

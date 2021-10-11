@@ -7,7 +7,6 @@ from threading import Thread
 from ProcessRequest import ProcessRequest
 import os
 import queue
-from Manifest import Manifest
 import inspect
 
 #Controller will initilaize all the objects and processes needed
@@ -17,11 +16,11 @@ class Controller:
 
     log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
-    #requestQueue is shared queue among all processes
+    # requestQueue is shared queue among all processes
     def __init__(self):
-        self.manifest = Manifest()
         self.requestQueue = multiprocessing.Queue()
         self.listener = Listener(self.requestQueue)
+        self.number_of_request_processors = os.cpu_count()
 
 
     def createRequestProcessor(self):
@@ -29,10 +28,11 @@ class Controller:
         req = ProcessRequest(self.requestQueue)
         req.processRequests()
 
+
     def createRequestProcessors(self):
         self.log_function_name()
         processes = []
-        for i in range(self.manifest.number_of_request_processors):
+        for i in range(self.number_of_request_processors):
             logger.info(f"creating request processor {str(i)}")
             #print('Createing processes %d' % i)
             processes.append(Process(target=self.createRequestProcessor))

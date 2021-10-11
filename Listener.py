@@ -7,25 +7,24 @@ import json
 from ProcessRequest import *
 from multiprocessing import Process
 from DataManagement.MessageItem import MessageItem
-from Manifest import Manifest
 import inspect
 
-#Class listener is used to listen on a servers ip address and port portNumber
-#12345 for incoming requests.
+# class listener is used to listen on a servers ip address and port portNumber
+# 12345 for incoming requests.
 class Listener:
 
     log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
-    hostname = socket.gethostname()
+
 
     def __init__(self, requestQueue):
-        self.manifest = Manifest()
         self.requestQueue = requestQueue
         self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.bufferSize = self.manifest.listener_buffer_size
-        self.portNumber = self.manifest.port_number
+        self.bufferSize = 10240
+        self.portNumber = 12345
         self.serverIp = ''
         self.reqCount = 0
+
 
     def createSocket(self):
         self.log_function_name()
@@ -36,6 +35,7 @@ class Listener:
         except OSError as error:
             logger.error(error)
         logger.debug(f"server socket: {str(self.serverSocket)}")
+
 
     def set_ip(self):
         self.log_function_name()
@@ -58,6 +58,7 @@ class Listener:
         msg = "{'ERROR':'BAD REQUEST'}"
         connectionSocket.send(msg.encode())
 
+
     def processRequest(self,connectionSocket):
         self.log_function_name()
         full_msg = ''
@@ -69,7 +70,6 @@ class Listener:
                     connectionSocket.settimeout(3)
                     rcvd_msg = connectionSocket.recv(self.bufferSize).decode('utf-8','replace')
                 except socket.timeout as err:
-                    #Expecting a timeout
                     break
             else:
                 try:
@@ -91,7 +91,6 @@ class Listener:
         except IndexError as error:
             logger.error(error)
             return
-
         try:
             parsedData = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
@@ -115,6 +114,7 @@ class Listener:
             except IOError as error:
                 logger.error(error)
                 connectionSocket.close()
+
 
     def createListener(self):
         self.log_function_name()

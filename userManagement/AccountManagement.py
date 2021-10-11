@@ -8,9 +8,6 @@ class AccountManagement:
 
     log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
-    username = ''
-    password = ''
-
     def __init__(self, mysqlDB):
         self.db = mysqlDB
 
@@ -41,10 +38,10 @@ class AccountManagement:
     def createAccount(self, reqItem):
         parsedData = reqItem.parsedData
         self.log_function_name()
-		#check if username exists
+		# check if username exists
         result = self.db.validateUsernameAvailable(parsedData["username"])
 
-        #call mysqlDB to create CreateAccount
+        # call mysqlDB to create CreateAccount
         if result == 0:
             self.db.createUser(parsedData)
             reqItem.createAccountResponse('success')
@@ -88,8 +85,6 @@ class AccountManagement:
         oldPassword = parsedData["old_password"]
         newPassword = parsedData["new_password"]
         if(self.validatePassword(username, oldPassword)):
-            # TODO remove commented out code if it is not needed
-            # if(True):
                 savedPassword = self.db.getPasswordFor(username)
                 savedPassword = savedPassword[0][0]
 
@@ -98,9 +93,6 @@ class AccountManagement:
                     reqItem.changePasswordResponse("success")
                 else:
                     reqItem.changePasswordResponse("fail")
-            # else:
-            #     print("token is not up to date")
-            #     reqItem.changePasswordResponse("fail")
         else:
             reqItem.changePasswordResponse("fail")
 

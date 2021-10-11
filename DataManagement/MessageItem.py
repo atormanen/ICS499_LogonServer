@@ -25,6 +25,7 @@ class MessageItem:
         }
         self.responseObj = json.dumps(response)
 
+
     def signinResponse(self,token, data):
         self.log_function_name()
         response = {
@@ -77,6 +78,7 @@ class MessageItem:
         response['reason'] = reason
         self.responseObj = json.dumps(response)
 
+
     def getUSerStatsResponse(self, stats):
         self.log_function_name()
         response = {
@@ -95,6 +97,7 @@ class MessageItem:
         response['score'] = stats[4]
         response['longest_win_streak'] = stats[5]
         self.responseObj = json.dumps(response)
+
 
     def getFriendsListResponse(self, friendsList, request = 'getFriendsList'):
         self.log_function_name()
@@ -145,6 +148,7 @@ class MessageItem:
         response['reason'] = reason
         self.responseObj = json.dumps(response)
 
+
     def removeFriendResponse(self, status, reason=None):
         self.log_function_name()
         response = {
@@ -177,6 +181,7 @@ class MessageItem:
         response['data'] = data
         self.responseObj = json.dumps(response)
 
+
     def mostChessGamesWonResponse(self, numberOfGames, data):
         self.log_function_name()
         response = {
@@ -188,6 +193,7 @@ class MessageItem:
         response['data'] = str(data)
         self.responseObj = json.dumps(response)
 
+
     def changePasswordResponse(self, status):
         self.log_function_name()
         response = {
@@ -197,6 +203,7 @@ class MessageItem:
         response['status'] = status
         self.responseObj = json.dumps(response)
 
+
     def saveAccountInfoByKeyResponse(self, status):
         self.log_function_name()
         response = {
@@ -205,6 +212,7 @@ class MessageItem:
         }
         response['status'] = status
         self.responseObj = json.dumps(response)
+
 
     def saveAccountInfoByKeyResponse(self, status):
         self.log_function_name()
