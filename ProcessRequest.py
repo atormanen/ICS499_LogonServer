@@ -81,6 +81,7 @@ class ProcessRequest:
             self.friendsManager.getFriendRequests(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "revokeFriendRequest":
+            # FIXME
             raise NotImplementedError('revokeFriendRequest has not been implemented yet')
             self.friendsManager.getFriendRequests(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
