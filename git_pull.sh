@@ -4,6 +4,6 @@ git stash
 git fetch
 git pull
 chown -R jar_user:jar_user *
-chmod 0664 -R *
+chmod 0554 -R *
 systemctl restart jar_logon.service
 tail -n 100 -f ./logs/logon_server.log
