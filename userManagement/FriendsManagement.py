@@ -127,6 +127,8 @@ class FriendsManagement:
 
 
     def revokeFriendRequest(self, parsedData, reqItem):
+        # FIXME
+        raise NotImplementedError('revokeFriendRequest has not been implemented yet')
         self.log_function_name()
         username = parsedData["username"]
         friendsUsername = parsedData["friends_username"]
