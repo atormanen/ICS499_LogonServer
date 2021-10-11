@@ -21,7 +21,3 @@ logger.addHandler(console_handler)
 #logger.setLevel(logging.INFO)
 #logger.setLevel(verbose_level)
 logger.setLevel(logging.DEBUG)
-
-
-logPath = '/var/jar_logon_server/ICS499_LogonServer/logs'
-fileName = 'logon_server.log'
