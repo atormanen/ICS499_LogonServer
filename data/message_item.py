@@ -226,18 +226,14 @@ class MessageItem:
             request_type = RequestType.GET_FRIENDS_LIST
 
         if friends_list:
-            friend_dict = {
-                'friend0': 'friends'
-            }
-
-            i = 0
+            new_friends_list = []
             for item in friends_list:
-                user = {'username': item[1]}
+                user = {"username": item[1]}
 
-                fried_str = 'friend' + str(i)
-                friend_dict[fried_str] = user
-                i = i + 1
-            self._set_success_response(request_type, count=len(friends_list), friends=str(friend_dict))
+                # friedStr = "friend" + str(i)
+                # friendDict[friedStr] = user
+                friends_list.append(user)
+            self._set_success_response(request_type, count=len(new_friends_list), friends=str(new_friends_list))
         else:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.FRIENDS_LIST_WAS_NOT_FOUND)
