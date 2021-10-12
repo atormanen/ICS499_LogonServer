@@ -51,7 +51,7 @@ class DB:
             cursor = mydb.cursor()
             cursor.execute(statement)
             result = cursor.fetchall()
-        except OSError as e:
+        except mysql.connector.Error as e:
             logger.error(e)
             result = None
         finally:
