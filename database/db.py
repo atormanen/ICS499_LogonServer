@@ -162,7 +162,9 @@ class DB:
         if(id == None):
             id = 1
         else:
-            id = str(eval(id) + 1)
+            if isinstance(id, str):
+                id = eval(id)
+            id = str(id + 1)
         statement = self.builder.createUser(id,parsedData)
         self.dbInsert(statement)
         result = self.dbInsert(self.builder.createUserStats(id))
