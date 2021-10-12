@@ -43,22 +43,22 @@ class ProcessRequest:
     ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
         self.log_function_name()
-        if self.reqValidation.isBadRequest(reqItem.parsedData):
-            self.responder.sendBadRequest(reqItem.connectionSocket)
+        if self.reqValidation.isBadRequest(reqItem.parsed_data):
+            self.responder.sendBadRequest(reqItem.connection_socket)
             return
 
-        parsedData = reqItem.parsedData
+        parsedData = reqItem.parsed_data
 
         if parsedData["request_type"] == "signin":
             token = self.signin.signin(parsedData, reqItem)
-            logger.debug(f"{reqItem.responseObj}")
+            logger.debug(f"{reqItem.response_obj}")
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "createAccount":
-            result = self.accountManager.createAccount(reqItem.parsedData)
+            result = self.accountManager.createAccount(reqItem.parsed_data)
             if result == True:
-                reqItem.createAccountResponse('success')
+                reqItem.set_create_account_response(was_successful=True)
             elif result == False:
-                reqItem.createAccountResponse('fail')
+                reqItem.set_create_account_response(was_successful=False)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "getUserStats":
             #call Account Management to get user stats
@@ -76,9 +76,9 @@ class ProcessRequest:
             #call FriendsManager to send friend request
             self.friendsManager.sendFriendRequest(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "validateFriendRequest":
+        elif parsedData["request_type"] == "accept_friend_request":
             #call friends management to validate friend request
-            self.friendsManager.validateFriendRequest(parsedData, reqItem)
+            self.friendsManager.accept_friend_request(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "getFriendRequests":
             #call friends management to validate friend request
@@ -90,11 +90,11 @@ class ProcessRequest:
         elif parsedData["request_type"] == "signout":
             self.signin.signout(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "getMostChessGamesWon":
-            self.leaderboard.getMostChessGamesWon(reqItem, parsedData["numberOfGames"])
+        elif parsedData["request_type"] == "get_most_chess_games_won":
+            self.leaderboard.get_most_chess_games_won(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "getLongestWinStreak":
-            self.leaderboard.getLongestWinStreak(reqItem, parsedData["numberOfGames"])
+        elif parsedData["request_type"] == "get_longest_win_streak":
+            self.leaderboard.get_longest_win_streak(reqItem, parsedData["numberOfGames"])
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "saveAccountInfoByKey":
             self.accountManager.saveAccountInfoByKey(parsedData, reqItem)
@@ -103,7 +103,7 @@ class ProcessRequest:
         #    self.accountManager.getAccountInfo(parsedData)
         #    self.responder.sendResponse(reqItem)
         else:
-            self.responder.sendBadRequest(reqItem.connectionSocket)
+            self.responder.sendBadRequest(reqItem.connection_socket)
 
 
     #The process thread will block on requestQueue.get() until something
@@ -117,5 +117,5 @@ class ProcessRequest:
                 self.proccesRequestType(requestItem)
             except Exception as e:
                 logger.error('invalid request')
-                requestItem.invalidRequest()
+                requestItem.set_invalid_request_response()
                 self.responder.sendResponse(requestItem)

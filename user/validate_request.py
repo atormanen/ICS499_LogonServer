@@ -27,11 +27,11 @@ class ValidateRequest:
             return False
         elif parsedData["request_type"] == "sendFriendRequest":
             return False
-        elif parsedData["request_type"] == "validateFriendRequest":
+        elif parsedData["request_type"] == "accept_friend_request":
             return False
         elif parsedData["request_type"] == "signout":
             return False
-        elif parsedData["request_type"] == "getMostChessGamesWon":
+        elif parsedData["request_type"] == "get_most_chess_games_won":
             return False
         elif parsedData["request_type"] == "removeFriend":
             return False
@@ -41,7 +41,7 @@ class ValidateRequest:
             return False
         elif parsedData["request_type"] == "saveAccountInfo":
             return False
-        elif parsedData["request_type"] == "getLongestWinStreak":
+        elif parsedData["request_type"] == "get_longest_win_streak":
             return False
         elif parsedData["request_type"] == "saveAccountInfoByKey":
             return False

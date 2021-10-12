@@ -56,7 +56,7 @@ class AccountManagement:
     def getUserStats(self, parsedData, reqItem):
         self.log_function_name()
         stats = self.db.getUserStats(parsedData["username"])
-        reqItem.getUSerStatsResponse(stats[0])
+        reqItem.set_get_user_stats_response(stats[0])
 
 
     def validatePassword(self, username, password):
@@ -88,7 +88,7 @@ class AccountManagement:
         #signonToken = parsedData["signon_token"]
         oldPassword = parsedData["old_password"]
         newPassword = parsedData["new_password"]
-        if(self.validatePassword(username, oldPassword)):
+        if self.validatePassword(username, oldPassword):
             # TODO remove commented out code if it is not needed
             # if(True):
                 savedPassword = self.db.getPasswordFor(username)
@@ -96,14 +96,16 @@ class AccountManagement:
 
                 if(savedPassword == oldPassword):
                     self.db.changePassword(username, newPassword)
-                    reqItem.changePasswordResponse("success")
+                    reqItem.set_change_password_response(was_successful=True)
                 else:
-                    reqItem.changePasswordResponse("fail")
+                    reqItem.set_change_password_response(was_successful=False,
+                                                         failure_reason='Provided previous password was not a match')
             # else:
             #     print("token is not up to date")
-            #     reqItem.changePasswordResponse("fail")
+            #     reqItem.set_change_password_response("fail")
         else:
-            reqItem.changePasswordResponse("fail")
+            reqItem.set_change_password_response(was_successful=False,
+                                                 failure_reason='Unable to validate password.')
 
 
     def saveAccountInfoByKey(self, parsedData, reqItem):
@@ -116,6 +118,7 @@ class AccountManagement:
         type = parsedData["type"]
         if(self.validatePassword(username, hash)):
             self.db.saveAccountInfoByKey(username, key, value);
-            reqItem.saveAccountInfoByKeyResponse("success")
+            reqItem.set_save_account_info_by_key_response(was_successful=True)
         else:
-            reqItem.saveAccountInfoByKeyResponse("fail")
+            reqItem.set_save_account_info_by_key_response(was_successful=False,
+                                                          failure_reason="Unable to validate password")

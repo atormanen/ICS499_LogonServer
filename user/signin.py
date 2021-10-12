@@ -1,11 +1,12 @@
 from global_logger import logger, VERBOSE
 import inspect
 
-#Signin will handle the mechanics of signing a user in
+# Signin will handle the mechanics of signing a user in
 from user.tokens import Tokens
 import time
-class Signin:
 
+
+class Signin:
     log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
     def __init__(self, db):
@@ -14,22 +15,22 @@ class Signin:
 
     def validatePassword(self, username, password):
         self.log_function_name()
-        if(self.db.validateUserExists(username)):
+        if (self.db.validateUserExists(username)):
             dbPassword = self.db.getPasswordFor(username)
             dbPassword = dbPassword[0][0]
-		    #compare password to given getPassword
-            if(password == dbPassword):
+            # compare password to given getPassword
+            if (password == dbPassword):
                 return True
         return False
 
-    def tokenUpToDate(self,username):
+    def tokenUpToDate(self, username):
         self.log_function_name()
         tokenExpiration = self.db.getTokenCreationTime(username)
-        #if(tokenExpiration):
+        # if(tokenExpiration):
         #    return False
         currentTime = time.time()
         timeDiference = currentTime - tokenExpiration[0][0]
-        if(timeDiference > 86400):
+        if (timeDiference > 86400):
             logger.debug(f"token expired for user {username}")
             return False
         logger.debug(f"token is valid for user {username}")
@@ -41,39 +42,37 @@ class Signin:
         password = parsedData["password"]
         data = self.getAccountInfo(parsedData)
 
-        if(self.validatePassword(username, password)):
-            if(self.tokenUpToDate(username)):
-                #Bundle the tocken into the response package
+        if (self.validatePassword(username, password)):
+            if (self.tokenUpToDate(username)):
+                # Bundle the tocken into the response package
                 signonToken = self.db.getToken(username)
                 signonToken = signonToken[0][0]
                 logger.debug(type(signonToken))
-                if(signonToken == None):
+                if (signonToken == None):
                     signonToken = self.token.getToken()
                     self.db.signin(username, signonToken, self.token.getTokenCreationTime())
-                reqItem.signinResponse(signonToken, data)
+                reqItem.set_signin_response(signonToken, data)
             else:
                 signonToken = self.token.getToken()
                 self.db.signin(username, signonToken, self.token.getTokenCreationTime())
-                reqItem.signinResponse(signonToken, data)
+                reqItem.set_signin_response(signonToken, data)
         else:
             logger.debug(f"signin failed for user {username}")
-            reqItem.signinResponseFailed('invalid password')
+            reqItem.set_signin_response_failed('invalid password')
 
-
-    def signout(self, parsedData, reqItem):
+    def signout(self, parsed_data, req_item):
         self.log_function_name()
-        username = parsedData["username"]
-        signonToken = parsedData["signon_token"]
-        savedToken = self.db.getToken(username)
+        username = parsed_data["username"]
+        signon_token = parsed_data["signon_token"]
+        saved_token = self.db.getToken(username)
 
         self.db.logout(username)
-        self.db.saveAccountInfo(username, parsedData)
-        reqItem.signoutResponse("success")
-
+        self.db.saveAccountInfo(username, parsed_data)
+        req_item.set_signout_response(was_successful=True)
 
     def getAccountInfo(self, parsedData):
         self.log_function_name()
         username = parsedData["username"]
-        #signonToken = parsedData["signonToken"]
+        # signonToken = parsedData["signonToken"]
         data = self.db.getAccountInfo(username)
         return data
