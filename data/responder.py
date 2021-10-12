@@ -20,7 +20,7 @@ class Responder:
         connectionSocket.send(msg.encode('utf-8'))
         connectionSocket.close()
 
-    def sendRequestedData(self,connectionSocket,reqestedData):
+    def sendRequestedData(self,connectionSocket,requestedData):
         self.log_function_name()
         logger.error('sendRequestedData is deprecated... do not use!')
         connectionSocket.send(requestedData.encode())

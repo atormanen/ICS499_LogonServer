@@ -1,7 +1,9 @@
 import inspect
 import time
+from typing import Optional
 
 from global_logger import logger, VERBOSE
+
 
 # TODO: change MysqlDB to db and change querry builder to mysqlQuerry
 class MysqlDB:
@@ -129,13 +131,12 @@ class MysqlDB:
         querry = "DELETE FROM friend_list WHERE user_id = " + str(userId) + " AND friend_id = " + str(friendId) + ";"
         return querry
 
-    def checkForFriendRequests(self, userId) -> str:
+    def checkForFriendRequests(self, user_id) -> str:
         self.log_function_name()
         querry = f'SELECT user.user_id, user.username FROM user \
         INNER JOIN friend_list ON user.user_id = friend_list.user_id WHERE friend_list.friend_id = {str(user_id)} \
         AND request_accepted = 0;'
         return querry
-
 
     def revokeFriendRequest(self, userId, friendId) -> str:
         self.log_function_name()
@@ -184,10 +185,10 @@ class MysqlDB:
             data["level"]) + " WHERE user.username = '" + str(username) + "';"
         return querry
 
-    def saveAccountInfoByKey(self, username, key, value) -> str:
+    def saveAccountInfoByKey(self, username, key, value) -> Optional[str]:
         self.log_function_name()
         column = self.getColumn(key)
-        if (column is None):
+        if column is None:
             return None
         querry = "UPDATE user, user_statistics SET " + str(column) + " = " + str(
             value) + " WHERE user.username = '" + str(username) + "';"

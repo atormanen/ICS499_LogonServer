@@ -51,8 +51,8 @@ class DB:
             cursor = mydb.cursor()
             cursor.execute(statement)
             result = cursor.fetchall()
-        except Error as e:
-            logger.error(error)
+        except OSError as e:
+            logger.error(e)
             result = None
         finally:
             if(mydb.is_connected()):
@@ -162,7 +162,7 @@ class DB:
         if(id == None):
             id = 1
         else:
-            id = str(id + 1)
+            id = str(eval(id) + 1)
         statement = self.builder.createUser(id,parsedData)
         self.dbInsert(statement)
         result = self.dbInsert(self.builder.createUserStats(id))
@@ -276,7 +276,7 @@ class DB:
 
     def saveAccountInfoByKey(self, username, key, value):
         self.log_function_name()
-        querry = self.builder.saveAccountInfoByKey(username, key, value);
+        querry = self.builder.saveAccountInfoByKey(username, key, value)
         if(querry is None):
             return
         else:
