@@ -54,11 +54,7 @@ class ProcessRequest:
             logger.debug(f"{reqItem.response_obj}")
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "createAccount":
-            result = self.accountManager.createAccount(reqItem.parsed_data)
-            if result == True:
-                reqItem.set_create_account_response(was_successful=True)
-            elif result == False:
-                reqItem.set_create_account_response(was_successful=False)
+            self.accountManager.createAccount(reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "getUserStats":
             #call Account Management to get user stats
@@ -82,6 +78,11 @@ class ProcessRequest:
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "getFriendRequests":
             #call friends management to validate friend request
+            self.friendsManager.getFriendRequests(parsedData, reqItem)
+            self.responder.sendResponse(reqItem)
+        elif parsedData["request_type"] == "revokeFriendRequest":
+            # FIXME
+            raise NotImplementedError('revokeFriendRequest has not been implemented yet')
             self.friendsManager.getFriendRequests(parsedData, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsedData["request_type"] == "removeFriend":
@@ -116,6 +117,7 @@ class ProcessRequest:
             try:
                 self.proccesRequestType(requestItem)
             except Exception as e:
-                logger.error('invalid request')
+                logger.error(e)
                 requestItem.set_invalid_request_response()
+                requestItem.invalidRequest()
                 self.responder.sendResponse(requestItem)

@@ -38,19 +38,18 @@ class AccountManagement:
             return False
 
 
-    def createAccount(self, parsedData):
+    def createAccount(self, reqItem):
+        parsedData = reqItem.parsedData
         self.log_function_name()
 		#check if username exists
-        #return false if username alread exists
         result = self.db.validateUsernameAvailable(parsedData["username"])
 
         #call mysqlDB to create CreateAccount
         if result == 0:
             self.db.createUser(parsedData)
-            return True
+            reqItem.createAccountResponse('success')
         else:
-            return False
-        #if account createion succussful return true otherwise False
+            reqItem.createAccountResponse('fail', 'username already exists')
 
 
     def getUserStats(self, parsedData, reqItem):

@@ -131,12 +131,18 @@ class MysqlDB:
 
     def checkForFriendRequests(self, userId) -> str:
         self.log_function_name()
-        querry = "select friend_list.user_id, user.username \
-        from user \
-        inner join friend_list \
-        on user.user_id = friend_list.user_id\
-        where friend_list.friend_id = " + str(userId) + \
-                 " AND request_accepted = 0;"
+        querry = f'SELECT user.user_id, user.username FROM user \
+        INNER JOIN friend_list ON user.user_id = friend_list.user_id WHERE friend_list.friend_id = {str(user_id)} \
+        AND request_accepted = 0;'
+        return querry
+
+
+    def revokeFriendRequest(self, userId, friendId) -> str:
+        self.log_function_name()
+        # FIXME
+        raise NotImplementedError('revokeFriendRequest has not been implemented yet')
+        querry = f'SELECT friend_list.user_id, '
+
         return querry
 
     def logout(self, username) -> str:

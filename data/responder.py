@@ -33,6 +33,7 @@ class Responder:
 
     def sendResponse(self, msgItem):
         self.log_function_name()
+        logger.debug(msgItem.responseObj)
         try:
             msgItem.connection_socket.send(msgItem.response_obj.encode())
         except ConnectionResetError as e:
