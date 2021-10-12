@@ -1,5 +1,5 @@
 #Is this class nececary? Should it be combined with signin?
-from userManagement.Tokens import Tokens
+from user.tokens import Tokens
 import time
 from global_logger import logger, VERBOSE
 import inspect

@@ -2,7 +2,7 @@ from global_logger import logger, VERBOSE
 import inspect
 
 #Signin will handle the mechanics of signing a user in
-from userManagement.Tokens import Tokens
+from user.tokens import Tokens
 import time
 class Signin:
 

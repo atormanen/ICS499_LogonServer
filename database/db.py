@@ -1,5 +1,5 @@
 import mysql.connector
-from database.MysqlDB import MysqlDB
+from database.mysql_db import MysqlDB
 from global_logger import logger, VERBOSE
 import inspect
 #from queryBuilder import queryBuilder

@@ -1,16 +1,16 @@
-from userManagement.Signin import Signin
-from userManagement.AccountManagement import AccountManagement
-from userManagement.ValidateRequest import ValidateRequest
-from database.DB import DB
+from user.signin import Signin
+from user.account_management import AccountManagement
+from user.validate_request import ValidateRequest
+from database.db import DB
 from threading import Thread
-from DataManagement.Responder import Responder
-from DataManagement.MessageItem import MessageItem
+from data.responder import Responder
+from data.message_item import MessageItem
 import os
 import json
-from userManagement.FriendsManagement import FriendsManagement
-from userManagement.Tokens import Tokens
-from DataManagement.Leaderboard import Leaderboard
-from Manifest import Manifest
+from user.friends_management import FriendsManagement
+from user.tokens import Tokens
+from data.leaderboard import Leaderboard
+from manifest import Manifest
 from global_logger import logger, VERBOSE
 import inspect
 
