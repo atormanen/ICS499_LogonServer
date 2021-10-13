@@ -229,11 +229,11 @@ class MessageItem:
             new_friends_list = []
             if friends_list:
                 for item in friends_list:
-                    user = {'username': item[1] if isinstance(item, tuple) else item['username']}
+                    user = {'username': item[1]}
 
                     # friedStr = "friend" + str(i)
                     # friendDict[friedStr] = user
-                    friends_list.append(user)
+                    new_friends_list.append(user)
             self._set_success_response(request_type, count=len(new_friends_list), friends=str(new_friends_list))
         else:
             self._set_failure_response(request_type,
