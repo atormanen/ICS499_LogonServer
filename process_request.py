@@ -119,5 +119,4 @@ class ProcessRequest:
             except Exception as e:
                 logger.error(e)
                 requestItem.set_invalid_request_response()
-                requestItem.invalidRequest()
                 self.responder.sendResponse(requestItem)
