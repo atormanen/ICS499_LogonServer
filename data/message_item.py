@@ -1,6 +1,6 @@
 """This module holds the MessageItem class used to store incoming and outgoing messages"""
 import json
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 from global_logger import logger, VERBOSE
 import inspect
@@ -32,7 +32,7 @@ class RequestType:
     SIGNIN = 'signin'
 
     @classmethod
-    def get_items(cls) -> list[str]:
+    def get_items(cls) -> List[str]:
         """Gets a list of all items"""
         return [RequestType.GET_ACCOUNT_INFO,
                 RequestType.SAVE_ACCOUNT_INFO_BY_KEY,
@@ -56,7 +56,7 @@ class Status:
     SUCCESS = 'success'
 
     @classmethod
-    def get_items(cls) -> list[str]:
+    def get_items(cls) -> List[str]:
         """Gets a list of all items"""
         return [Status.FAIL, Status.SUCCESS]
 
@@ -68,7 +68,7 @@ class FailureReasons:
     USER_STATS_COULD_NOT_BE_FOUND = 'User stats could not be found'
 
     @classmethod
-    def get_items(cls) -> list[str]:
+    def get_items(cls) -> List[str]:
         """Gets a list of all items"""
         return [FailureReasons.UNSPECIFIED,
                 FailureReasons.FRIENDS_LIST_WAS_NOT_FOUND,
