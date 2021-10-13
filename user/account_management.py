@@ -40,21 +40,21 @@ class AccountManagement:
             return False
 
     def createAccount(self, reqItem):
-        parsedData = reqItem.parsedData
+        parsed_data = reqItem.parsed_data
         self.log_function_name()
         # check if username exists
-        result = self.db.validateUsernameAvailable(parsedData["username"])
+        result = self.db.validateUsernameAvailable(parsed_data["username"])
 
         # call mysqlDB to create CreateAccount
         if result == 0:
-            self.db.createUser(parsedData)
+            self.db.createUser(parsed_data)
             reqItem.createAccountResponse('success')
         else:
             reqItem.createAccountResponse('fail', 'username already exists')
 
-    def getUserStats(self, parsedData, reqItem):
+    def getUserStats(self, parsed_data, reqItem):
         self.log_function_name()
-        stats = self.db.getUserStats(parsedData["username"])
+        stats = self.db.getUserStats(parsed_data["username"])
         reqItem.set_get_user_stats_response(stats[0])
 
     def validatePassword(self, username, password):
@@ -78,12 +78,12 @@ class AccountManagement:
             return False
         return True
 
-    def changePassword(self, parsedData, reqItem):
+    def changePassword(self, parsed_data, reqItem):
         self.log_function_name()
-        username = parsedData["username"]
-        # signonToken = parsedData["signon_token"]
-        oldPassword = parsedData["old_password"]
-        newPassword = parsedData["new_password"]
+        username = parsed_data["username"]
+        # signonToken = parsed_data["signon_token"]
+        oldPassword = parsed_data["old_password"]
+        newPassword = parsed_data["new_password"]
         if self.validatePassword(username, oldPassword):
             # TODO remove commented out code if it is not needed
             # if(True):
@@ -103,14 +103,14 @@ class AccountManagement:
             reqItem.set_change_password_response(was_successful=False,
                                                  failure_reason='Unable to validate password.')
 
-    def saveAccountInfoByKey(self, parsedData, reqItem):
+    def saveAccountInfoByKey(self, parsed_data, reqItem):
         self.log_function_name()
-        username = parsedData["username"]
-        signonToken = parsedData["signonToken"]
-        hash = parsedData["hash"]
-        key = parsedData["key"]
-        value = parsedData["value"]
-        type = parsedData["type"]
+        username = parsed_data["username"]
+        signonToken = parsed_data["signonToken"]
+        hash = parsed_data["hash"]
+        key = parsed_data["key"]
+        value = parsed_data["value"]
+        type = parsed_data["type"]
         if (self.validatePassword(username, hash)):
             self.db.saveAccountInfoByKey(username, key, value)
             reqItem.set_save_account_info_by_key_response(was_successful=True)
