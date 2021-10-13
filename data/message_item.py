@@ -229,6 +229,7 @@ class MessageItem:
             new_friends_list = []
             if friends_list:
                 for item in friends_list:
+                    logger.debug(f'item: {item}')
                     user = {"username": item[1]}
 
                     # friedStr = "friend" + str(i)
