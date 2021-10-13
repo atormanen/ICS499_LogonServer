@@ -47,61 +47,61 @@ class ProcessRequest:
             self.responder.sendBadRequest(reqItem.connection_socket)
             return
 
-        parsedData = reqItem.parsed_data
+        parsed_data = reqItem.parsed_data
 
-        if parsedData["request_type"] == "signin":
-            token = self.signin.signin(parsedData, reqItem)
+        if parsed_data["request_type"] == "signin":
+            token = self.signin.signin(parsed_data, reqItem)
             logger.debug(f"{reqItem.response_obj}")
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "createAccount":
+        elif parsed_data["request_type"] == "createAccount":
             self.accountManager.createAccount(reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "getUserStats":
+        elif parsed_data["request_type"] == "getUserStats":
             #call Account Management to get user stats
-            self.accountManager.getUserStats(parsedData, reqItem)
+            self.accountManager.getUserStats(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "changePassword":
+        elif parsed_data["request_type"] == "changePassword":
             #call Account Management to get user stats
-            self.accountManager.changePassword(parsedData, reqItem)
+            self.accountManager.changePassword(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "getFriendsList":
+        elif parsed_data["request_type"] == "getFriendsList":
             #call FriendsManager to retrieve friends list
-            self.friendsManager.getFriendsList(parsedData, reqItem)
+            self.friendsManager.getFriendsList(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "sendFriendRequest":
+        elif parsed_data["request_type"] == "sendFriendRequest":
             #call FriendsManager to send friend request
-            self.friendsManager.sendFriendRequest(parsedData, reqItem)
+            self.friendsManager.sendFriendRequest(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "accept_friend_request":
+        elif parsed_data["request_type"] == "accept_friend_request":
             #call friends management to validate friend request
-            self.friendsManager.accept_friend_request(parsedData, reqItem)
+            self.friendsManager.accept_friend_request(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "getFriendRequests":
+        elif parsed_data["request_type"] == "getFriendRequests":
             #call friends management to validate friend request
-            self.friendsManager.getFriendRequests(parsedData, reqItem)
+            self.friendsManager.getFriendRequests(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "revokeFriendRequest":
+        elif parsed_data["request_type"] == "revokeFriendRequest":
             # FIXME
             raise NotImplementedError('revokeFriendRequest has not been implemented yet')
-            self.friendsManager.getFriendRequests(parsedData, reqItem)
+            self.friendsManager.getFriendRequests(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "removeFriend":
-            self.friendsManager.removeFriend(parsedData, reqItem)
+        elif parsed_data["request_type"] == "removeFriend":
+            self.friendsManager.removeFriend(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "signout":
-            self.signin.signout(parsedData, reqItem)
+        elif parsed_data["request_type"] == "signout":
+            self.signin.signout(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "get_most_chess_games_won":
-            self.leaderboard.get_most_chess_games_won(reqItem, parsedData["numberOfGames"])
+        elif parsed_data["request_type"] == "get_most_chess_games_won":
+            self.leaderboard.get_most_chess_games_won(reqItem, parsed_data["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "get_longest_win_streak":
-            self.leaderboard.get_longest_win_streak(reqItem, parsedData["numberOfGames"])
+        elif parsed_data["request_type"] == "get_longest_win_streak":
+            self.leaderboard.get_longest_win_streak(reqItem, parsed_data["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        elif parsedData["request_type"] == "saveAccountInfoByKey":
-            self.accountManager.saveAccountInfoByKey(parsedData, reqItem)
+        elif parsed_data["request_type"] == "saveAccountInfoByKey":
+            self.accountManager.saveAccountInfoByKey(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        # elif parsedData["request_type"] == "getAccountInfo":
-        #    self.accountManager.getAccountInfo(parsedData)
+        # elif parsed_data["request_type"] == "getAccountInfo":
+        #    self.accountManager.getAccountInfo(parsed_data)
         #    self.responder.sendResponse(reqItem)
         else:
             self.responder.sendBadRequest(reqItem.connection_socket)
@@ -113,7 +113,7 @@ class ProcessRequest:
         self.log_function_name()
         while True:
             requestItem = self.requestQueue.get()
-            #Decrypt parsedData
+            #Decrypt parsed_data
             try:
                 self.proccesRequestType(requestItem)
             except Exception as e:

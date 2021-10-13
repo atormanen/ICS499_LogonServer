@@ -36,11 +36,11 @@ class Signin:
         logger.debug(f"token is valid for user {username}")
         return True
 
-    def signin(self, parsedData, reqItem):
+    def signin(self, parsed_data, reqItem):
         self.log_function_name()
-        username = parsedData["username"]
-        password = parsedData["password"]
-        data = self.getAccountInfo(parsedData)
+        username = parsed_data["username"]
+        password = parsed_data["password"]
+        data = self.getAccountInfo(parsed_data)
 
         if (self.validatePassword(username, password)):
             if (self.tokenUpToDate(username)):
@@ -74,9 +74,9 @@ class Signin:
         self.db.saveAccountInfo(username, parsed_data)
         req_item.set_signout_response(was_successful=True)
 
-    def getAccountInfo(self, parsedData):
+    def getAccountInfo(self, parsed_data):
         self.log_function_name()
-        username = parsedData["username"]
-        # signonToken = parsedData["signonToken"]
+        username = parsed_data["username"]
+        # signonToken = parsed_data["signonToken"]
         data = self.db.getAccountInfo(username)
         return data

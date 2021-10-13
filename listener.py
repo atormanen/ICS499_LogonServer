@@ -93,13 +93,13 @@ class Listener:
             return
 
         try:
-            parsedData = json.loads(full_msg)
+            parsed_data = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
-            logger.error(f"unable to load message into json: {parsedData}")
+            logger.error(f"unable to load message into json: {parsed_data}")
             self.sendBadRequest(connectionSocket)
             return
-        msgItem = MessageItem(connectionSocket,parsedData)
-        logger.debug(f"message item: {parsedData}")
+        msgItem = MessageItem(connectionSocket,parsed_data)
+        logger.debug(f"message item: {parsed_data}")
         self.requestQueue.put(msgItem)
 
 

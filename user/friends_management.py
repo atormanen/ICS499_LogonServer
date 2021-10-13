@@ -31,15 +31,15 @@ class FriendsManagement:
             return True
         return False
 
-    def getFriendsList(self, parsedData, reqItem):
+    def getFriendsList(self, parsed_data, reqItem):
         self.log_function_name()
         # connect to mysqldb to get FriendsList
-        friendsList = self.db.getFriendsList(parsedData["username"])
+        friendsList = self.db.getFriendsList(parsed_data["username"])
         reqItem.set_get_friends_list_response(friendsList)
 
-    def getFriendRequests(self, parsedData, reqItem):
+    def getFriendRequests(self, parsed_data, reqItem):
         self.log_function_name()
-        friendList = self.db.checkForFriendRequests(parsedData["username"])
+        friendList = self.db.checkForFriendRequests(parsed_data["username"])
         reqItem.set_get_friend_requests_response(friendList)
 
     def getUserStats(self, username):
@@ -49,11 +49,11 @@ class FriendsManagement:
             return stats
         return False
 
-    def sendFriendRequest(self, parsedData, reqItem):
+    def sendFriendRequest(self, parsed_data, reqItem):
         self.log_function_name()
         # send a freind req
-        username = parsedData["username"]
-        friendsUsername = parsedData["friends_username"]
+        username = parsed_data["username"]
+        friendsUsername = parsed_data["friends_username"]
 
         if (self.validateUsername(username)):
             if (self.validateUsername(friendsUsername)):
@@ -73,10 +73,10 @@ class FriendsManagement:
                                                          failure_reason="The requester's request does not exist.")
                 # reqItem.set_accept_friend_request_response(result)
 
-    def accept_friend_request(self, parsedData, reqItem):
+    def accept_friend_request(self, parsed_data, reqItem):
         self.log_function_name()
-        username = parsedData["username"]
-        friends_username = parsedData["friends_username"]
+        username = parsed_data["username"]
+        friends_username = parsed_data["friends_username"]
         was_successful = False
         if self.validateUsername(username):
             if self.validateUsername(friends_username):
@@ -87,10 +87,10 @@ class FriendsManagement:
         self.log_function_name()
         return False
 
-    def removeFriend(self, parsedData, reqItem):
+    def removeFriend(self, parsed_data, reqItem):
         self.log_function_name()
-        username = parsedData["username"]
-        friends_username = parsedData["friends_username"]
+        username = parsed_data["username"]
+        friends_username = parsed_data["friends_username"]
 
         if self.validateUsername(username) == False:
             reqItem.set_remove_friend_response(was_successful=False,

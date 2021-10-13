@@ -155,7 +155,7 @@ class DB:
         intResult = result[0][0]
         return intResult
 
-    def createUser(self, parsedData):
+    def createUser(self, parsed_data):
         self.log_function_name()
         id = self.dbFetch(self.builder.getLastUserId())
         id = id[0][0]
@@ -165,7 +165,7 @@ class DB:
             if isinstance(id, str):
                 id = eval(id)
             id = str(id + 1)
-        statement = self.builder.createUser(id,parsedData)
+        statement = self.builder.createUser(id,parsed_data)
         self.dbInsert(statement)
         result = self.dbInsert(self.builder.createUserStats(id))
         return result

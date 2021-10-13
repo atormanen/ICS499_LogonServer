@@ -11,42 +11,42 @@ class ValidateRequest:
     def __init__(self):
         self.num = 0
 
-    def isBadRequest(self,parsedData):
+    def isBadRequest(self,parsed_data):
         self.log_function_name()
-        if parsedData["request_type"] == "signin":
+        if parsed_data["request_type"] == "signin":
             #self.sendBadRequest(connectionSocket)
             return False
-        elif parsedData["request_type"] == "createAccount":
+        elif parsed_data["request_type"] == "createAccount":
             #self.sendBadRequest(connectionSocket)
             return False
-        elif parsedData["request_type"] == "changePassword":
+        elif parsed_data["request_type"] == "changePassword":
             return False
-        elif parsedData["request_type"] == "getUserStats":
+        elif parsed_data["request_type"] == "getUserStats":
             return False
-        elif parsedData["request_type"] == "getFriendsList":
+        elif parsed_data["request_type"] == "getFriendsList":
             return False
-        elif parsedData["request_type"] == "sendFriendRequest":
+        elif parsed_data["request_type"] == "sendFriendRequest":
             return False
-        elif parsedData["request_type"] == "accept_friend_request":
+        elif parsed_data["request_type"] == "accept_friend_request":
             return False
-        elif parsedData["request_type"] == "signout":
+        elif parsed_data["request_type"] == "signout":
             return False
-        elif parsedData["request_type"] == "get_most_chess_games_won":
+        elif parsed_data["request_type"] == "get_most_chess_games_won":
             return False
-        elif parsedData["request_type"] == "removeFriend":
+        elif parsed_data["request_type"] == "removeFriend":
             return False
-        elif parsedData["request_type"] == "getFriendRequests":
+        elif parsed_data["request_type"] == "getFriendRequests":
             return False
-        elif parsedData["request_type"] == "getAccountInfo":
+        elif parsed_data["request_type"] == "getAccountInfo":
             return False
-        elif parsedData["request_type"] == "saveAccountInfo":
+        elif parsed_data["request_type"] == "saveAccountInfo":
             return False
-        elif parsedData["request_type"] == "get_longest_win_streak":
+        elif parsed_data["request_type"] == "get_longest_win_streak":
             return False
-        elif parsedData["request_type"] == "saveAccountInfoByKey":
+        elif parsed_data["request_type"] == "saveAccountInfoByKey":
             return False
-        elif parsedData["requestType"] == "saveAccountInfoByKey":
+        elif parsed_data["requestType"] == "saveAccountInfoByKey":
             return False
         else:
-            #self.requestQueue.put(RequestItem(connectionSocket,parsedData))
+            #self.requestQueue.put(RequestItem(connectionSocket,parsed_data))
             return True

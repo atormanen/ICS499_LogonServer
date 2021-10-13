@@ -46,15 +46,15 @@ class MysqlDB:
         self.log_function_name()
         return "SELECT MAX(user_id) FROM user;"
 
-    def createUser(self, id, parsedData) -> str:
+    def createUser(self, id, parsed_data) -> str:
         self.log_function_name()
         now = time.strftime('%Y-%m-%d %H-%M-%S')
         id = str(id)
-        username = parsedData["username"]
-        fname = parsedData["first_name"]
-        lname = parsedData["last_name"]
-        email = parsedData["email"]
-        password = parsedData["password"]
+        username = parsed_data["username"]
+        fname = parsed_data["first_name"]
+        lname = parsed_data["last_name"]
+        email = parsed_data["email"]
+        password = parsed_data["password"]
         sql_staement = f"INSERT INTO user VALUES({id},'{username}','{fname}','{lname}','{email}',0,'{password}',null,'{now}',1,1,1,1,False,True,1);"
         return sql_staement
 
