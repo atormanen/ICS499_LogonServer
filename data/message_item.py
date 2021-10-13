@@ -227,16 +227,17 @@ class MessageItem:
 
         if(failure_reason is None):
             new_friends_list = []
-            for item in friends_list:
-                user = {"username": item[1]}
+            if friends_list:
+                for item in friends_list:
+                    user = {"username": item[1]}
 
-                # friedStr = "friend" + str(i)
-                # friendDict[friedStr] = user
-                friends_list.append(user)
+                    # friedStr = "friend" + str(i)
+                    # friendDict[friedStr] = user
+                    friends_list.append(user)
             self._set_success_response(request_type, count=len(new_friends_list), friends=str(new_friends_list))
         else:
             self._set_failure_response(request_type,
-                                       failure_reason if failure_reason else FailureReasons.FRIENDS_LIST_WAS_NOT_FOUND)
+                                       failure_reason)
 
     def set_get_friend_requests_response(self, friends_list: Optional[list] = None,
                                          failure_reason: Optional[str] = None) -> None:
