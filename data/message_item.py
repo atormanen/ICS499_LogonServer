@@ -229,7 +229,7 @@ class MessageItem:
             new_friends_list = []
             if friends_list:
                 for item in friends_list:
-                    user = {'username': item['username']}
+                    user = {'username': item[1] if isinstance(item, tuple) else item['username']}
 
                     # friedStr = "friend" + str(i)
                     # friendDict[friedStr] = user
