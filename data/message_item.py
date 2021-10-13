@@ -225,7 +225,7 @@ class MessageItem:
         if not request_type:
             request_type = RequestType.GET_FRIENDS_LIST
 
-        if friends_list:
+        if(failure_reason is None):
             new_friends_list = []
             for item in friends_list:
                 user = {"username": item[1]}
