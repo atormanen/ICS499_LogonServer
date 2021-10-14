@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from global_logger import logger, VERBOSE
 from listener import Listener
 from database.db import DB
