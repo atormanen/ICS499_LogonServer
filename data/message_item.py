@@ -23,7 +23,7 @@ class RequestType:
     GET_LONGEST_WIN_STREAK = 'get_longest_win_streak'
     SIGNOUT = 'signout'
     REMOVE_FRIEND = 'removeFriend'
-    ACCEPT_FRIEND_REQUEST = 'accept_friend_request'
+    ACCEPT_FRIEND_REQUEST = 'acceptFriendRequest'
     SEND_FRIEND_REQUEST = 'sendFriendRequest'
     GET_FRIEND_REQUESTS = 'getFriendRequests'
     GET_FRIENDS_LIST = 'getFriendsList'
