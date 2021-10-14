@@ -16,6 +16,7 @@ import inspect
 
 class RequestType:
     """Constants representing request types"""
+    REVOKE_FRIEND_REQUEST = 'revokeFriendRequest'
     GET_ACCOUNT_INFO = 'getAccountInfo'
     SAVE_ACCOUNT_INFO_BY_KEY = 'saveAccountInfoByKey'
     CHANGE_PASSWORD = 'changePassword'
@@ -34,7 +35,8 @@ class RequestType:
     @classmethod
     def get_items(cls) -> List[str]:
         """Gets a list of all items"""
-        return [RequestType.GET_ACCOUNT_INFO,
+        return [RequestType.REVOKE_FRIEND_REQUEST,
+                RequestType.GET_ACCOUNT_INFO,
                 RequestType.SAVE_ACCOUNT_INFO_BY_KEY,
                 RequestType.CHANGE_PASSWORD,
                 RequestType.GET_MOST_CHESS_GAMES_WON,

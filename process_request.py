@@ -12,6 +12,7 @@ from user.tokens import Tokens
 from data.leaderboard import Leaderboard
 from manifest import Manifest
 from global_logger import logger, VERBOSE
+from data.message_item import RequestType
 import inspect
 
 class ProcessRequest:
@@ -49,35 +50,35 @@ class ProcessRequest:
 
         parsed_data = reqItem.parsed_data
 
-        if parsed_data["request_type"] == "signin":
+        if parsed_data["request_type"] == RequestType.SIGNIN:
             token = self.signin.signin(parsed_data, reqItem)
             logger.debug(f"{reqItem.response_obj}")
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "createAccount":
+        elif parsed_data["request_type"] == RequestType.CREATE_ACCOUNT:
             self.accountManager.createAccount(reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "getUserStats":
+        elif parsed_data["request_type"] == RequestType.GET_USER_STATS:
             #call Account Management to get user stats
             self.accountManager.getUserStats(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "changePassword":
+        elif parsed_data["request_type"] == RequestType.CHANGE_PASSWORD:
             #call Account Management to get user stats
             self.accountManager.changePassword(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "getFriendsList":
+        elif parsed_data["request_type"] == RequestType.GET_FRIENDS_LIST:
             #call FriendsManager to retrieve friends list
             self.friendsManager.getFriendsList(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "sendFriendRequest":
+        elif parsed_data["request_type"] == RequestType.SEND_FRIEND_REQUEST:
             #call FriendsManager to send friend request
             self.friendsManager.sendFriendRequest(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "accept_friend_request":
-            #call friends management to validate friend request
+        elif parsed_data["request_type"] == RequestType.ACCEPT_FRIEND_REQUEST:
+            #call friends management to accept friend request
             self.friendsManager.accept_friend_request(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "getFriendRequests":
-            #call friends management to validate friend request
+        elif parsed_data["request_type"] == RequestType.GET_FRIEND_REQUESTS:
+            #call friends management to get friend request
             self.friendsManager.getFriendRequests(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsed_data["request_type"] == "revokeFriendRequest":
