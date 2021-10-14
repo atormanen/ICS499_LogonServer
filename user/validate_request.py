@@ -6,7 +6,7 @@ import inspect
 #Validate request will check the initial variable to see what kind of request
 #type it is.
 ## TODO: Check the entire json object for apropriate fields and not just the req type
-class ValidateRequest:
+class RequestValidator:
 
     log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 

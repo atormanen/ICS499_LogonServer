@@ -1,6 +1,6 @@
 from user.signin import Signin
 from user.account_management import AccountManagement
-from user.validate_request import ValidateRequest
+from user.validate_request import RequestValidator
 from database.db import DB
 from threading import Thread
 from data.responder import Responder
@@ -37,7 +37,7 @@ class ProcessRequest:
         self.signin = Signin(self.database)
         self.accountManager = AccountManagement(self.database)
         self.friendsManager = FriendsManagement(self.database)
-        self.reqValidation = ValidateRequest()
+        self.reqValidation = RequestValidator()
         self.responder = Responder()
         self.leaderboard = Leaderboard(self.database)
 
