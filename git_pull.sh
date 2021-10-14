@@ -4,6 +4,8 @@ git stash
 git fetch
 git pull
 chown -R jar_user:jar_user *
+chmod +x ./git_pull.sh
+chmod +x ./controller.py
 chmod 0554 -R *
 chmod 0664 ./logs/logon_server.log
 chmod 0440 ./params.json
