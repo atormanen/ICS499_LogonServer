@@ -12,8 +12,11 @@ class ValidateRequest:
 
     def __init__(self):
         self.num = 0
-    def isBadRequst(self,parsed_data):
+
+    def is_bad_request(self, parsed_data):
         self.log_function_name()
+
+        # If any check returns True, the request is considered bad
         requirement_check_list = [
             # valid request type
             lambda: parsed_data['request_type'] not in RequestType.get_items()
