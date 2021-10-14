@@ -81,24 +81,24 @@ class ProcessRequest:
             #call friends management to get friend request
             self.friendsManager.getFriendRequests(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "revokeFriendRequest":
+        elif parsed_data["request_type"] == RequestType.REVOKE_FRIEND_REQUEST:
             # FIXME
             raise NotImplementedError('revokeFriendRequest has not been implemented yet')
             self.friendsManager.getFriendRequests(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "removeFriend":
+        elif parsed_data["request_type"] == RequestType.REVOKE_FRIEND_REQUEST:
             self.friendsManager.removeFriend(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "signout":
+        elif parsed_data["request_type"] == RequestType.SIGNOUT:
             self.signin.signout(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "get_most_chess_games_won":
+        elif parsed_data["request_type"] == RequestType.GET_MOST_CHESS_GAMES_WON:
             self.leaderboard.get_most_chess_games_won(reqItem, parsed_data["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "get_longest_win_streak":
+        elif parsed_data["request_type"] == RequestType.GET_LONGEST_WIN_STREAK:
             self.leaderboard.get_longest_win_streak(reqItem, parsed_data["numberOfGames"])
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == "saveAccountInfoByKey":
+        elif parsed_data["request_type"] == RequestType.SAVE_ACCOUNT_INFO_BY_KEY:
             self.accountManager.saveAccountInfoByKey(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
         # elif parsed_data["request_type"] == "getAccountInfo":
