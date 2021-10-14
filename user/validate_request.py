@@ -1,5 +1,7 @@
+from data.message_item import RequestType
 from global_logger import logger, VERBOSE
 import inspect
+
 
 #Validate request will check the initial variable to see what kind of request
 #type it is.
@@ -10,43 +12,13 @@ class ValidateRequest:
 
     def __init__(self):
         self.num = 0
-
-    def isBadRequest(self,parsed_data):
+    def isBadRequst(self,parsed_data):
         self.log_function_name()
-        if parsed_data["request_type"] == "signin":
-            #self.sendBadRequest(connectionSocket)
-            return False
-        elif parsed_data["request_type"] == "createAccount":
-            #self.sendBadRequest(connectionSocket)
-            return False
-        elif parsed_data["request_type"] == "changePassword":
-            return False
-        elif parsed_data["request_type"] == "getUserStats":
-            return False
-        elif parsed_data["request_type"] == "getFriendsList":
-            return False
-        elif parsed_data["request_type"] == "sendFriendRequest":
-            return False
-        elif parsed_data["request_type"] == "accept_friend_request":
-            return False
-        elif parsed_data["request_type"] == "signout":
-            return False
-        elif parsed_data["request_type"] == "get_most_chess_games_won":
-            return False
-        elif parsed_data["request_type"] == "removeFriend":
-            return False
-        elif parsed_data["request_type"] == "getFriendRequests":
-            return False
-        elif parsed_data["request_type"] == "getAccountInfo":
-            return False
-        elif parsed_data["request_type"] == "saveAccountInfo":
-            return False
-        elif parsed_data["request_type"] == "get_longest_win_streak":
-            return False
-        elif parsed_data["request_type"] == "saveAccountInfoByKey":
-            return False
-        elif parsed_data["requestType"] == "saveAccountInfoByKey":
-            return False
-        else:
-            #self.requestQueue.put(RequestItem(connectionSocket,parsed_data))
-            return True
+        requirement_check_list = [
+            # valid request type
+            lambda: parsed_data['request_type'] not in RequestType.get_items()
+        ]
+        for requirement_check in requirement_check_list:
+            if requirement_check():
+                return True
+        return False
