@@ -44,7 +44,7 @@ class ProcessRequest:
     ## TODO: find a better way to process these requests types.
     def proccesRequestType(self, reqItem):
         self.log_function_name()
-        if self.reqValidation.isBadRequest(reqItem.parsed_data):
+        if self.reqValidation.is_bad_request(reqItem.parsed_data):
             self.responder.sendBadRequest(reqItem.connection_socket)
             return
 
