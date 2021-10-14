@@ -4,10 +4,10 @@ import sys
 #from _thread import *
 from threading import Thread
 import json
-from ProcessRequest import *
+from process_request import *
 from multiprocessing import Process
-from DataManagement.MessageItem import MessageItem
-from Manifest import Manifest
+from data.message_item import MessageItem
+from manifest import Manifest
 import inspect
 
 #Class listener is used to listen on a servers ip address and port portNumber
@@ -93,13 +93,13 @@ class Listener:
             return
 
         try:
-            parsedData = json.loads(full_msg)
+            parsed_data = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
-            logger.error(f"unable to load message into json: {parsedData}")
+            logger.error(f"unable to load message into json: {parsed_data}")
             self.sendBadRequest(connectionSocket)
             return
-        msgItem = MessageItem(connectionSocket,parsedData)
-        logger.debug(f"message item: {parsedData}")
+        msgItem = MessageItem(connectionSocket,parsed_data)
+        logger.debug(f"message item: {parsed_data}")
         self.requestQueue.put(msgItem)
 
 

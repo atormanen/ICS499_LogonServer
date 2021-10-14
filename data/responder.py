@@ -20,7 +20,7 @@ class Responder:
         connectionSocket.send(msg.encode('utf-8'))
         connectionSocket.close()
 
-    def sendRequestedData(self,connectionSocket,reqestedData):
+    def sendRequestedData(self,connectionSocket,requestedData):
         self.log_function_name()
         logger.error('sendRequestedData is deprecated... do not use!')
         connectionSocket.send(requestedData.encode())
@@ -33,8 +33,8 @@ class Responder:
 
     def sendResponse(self, msgItem):
         self.log_function_name()
-        logger.debug(msgItem.responseObj)
+        logger.debug(msgItem.response_obj)
         try:
-            msgItem.connectionSocket.send(msgItem.responseObj.encode())
+            msgItem.connection_socket.send(msgItem.response_obj.encode())
         except ConnectionResetError as e:
             logger.error(e)

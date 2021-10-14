@@ -1,5 +1,5 @@
 import mysql.connector
-from database.MysqlDB import MysqlDB
+from database.mysql_db import MysqlDB
 from global_logger import logger, VERBOSE
 import inspect
 #from queryBuilder import queryBuilder
@@ -51,8 +51,8 @@ class DB:
             cursor = mydb.cursor()
             cursor.execute(statement)
             result = cursor.fetchall()
-        except Error as e:
-            logger.error(error)
+        except mysql.connector.Error as e:
+            logger.error(e)
             result = None
         finally:
             if(mydb.is_connected()):
@@ -61,8 +61,13 @@ class DB:
             logger.debug(f"result: {result}")
             return result
 
-    def dbUpdate(self, statement):
-        logger.debug(f"func dbUpdate -> statement: {statement}")
+    def db_update(self, statement) -> bool:
+        """Updates the database
+
+        :param statement: the query that will be executed
+        :return: true if successful, else false
+        """
+        logger.debug(f"func db_update -> statement: {statement}")
         try:
             mydb = mysql.connector.connect(user=self.user, password=self.password,
                                   host=self.writer,
@@ -115,7 +120,7 @@ class DB:
 
     def changePassword(self, username, password):
         self.log_function_name()
-        status = self.dbUpdate(self.builder.changePassword(username, password))
+        status = self.db_update(self.builder.changePassword(username, password))
         return status
 
     #Returns 1\true if exits, false\0 if not
@@ -150,22 +155,24 @@ class DB:
         intResult = result[0][0]
         return intResult
 
-    def createUser(self, parsedData):
+    def createUser(self, parsed_data):
         self.log_function_name()
         id = self.dbFetch(self.builder.getLastUserId())
         id = id[0][0]
         if(id == None):
             id = 1
         else:
+            if isinstance(id, str):
+                id = eval(id)
             id = str(id + 1)
-        statement = self.builder.createUser(id,parsedData)
+        statement = self.builder.createUser(id,parsed_data)
         self.dbInsert(statement)
         result = self.dbInsert(self.builder.createUserStats(id))
         return result
 
     def signin(self, username, token, tokenCreationTime):
         self.log_function_name()
-        result = self.dbUpdate(self.builder.signin(username,token,tokenCreationTime))
+        result = self.db_update(self.builder.signin(username, token, tokenCreationTime))
         return result
 
     def getToken(self,username):
@@ -219,8 +226,8 @@ class DB:
             return False
         friendsId = friendsId[0][0]
         userId = userId[0][0]
-        result = self.dbUpdate(self.builder.acceptFriendRequest(userId, friendsId, acceptedRequest))
-        self.dbUpdate(self.builder.addFriend(userId, friendsId))
+        result = self.db_update(self.builder.acceptFriendRequest(userId, friendsId, acceptedRequest))
+        self.db_update(self.builder.addFriend(userId, friendsId))
         return result
 
     def removeFriend(self, username, friendsUsername):
@@ -248,7 +255,7 @@ class DB:
 
     def logout(self, username):
         self.log_function_name()
-        self.dbUpdate(self.builder.logout(username))
+        self.db_update(self.builder.logout(username))
 
     def getMostChessGamesWon(self, numberOfGames):
         self.log_function_name()
@@ -267,12 +274,12 @@ class DB:
 
     def saveAccountInfo(self, username, data):
         self.log_function_name()
-        self.dbUpdate(self.builder.saveAccountInfo(username, data))
+        self.db_update(self.builder.saveAccountInfo(username, data))
 
     def saveAccountInfoByKey(self, username, key, value):
         self.log_function_name()
-        querry = self.builder.saveAccountInfoByKey(username, key, value);
+        querry = self.builder.saveAccountInfoByKey(username, key, value)
         if(querry is None):
             return
         else:
-            self.dbUpdate(querry)
+            self.db_update(querry)

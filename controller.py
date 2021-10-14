@@ -1,13 +1,14 @@
+#!/usr/bin/env python3
 from global_logger import logger, VERBOSE
-from Listener import Listener
-from database.DB import DB
+from listener import Listener
+from database.db import DB
 from multiprocessing import Process
 import multiprocessing
 from threading import Thread
-from ProcessRequest import ProcessRequest
+from process_request import ProcessRequest
 import os
 import queue
-from Manifest import Manifest
+from manifest import Manifest
 import inspect
 
 #Controller will initilaize all the objects and processes needed

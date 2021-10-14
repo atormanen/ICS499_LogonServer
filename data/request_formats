@@ -1,8 +1,8 @@
 Format for json requests
 requestTypes: signin, createAccount, getUserStats, sendFriendRequest,
-  validateFriendRequest
+  accept_friend_request
 
-User must be signed in for getUserStats, sendFriendRequest,and validateFriendRequest
+User must be signed in for getUserStats, sendFriendRequest,and accept_friend_request
 ********************************************************
 signin
 {
@@ -64,7 +64,7 @@ changePassword
   "new_password"
 }
 
-changePasswordResponse
+set_change_password_response
 {
   "request_type":"changePassword",
   "status":"success"
@@ -86,27 +86,27 @@ getFriendsList
   "username":"testaccount1344",
 }
 
-getFriendsListResponse
+set_get_friends_list_response
 {
   "request_type":"getFriendsList",
   "status":"succus"
 }
 
-getLongestWinStreak
+get_longest_win_streak
 {
-  "request_type":"getLongestWinStreak",
+  "request_type":"get_longest_win_streak",
   "number_of_games":""
 }
 
-getMostChessGamesWon
+get_most_chess_games_won
 {
-  "request_type":"getMostChessGamesWon",
+  "request_type":"get_most_chess_games_won",
   "number_of_games":""
 }
 
-getMostChessGamesWon\getLongestWinStreak response
+get_most_chess_games_won\get_longest_win_streak response
 {
-  "request_type":"getMostChessGamesWon",
+  "request_type":"get_most_chess_games_won",
   "number_of_games":"",
   "data":""
 }
@@ -128,14 +128,14 @@ freind request sendRequestedData
 ********************************************************
 acceptFriendRequest
 {
-  "request_type":"validateFriendRequest",
+  "request_type":"accept_friend_request",
   "username":"testaccount1344",
   "signon_token":"asdfasdgadfg",
   "friends_username":"freindsname"
 }
 
 {
-  "request_type":"validateFriendRequest",
+  "request_type":"accept_friend_request",
   "status":"succus"
 }
 
