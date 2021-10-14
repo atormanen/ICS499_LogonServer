@@ -86,7 +86,7 @@ class ProcessRequest:
             raise NotImplementedError('revokeFriendRequest has not been implemented yet')
             self.friendsManager.getFriendRequests(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
-        elif parsed_data["request_type"] == RequestType.REVOKE_FRIEND_REQUEST:
+        elif parsed_data["request_type"] == RequestType.REMOVE_FRIEND_REQUEST:
             self.friendsManager.removeFriend(parsed_data, reqItem)
             self.responder.sendResponse(reqItem)
         elif parsed_data["request_type"] == RequestType.SIGNOUT:
