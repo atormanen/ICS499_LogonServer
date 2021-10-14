@@ -99,7 +99,8 @@ class MessageItem:
         """
         self.log_function_name()
         self._set_failure_response(request_type=request_type if request_type else 'unknown_request_type',
-                                   reason=reason if reason else f'Invalid request. Please double check request syntax. Acceptable request types are {RequestType.get_items()}.',
+                                   reason=reason if reason else 'Invalid request. Please double check request syntax.',
+                                   acceptable_request_types=RequestType.get_items(),
                                    **kwargs)
 
     def set_signin_response(self, token: Optional[object], data: Optional[list],
