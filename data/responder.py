@@ -1,40 +1,41 @@
-import socket
-import sys
-from global_logger import logger, VERBOSE
-import inspect
-#from MessageItem import MessageItem
+from global_logger import logger, logged_method
 
-#Responder will handle all the return messages for the servers
-## TODO: clean this up... find a better way to implement responder
+
+# from MessageItem import MessageItem
+
+# Responder will handle all the return messages for the servers
+# TODO: clean this up... find a better way to implement responder
 class Responder:
-
-    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
     def __init__(self):
         self.num = 0
 
-    def sendBadRequest(self,connectionSocket):
-        self.log_function_name()
+    @logged_method
+    def send_bad_request(self, connection_socket):
+
         logger.verbose(f"bad request")
         msg = "ERROR - BAD REQUEST"
-        connectionSocket.send(msg.encode('utf-8'))
-        connectionSocket.close()
+        connection_socket.send(msg.encode('utf-8'))
+        connection_socket.close()
 
-    def sendRequestedData(self,connectionSocket,requestedData):
-        self.log_function_name()
+    @logged_method
+    def send_requested_data(self, connection_socket, requested_data):
+
         logger.error('sendRequestedData is deprecated... do not use!')
-        connectionSocket.send(requestedData.encode())
+        connection_socket.send(requested_data.encode())
 
-    def sendAccountCreationStatus(self, connectionSocket,status):
-        self.log_function_name()
+    @logged_method
+    def send_account_creation_status(self, connection_socket, status):
+
         logger.error('sendAccountCreationStatus is deprecated... do not use!')
         status = '' + status
-        connectionSocket.send(status.encode())
+        connection_socket.send(status.encode())
 
-    def sendResponse(self, msgItem):
-        self.log_function_name()
-        logger.debug(msgItem.response_obj)
+    @logged_method
+    def send_response(self, msg_item):
+
+        logger.debug(msg_item.response_obj)
         try:
-            msgItem.connection_socket.send(msgItem.response_obj.encode())
+            msg_item.connection_socket.send(msg_item.response_obj.encode())
         except ConnectionResetError as e:
             logger.error(e)

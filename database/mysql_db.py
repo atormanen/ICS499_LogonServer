@@ -1,201 +1,202 @@
-import inspect
 import time
 from typing import Optional
 
-from global_logger import logger, VERBOSE
+from global_logger import logged_method
 
 
-# TODO: change MysqlDB to db and change querry builder to mysqlQuerry
+# TODO: change MysqlDB to db and change query builder to mysql_query
 class MysqlDB:
     """This class holds all the mysql syntax for the sql class"""
-    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
 
     def __init__(self):
-        self.tableName = 'test'
+        self.table_name = 'test'
 
-    def getPasswordFor(self, username) -> str:
-        self.log_function_name()
-        selectStatement = "SELECT password FROM user WHERE username ='" + \
-                          username + "';"
-        return selectStatement
+    @logged_method
+    def get_password_for(self, username) -> str:
+        select_statement = "SELECT password FROM user WHERE username ='" + \
+                           username + "';"
+        return select_statement
 
-    def changePassword(self, username, password) -> str:
-        self.log_function_name()
-        querry = "UPDATE user SET password = '" + str(password) + "' WHERE username = '" + str(username) + "';"
-        return querry
+    @logged_method
+    def change_password(self, username, password) -> str:
+        query = "UPDATE user SET password = '" + str(password) + "' WHERE username = '" + str(username) + "';"
+        return query
 
-    def validateUserExists(self, username) -> str:
-        self.log_function_name()
+    @logged_method
+    def validate_user_exists(self, username) -> str:
         statement = "SELECT EXISTS(SELECT username FROM user WHERE username = '" + \
                     username + "');"
         return statement
 
-    def checkIfFriendRequestExists(self, userId, friendsId) -> str:
-        self.log_function_name()
-        querry = "SELECT EXISTS(SELECT user_id FROM friend_list WHERE user_id = \
-        " + str(userId) + " AND friend_id = " + str(friendsId) + " AND request_accepted = 0);"
-        return querry
+    @logged_method
+    def check_if_friend_request_exists(self, user_id, friends_id) -> str:
+        query = "SELECT EXISTS(SELECT user_id FROM friend_list WHERE user_id = \
+        " + str(user_id) + " AND friend_id = " + str(friends_id) + " AND request_accepted = 0);"
+        return query
 
-    def validateUsernameAvailable(self, username) -> str:
-        self.log_function_name()
+    @logged_method
+    def validate_username_available(self, username) -> str:
         statement = "SELECT EXISTS(SELECT username FROM user WHERE username = '" + \
                     username + "');"
         return statement
 
-    def getLastUserId(self) -> str:
-        self.log_function_name()
+    @logged_method
+    def get_last_user_id(self) -> str:
         return "SELECT MAX(user_id) FROM user;"
 
-    def createUser(self, id, parsed_data) -> str:
-        self.log_function_name()
+    @logged_method
+    def create_user(self, user_id, parsed_data) -> str:
         now = time.strftime('%Y-%m-%d %H-%M-%S')
-        id = str(id)
+        user_id = str(user_id)
         username = parsed_data["username"]
-        fname = parsed_data["first_name"]
-        lname = parsed_data["last_name"]
+        first_name = parsed_data["first_name"]
+        last_name = parsed_data["last_name"]
         email = parsed_data["email"]
         password = parsed_data["password"]
-        sql_staement = f"INSERT INTO user VALUES({id},'{username}','{fname}','{lname}','{email}',0,'{password}',null,'{now}',1,1,1,1,False,True,1);"
-        return sql_staement
+        sql_statement = f"INSERT INTO user VALUES({user_id},'{username}','{first_name}','{last_name}','{email}',0,\
+        '{password}',null,'{now}',1,1,1,1,False,True,1);"
+        return sql_statement
 
-    # id, username, firstname, lastname, email, avatar, ####, password, now, signonToken,
+    # id, username, firstname, lastname, email, avatar, ####, password, now, signon_token,
 
-    def createUserStats(self, id) -> str:
-        self.log_function_name()
-        return "INSERT INTO user_statistics VALUES(" + str(id) + ",0,0,0,0,0,null,1);"
+    @logged_method
+    def create_user_stats(self, user_id) -> str:
+        return "INSERT INTO user_statistics VALUES(" + str(user_id) + ",0,0,0,0,0,null,1);"
 
-    def getFriendsList(self, id) -> str:
-        self.log_function_name()
-        querry = "select user.user_id, user.username \
+    @logged_method
+    def get_friends_list(self, user_id) -> str:
+        query = "select user.user_id, user.username \
                     from user \
                     inner join  friend_list \
                     on user.user_id = friend_list.friend_id \
-                    where friend_list.user_id = " + str(id) + \
-                 " AND request_accepted = 1;"
-        return querry
+                    where friend_list.user_id = " + str(user_id) + \
+                " AND request_accepted = 1;"
+        return query
 
-    def getUserId(self, username) -> str:
-        self.log_function_name()
-        querry = "SELECT user_id FROM user WHERE username = '" + username + "';"
-        return querry
+    @logged_method
+    def get_user_id(self, username) -> str:
+        query = "SELECT user_id FROM user WHERE username = '" + username + "';"
+        return query
 
-    def getUserFromId(self, userId) -> str:
-        self.log_function_name()
-        querry = "SELECT username FROM user WHERE user_id = '" + str(userId) + "';"
-        return querry
+    @logged_method
+    def get_user_from_id(self, user_id) -> str:
+        query = "SELECT username FROM user WHERE user_id = '" + str(user_id) + "';"
+        return query
 
-    def getUserStats(self, id) -> str:
-        self.log_function_name()
-        querry = "SELECT * FROM user_statistics WHERE user_id = " + id + ";"
-        return querry
+    @logged_method
+    def get_user_stats(self, user_id) -> str:
+        query = "SELECT * FROM user_statistics WHERE user_id = " + user_id + ";"
+        return query
 
-    def signin(self, username, token, tokenExpiration) -> str:
-        self.log_function_name()
-        querry = "UPDATE user SET token_creation='" + tokenExpiration + \
-                 "',signon_token='" + token + "' WHERE username = " + \
-                 "'" + username + "';"
-        return querry
+    @logged_method
+    def signin(self, username, token, token_expiration) -> str:
+        query = "UPDATE user SET token_creation='" + token_expiration + \
+                "',signon_token='" + token + "' WHERE username = " + \
+                "'" + username + "';"
+        return query
 
-    def getToken(self, username) -> str:
-        self.log_function_name()
-        querry = "SELECT signon_token FROM user WHERE username='" + username + "';"
-        return querry
+    @logged_method
+    def get_token(self, username) -> str:
+        query = "SELECT signon_token FROM user WHERE username='" + username + "';"
+        return query
 
-    def getTokenCreationTime(self, username) -> str:
-        self.log_function_name()
-        querry = "SELECT unix_timestamp(token_creation) FROM user WHERE username='" + username + "';"
-        return querry
+    @logged_method
+    def get_token_creation_time(self, username) -> str:
+        query = "SELECT unix_timestamp(token_creation) FROM user WHERE username='" + username + "';"
+        return query
 
-    def sendFriendRequest(self, user_id, friend_id) -> str:
-        self.log_function_name()
-        querry = "INSERT INTO friend_list VALUES(" + str(user_id) + \
-                 "," + str(friend_id) + ",0);"
-        return querry
+    @logged_method
+    def send_friend_request(self, user_id, friend_id) -> str:
+        query = "INSERT INTO friend_list VALUES(" + str(user_id) + \
+                "," + str(friend_id) + ",0);"
+        return query
 
-    def addFriend(self, userId, friendId) -> str:
-        self.log_function_name()
-        querry = "INSERT INTO friend_list VALUES(" + str(userId) + \
-                 "," + str(friendId) + ",1);"
-        return querry
+    @logged_method
+    def add_friend(self, user_id, friend_id) -> str:
+        query = "INSERT INTO friend_list VALUES(" + str(user_id) + \
+                "," + str(friend_id) + ",1);"
+        return query
 
-    # UserId and friendId are backwards... that is intentional
-    def acceptFriendRequest(self, userId, friendId, acceptedRequest) -> str:
-        self.log_function_name()
-        querry = "UPDATE friend_list set request_accepted = " + str(acceptedRequest) + \
-                 " WHERE friend_id = " + str(userId) + " AND user_id = " + \
-                 str(friendId) + ";"
-        return querry
+    # UserId and friend_id are backwards... that is intentional
+    @logged_method
+    def accept_friend_request(self, user_id, friend_id, accepted_request) -> str:
+        query = "UPDATE friend_list set request_accepted = " + str(accepted_request) + \
+                " WHERE friend_id = " + str(user_id) + " AND user_id = " + \
+                str(friend_id) + ";"
+        return query
 
-    def removeFriend(self, userId, friendId) -> str:
-        self.log_function_name()
-        querry = "DELETE FROM friend_list WHERE user_id = " + str(userId) + " AND friend_id = " + str(friendId) + ";"
-        return querry
+    @logged_method
+    def remove_friend(self, user_id, friend_id) -> str:
+        query = "DELETE FROM friend_list WHERE user_id = " + str(user_id) + " AND friend_id = " + str(friend_id) + ";"
+        return query
 
-    def checkForFriendRequests(self, user_id) -> str:
-        self.log_function_name()
-        querry = f'SELECT user.user_id, user.username FROM user \
+    @logged_method
+    def check_for_friend_requests(self, user_id) -> str:
+        query = f'SELECT user.user_id, user.username FROM user \
         INNER JOIN friend_list ON user.user_id = friend_list.user_id WHERE friend_list.friend_id = {str(user_id)} \
         AND request_accepted = 0;'
-        return querry
+        return query
 
-    def revokeFriendRequest(self, userId, friendId) -> str:
-        self.log_function_name()
+    @logged_method
+    def revoke_friend_request(self, user_id, friend_id) -> str:
         # FIXME
         raise NotImplementedError('revokeFriendRequest has not been implemented yet')
-        querry = f'SELECT friend_list.user_id, '
+        query = f'SELECT friend_list.user_id, '
 
-        return querry
+        return query
 
+    @logged_method
     def logout(self, username) -> str:
-        self.log_function_name()
-        querry = f"UPDATE user SET signon_token = null WHERE username = '{username}';"
-        return querry
+        query = f"UPDATE user SET signon_token = null WHERE username = '{username}';"
+        return query
 
-    def getMostGamesWon(self, numberOfGames) -> str:
-        self.log_function_name()
-        querry = "select user.username, user_statistics.* from user inner join user_statistics on user.user_id = user_statistics.user_id order by games_won desc limit " + str(
-            numberOfGames) + ";"
-        return querry
+    @logged_method
+    def get_most_games_won(self, number_of_games) -> str:
+        query = "select user.username, user_statistics.* from user inner join user_statistics on user.user_id = \
+        user_statistics.user_id order by games_won desc limit " + str(
+            number_of_games) + ";"
+        return query
 
-    def getLongestWinStreak(self, numberOfGames) -> str:
-        self.log_function_name()
-        querry = "select user.username, user_statistics.* from user \
+    @logged_method
+    def get_longest_win_streak(self, number_of_games) -> str:
+        query = "select user.username, user_statistics.* from user \
         inner join user_statistics on user.user_id = user_statistics.user_id\
-        order by longetst_win_streak desc limit" + str(numberOfGames) + ";"
-        return querry
+        order by longest_win_streak desc limit" + str(number_of_games) + ";"
+        return query
 
-    def getAccountInfo(self, username) -> str:
-        self.log_function_name()
-        querry = "SELECT user.avatar, user.chess_board_style,  user.chess_piece_style, \
-        user.match_clock_choice, user.automatic_queueing, user.disable_pausing, user.require_commit_press, user_statistics.level FROM user \
-        inner join user_statistics on user.user_id = user_statistics.user_id \
+    @logged_method
+    def get_account_info(self, username) -> str:
+        query = "SELECT user.avatar, user.chess_board_style,  user.chess_piece_style, \
+        user.match_clock_choice, user.automatic_queueing, user.disable_pausing, user.require_commit_press, \
+        user_statistics.level FROM user inner join user_statistics on user.user_id = user_statistics.user_id \
         Where username = '" + str(username) + "';"
-        return querry
+        return query
 
-    def saveAccountInfo(self, username, data) -> str:
-        self.log_function_name()
-        querry = "UPDATE user, user_statistics SET user.avatar = " + str(
+    @logged_method
+    def save_account_info(self, username, data) -> str:
+        query = "UPDATE user, user_statistics SET user.avatar = " + str(
             data["avatar_style"]) + ", user.chess_board_style = " + str(
             data["chess_board_style"]) + ", user.chess_piece_style = " + str(data["chess_piece_style"]) + \
-                 ", user.match_clock_choice =  " + str(
+                ", user.match_clock_choice =  " + str(
             data["match_clock_choice"]) + ", user.automatic_queueing = " + str(
             data["automatic_queueing"]) + ", user.disable_pausing = " + str(data["disable_pausing"]) + \
-                 ", user.require_commit_press =  " + str(
+                ", user.require_commit_press =  " + str(
             data["require_commit_press"]) + ", user_statistics.level = " + str(
             data["level"]) + " WHERE user.username = '" + str(username) + "';"
-        return querry
+        return query
 
-    def saveAccountInfoByKey(self, username, key, value) -> Optional[str]:
-        self.log_function_name()
-        column = self.getColumn(key)
+    @logged_method
+    def save_account_info_by_key(self, username, key, value) -> Optional[str]:
+        column = self.get_column(key)
         if (column is None):
             return None
-        querry = "UPDATE user, user_statistics SET " + str(column) + " = " + str(
+        query = "UPDATE user, user_statistics SET " + str(column) + " = " + str(
             value) + " WHERE user.username = '" + str(username) + "';"
-        return querry
+        return query
 
-    def getColumn(self, key) -> str:
-        self.log_function_name()
+    @logged_method
+    def get_column(self, key) -> str:
+        # noinspection SpellCheckingInspection
         columns = {
             # key : column
             "avatar_style": "user.avatar",

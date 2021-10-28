@@ -1,12 +1,10 @@
 """This module holds the MessageItem class used to store incoming and outgoing messages"""
 import json
-from typing import Optional, Dict, List
-
-from global_logger import logger, VERBOSE
-import inspect
+from typing import Optional, List
+from global_logger import logger, logged_method
 
 
-# Message item is a wrapper class to hold the data of each reqeust.
+# Message item is a wrapper class to hold the data of each request.
 # It holds the json object that was sent to the server as well as
 # the socket
 
@@ -17,19 +15,19 @@ import inspect
 class RequestType:
     """Constants representing request types"""
     REVOKE_FRIEND_REQUEST = 'revokeFriendRequest'
-    GET_ACCOUNT_INFO = 'getAccountInfo'
-    SAVE_ACCOUNT_INFO_BY_KEY = 'saveAccountInfoByKey'
-    CHANGE_PASSWORD = 'changePassword'
+    GET_ACCOUNT_INFO = 'get_account_info'
+    SAVE_ACCOUNT_INFO_BY_KEY = 'save_account_info_by_key'
+    CHANGE_PASSWORD = 'change_password'
     GET_MOST_CHESS_GAMES_WON = 'get_most_chess_games_won'
     GET_LONGEST_WIN_STREAK = 'get_longest_win_streak'
     SIGNOUT = 'signout'
-    REMOVE_FRIEND = 'removeFriend'
-    ACCEPT_FRIEND_REQUEST = 'acceptFriendRequest'
-    SEND_FRIEND_REQUEST = 'sendFriendRequest'
-    GET_FRIEND_REQUESTS = 'getFriendRequests'
-    GET_FRIENDS_LIST = 'getFriendsList'
-    GET_USER_STATS = 'getUserStats'
-    CREATE_ACCOUNT = 'createAccount'
+    REMOVE_FRIEND = 'remove_friend'
+    ACCEPT_FRIEND_REQUEST = 'accept_friend_request'
+    SEND_FRIEND_REQUEST = 'send_friend_request'
+    GET_FRIEND_REQUESTS = 'get_friend_requests'
+    GET_FRIENDS_LIST = 'get_friends_list'
+    GET_USER_STATS = 'get_user_stats'
+    CREATE_ACCOUNT = 'create_account'
     SIGNIN = 'signin'
 
     @classmethod
@@ -78,14 +76,14 @@ class FailureReasons:
 
 
 class MessageItem:
-    """This class is used to store incoming and outgoing messages, storing and retreiving needed information."""
-    log_function_name = lambda x: logger.debug(f'func {inspect.stack()[1][3]}')
+    """This class is used to store incoming and outgoing messages, storing and retrieving needed information."""
 
     def __init__(self, connection_socket, parsed_data):
         self.connection_socket = connection_socket
         self.parsed_data = parsed_data
         self.response_obj = ''
 
+    @logged_method
     def set_invalid_request_response(self, request_type: Optional[str] = None,
                                      reason: Optional[str] = None, **kwargs) -> None:
         """Sets the response for an invalid request
@@ -97,12 +95,13 @@ class MessageItem:
         :param kwargs: Any additional information to be sent.
         :return: None
         """
-        self.log_function_name()
+
         self._set_failure_response(request_type=request_type if request_type else 'unknown_request_type',
                                    reason=reason if reason else 'Invalid request. Please double check request syntax.',
                                    acceptable_request_types=RequestType.get_items(),
                                    **kwargs)
 
+    @logged_method
     def set_signin_response(self, token: Optional[object], data: Optional[list],
                             failure_reason: Optional[str] = None) -> None:
         """Sets the response for a signin request
@@ -112,11 +111,13 @@ class MessageItem:
         :param failure_reason a string representation of the reason for the failure
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.SIGNIN
         user_dict = None
         if token and data and len(data) > 0 and len(data[0]) > 7:
             logger.debug(data)
+
+            # noinspection SpellCheckingInspection
             user_dict = {'token': token, 'avatar_style': data[0][0], 'chessboard_style': data[0][1],
                          'chesspiece_style': data[0][2], 'match_clock_choice': data[0][3],
                          'automatic_queening': data[0][4], 'disable_pausing': data[0][5],
@@ -129,6 +130,7 @@ class MessageItem:
         else:
             self._set_failure_response(request_type, failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def _set_success_response(self, request_type: str, **kwargs) -> None:
         """Sets the response for a successful operation
 
@@ -137,7 +139,7 @@ class MessageItem:
         This will be appended in the json response message.
         :return: None
         """
-        self.log_function_name()
+
         response = {
             'request_type': request_type,
             'status': Status.SUCCESS
@@ -149,6 +151,7 @@ class MessageItem:
 
         self.response_obj = json.dumps(response)
 
+    @logged_method
     def _set_failure_response(self, request_type: str, reason: str, **kwargs) -> None:
         """Sets the response for a failed operation
 
@@ -158,7 +161,7 @@ class MessageItem:
         This will be appended in the json response message.
         :return: None
         """
-        self.log_function_name()
+
         response = {
             'request_type': request_type,
             'status': Status.FAIL,
@@ -171,15 +174,17 @@ class MessageItem:
 
         self.response_obj = json.dumps(response)
 
+    @logged_method
     def set_signin_response_failed(self, reason: str) -> None:
         """Sets the response for a failed signin request
 
         :param reason: the reason the signin attempt failed
         :return: None
         """
-        self.log_function_name()
+
         self._set_failure_response(RequestType.SIGNIN, reason)
 
+    @logged_method
     def set_create_account_response(self, was_successful: bool, failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to create an account.
 
@@ -187,13 +192,14 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.CREATE_ACCOUNT
         if was_successful:
             self._set_success_response(request_type)
         else:
             self._set_failure_response(request_type, failure_reason)
 
+    @logged_method
     def set_get_user_stats_response(self, stats: Optional[list], failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to get the user stats.
 
@@ -201,7 +207,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.GET_USER_STATS
         if stats and len(stats) > 5:
             stat_dict = {'user_id': stats[0], 'games_played': stats[1],
@@ -213,6 +219,7 @@ class MessageItem:
                                        failure_reason if failure_reason else
                                        FailureReasons.USER_STATS_COULD_NOT_BE_FOUND)
 
+    @logged_method
     def set_get_friends_list_response(self, friends_list: Optional[list] = None,
                                       request_type: Optional[str] = None,
                                       failure_reason: Optional[str] = None) -> None:
@@ -223,25 +230,25 @@ class MessageItem:
         :param failure_reason: A message explaining the reason the operation failed.
         :return: None
         """
-        self.log_function_name()
 
         if not request_type:
             request_type = RequestType.GET_FRIENDS_LIST
 
-        if(failure_reason is None):
+        if (failure_reason is None):
             new_friends_list = []
             if friends_list:
                 for item in friends_list:
                     user = {'username': item[1]}
 
-                    # friedStr = "friend" + str(i)
-                    # friendDict[friedStr] = user
+                    # fried_str = "friend" + str(i)
+                    # friend_dict[friedStr] = user
                     new_friends_list.append(user)
             self._set_success_response(request_type, count=len(new_friends_list), friends=str(new_friends_list))
         else:
             self._set_failure_response(request_type,
                                        failure_reason)
 
+    @logged_method
     def set_get_friend_requests_response(self, friends_list: Optional[list] = None,
                                          failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to get friend requests
@@ -250,11 +257,12 @@ class MessageItem:
         :param failure_reason: A message explaining why  the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         self.set_get_friends_list_response(friends_list=friends_list,
                                            request_type=RequestType.GET_FRIEND_REQUESTS,
                                            failure_reason=failure_reason)
 
+    @logged_method
     def set_accept_friend_request_response(self, was_successful: bool, failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to accept a friend request
 
@@ -262,7 +270,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.ACCEPT_FRIEND_REQUEST
         if was_successful:
             self._set_success_response(request_type)
@@ -270,15 +278,16 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_send_friend_request_response(self, was_successful: bool,
                                          failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to send a friend request.
 
-        :param was_successful: True if the opperation was successful, else false.
+        :param was_successful: True if the operation was successful, else false.
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.SEND_FRIEND_REQUEST
         if was_successful:
             self._set_success_response(request_type)
@@ -286,6 +295,7 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_remove_friend_response(self, was_successful: bool, failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to remove a friend
 
@@ -293,7 +303,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.REMOVE_FRIEND
         if was_successful:
             self._set_success_response(request_type)
@@ -301,6 +311,7 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_signout_response(self, was_successful: bool, failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to sign out
 
@@ -308,7 +319,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.SIGNOUT
         if was_successful:
             self._set_success_response(request_type)
@@ -316,6 +327,7 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_longest_win_streak_response(self, number_of_games: Optional[object], data: Optional[object],
                                         failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to get the longest win streak for a user.
@@ -325,7 +337,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.GET_LONGEST_WIN_STREAK
         if number_of_games and data:  # TODO Figure out if we should allow response with no data
             self._set_success_response(request_type, number_of_games=number_of_games, data=data)
@@ -333,6 +345,7 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_most_chess_games_won_response(self, number_of_games: Optional[object], data: Optional[object],
                                           failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to get the most games won
@@ -342,7 +355,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.GET_MOST_CHESS_GAMES_WON
         if number_of_games and data:  # TODO Figure out if we should allow response with no data
             self._set_success_response(request_type, number_of_games=number_of_games, data=str(data))
@@ -350,6 +363,7 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_change_password_response(self, was_successful: bool,
                                      failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to change a user's password
@@ -358,7 +372,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.CHANGE_PASSWORD
         if was_successful:
             self._set_success_response(request_type)
@@ -366,6 +380,7 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_save_account_info_by_key_response(self, was_successful: bool,
                                               failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to save account info by key
@@ -374,7 +389,7 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return: None
         """
-        self.log_function_name()
+
         request_type = RequestType.SAVE_ACCOUNT_INFO_BY_KEY
         if was_successful:
             self._set_success_response(request_type)
@@ -382,6 +397,7 @@ class MessageItem:
             self._set_failure_response(request_type,
                                        failure_reason if failure_reason else FailureReasons.UNSPECIFIED)
 
+    @logged_method
     def set_get_account_info_response(self, account_data: Optional[list],
                                       failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to get account info
@@ -390,9 +406,10 @@ class MessageItem:
         :param failure_reason: A message explaining why the operation failed.
         :return:
         """
-        self.log_function_name()
+
         request_type = RequestType.GET_ACCOUNT_INFO
         try:
+            # noinspection SpellCheckingInspection
             account_dict = {'avatar_style': account_data[0][0], 'chessboard_style': account_data[0][1],
                             'chesspiece_style': account_data[0][2], 'match_clock_choice': account_data[0][3],
                             'automatic_queening': account_data[0][4], 'disable_pausing': account_data[0][5],
