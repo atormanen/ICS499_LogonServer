@@ -314,7 +314,7 @@ class DB:
 
     @logged_method
     def get_user_info(self, username):
-        return False
+        return False  # FIXME
 
     @logged_method
     def get_user_stats(self, username):
