@@ -1,7 +1,7 @@
 from typing import Optional, Union, List
 
 import mysql.connector
-from mysql.connector import CMySQLConnection, MySQLConnection
+from mysql.connector import MySQLConnection
 from mysql.connector.cursor_cext import CMySQLCursor
 
 from database.mysql_db import MysqlDB
@@ -16,7 +16,7 @@ from global_logger import logger, logged_method
 class _DBContext:
     def __init__(self):
         self.fetched = None
-        self.db: Optional[Union[CMySQLConnection, MySQLConnection]] = None
+        self.db: Optional[MySQLConnection] = None
         self.cursor: Optional[CMySQLCursor] = None
         self.result: Optional[bool] = None
         self.statements = []
