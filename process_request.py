@@ -78,7 +78,7 @@ class ProcessRequest:
             self.responder.send_response(req_item)
         elif parsed_data["request_type"] == RequestType.REVOKE_FRIEND_REQUEST:
             # FIXME
-            raise NotImplementedError('revokeFriendRequest has not been implemented yet')
+            raise NotImplementedError('revoke_friend_request has not been implemented yet')
             self.friends_manager.get_friend_requests(parsed_data, req_item)
             self.responder.send_response(req_item)
         elif parsed_data["request_type"] == RequestType.REMOVE_FRIEND:
@@ -88,10 +88,10 @@ class ProcessRequest:
             self.signin.signout(parsed_data, req_item)
             self.responder.send_response(req_item)
         elif parsed_data["request_type"] == RequestType.GET_MOST_CHESS_GAMES_WON:
-            self.leaderboard.get_most_chess_games_won(req_item, parsed_data["numberOfGames"])
+            self.leaderboard.get_most_chess_games_won(req_item, parsed_data["number_of_games"])
             self.responder.send_response(req_item)
         elif parsed_data["request_type"] == RequestType.GET_LONGEST_WIN_STREAK:
-            self.leaderboard.get_longest_win_streak(req_item, parsed_data["numberOfGames"])
+            self.leaderboard.get_longest_win_streak(req_item, parsed_data["number_of_games"])
             self.responder.send_response(req_item)
         elif parsed_data["request_type"] == RequestType.SAVE_ACCOUNT_INFO_BY_KEY:
             self.account_manager.save_account_info_by_key(parsed_data, req_item)
