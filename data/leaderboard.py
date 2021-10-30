@@ -1,18 +1,16 @@
 """This module holds the Leaderboard class used to retrieve leaderboard statistics"""
-import json
 
 from data.message_item import MessageItem
-from global_logger import logger, VERBOSE
-import inspect
+from global_logger import logged_method
 
 
 class Leaderboard:
     """The class allows for retrieval of leaderboard statistics."""
-    log_function_name = lambda x: logger.debug(f'func {inspect.stack()[1][3]}')
 
     def __init__(self, database):
         self.db = database
 
+    @logged_method
     def get_longest_win_streak(self, req_item: MessageItem,
                                number_of_games) -> None:  # TODO put type hint for number_of_games
         """Gets the longest consecutive string of wins not including games results that are omitted from leaderboards.
@@ -21,19 +19,17 @@ class Leaderboard:
         :param number_of_games: # TODO describe this argument
         :return: None
         """
-        " tst"
-        self.log_function_name()
         resp = self.db.get_longest_win_streak(number_of_games)
         req_item.set_longest_win_streak_response(number_of_games, resp)
 
+    @logged_method
     def get_most_chess_games_won(self, req_item: MessageItem, number_of_games):
         """
-        
+
         :param req_item: The message received by the server.
         :param number_of_games: # TODO describe this argument
-        :return: 
+        :return:
         """
-        self.log_function_name()
         resp = self.db.get_most_chess_games_won(number_of_games)
 
         user_dict = {
@@ -46,6 +42,6 @@ class Leaderboard:
                     'shortest_game': item[7]}
             user_str = 'user' + str(i)
             user_dict[user_str] = user
-            i = i + 1
+            i += 1
 
         req_item.set_most_chess_games_won_response(number_of_games, user_dict)

@@ -1,122 +1,120 @@
-from global_logger import logger, VERBOSE
 import socket
-import sys
-#from _thread import *
 from threading import Thread
-import json
-from process_request import *
-from multiprocessing import Process
+
 from data.message_item import MessageItem
 from manifest import Manifest
-import inspect
+from process_request import *
 
-#Class listener is used to listen on a servers ip address and port portNumber
-#12345 for incoming requests.
+
+# Class listener is used to listen on a servers ip address and port port_number
+# 12345 for incoming requests.
 class Listener:
-
-    log_function_name = lambda x: logger.debug(f"func {inspect.stack()[1][3]}")
     hostname = socket.gethostname()
 
-    def __init__(self, requestQueue):
+    def __init__(self, request_queue):
         self.manifest = Manifest()
-        self.requestQueue = requestQueue
-        self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.bufferSize = self.manifest.listener_buffer_size
-        self.portNumber = self.manifest.port_number
-        self.serverIp = ''
-        self.reqCount = 0
+        self.request_queue = request_queue
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.buffer_size = self.manifest.listener_buffer_size
+        self.port_number = self.manifest.port_number
+        self.server_ip = ''
+        self.req_count = 0
 
-    def createSocket(self):
-        self.log_function_name()
-        logger.info('creating server socker listener')
+    @logged_method
+    def create_socket(self):
+
+        logger.info('creating server socket listener')
         try:
-            self.serverSocket.bind((self.serverIp,self.portNumber))
-            self.serverSocket.listen(5)
+            self.server_socket.bind((self.server_ip, self.port_number))
+            self.server_socket.listen(5)
         except OSError as error:
             logger.error(error)
-        logger.debug(f"server socket: {str(self.serverSocket)}")
+        logger.debug(f"server socket: {str(self.server_socket)}")
 
+    @logged_method
     def set_ip(self):
-        self.log_function_name()
+        ip = None
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             # doesn't even have to be reachable
             s.connect(('10.255.255.255', 1))
-            IP = s.getsockname()[0]
-        except:
-            IP = '127.0.0.1'
+            ip = s.getsockname()[0]
+        except socket.error:
+            ip = '127.0.0.1'
         finally:
             s.close()
-            self.serverIp = IP
-            #self.serverIp = '18.191.38.171'
-            logger.info(f"server ip set to: {self.serverIp}")
+            self.server_ip = ip
+            # self.server_ip = '18.191.38.171'
+            logger.info(f"server ip set to: {self.server_ip}")
 
+    @logged_method
+    def send_bad_request(self, connection_socket):
 
-    def sendBadRequest(self,connectionSocket):
-        self.log_function_name()
         msg = "{'ERROR':'BAD REQUEST'}"
-        connectionSocket.send(msg.encode())
+        connection_socket.send(msg.encode())
 
-    def processRequest(self,connectionSocket):
-        self.log_function_name()
+    @logged_method
+    def process_request(self, connection_socket):
+
         full_msg = ''
-        rcvd_msg = ''
-        bufferExceeded = False
+        received_msg = ''
+        buffer_exceeded = False
         while True:
-            if bufferExceeded:
+            if buffer_exceeded:
                 try:
-                    connectionSocket.settimeout(3)
-                    rcvd_msg = connectionSocket.recv(self.bufferSize).decode('utf-8','replace')
+                    connection_socket.settimeout(3)
+                    received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
                 except socket.timeout as err:
-                    #Expecting a timeout
+                    # Expecting a timeout
                     break
             else:
                 try:
 
-                    rcvd_msg = connectionSocket.recv(self.bufferSize).decode('utf-8','replace')
+                    received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
                 except UnicodeDecodeError:
-                    self.sendBadRequest(connectionSocket)
-            full_msg += rcvd_msg
-            if(len(rcvd_msg) == 0):
+                    self.send_bad_request(connection_socket)
+            full_msg += received_msg
+            if (len(received_msg) == 0):
                 break
-            elif len(rcvd_msg) < self.bufferSize:
+            elif len(received_msg) < self.buffer_size:
                 break
-            elif len(rcvd_msg) == self.bufferSize:
-                rcvd_msg = ''
-                bufferExceeded = True
+            elif len(received_msg) == self.buffer_size:
+                received_msg = ''
+                buffer_exceeded = True
         try:
             if not (full_msg[0] == "{"):
                 full_msg = full_msg[2::]
         except IndexError as error:
             logger.error(error)
             return
-
         try:
             parsed_data = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
-            logger.error(f"unable to load message into json: {parsed_data}")
-            self.sendBadRequest(connectionSocket)
+            logger.error(f"unable to load message into json: {full_msg}")
+            self.send_bad_request(connection_socket)
             return
-        msgItem = MessageItem(connectionSocket,parsed_data)
+        msg_item = MessageItem(connection_socket, parsed_data)
         logger.debug(f"message item: {parsed_data}")
-        self.requestQueue.put(msgItem)
+        self.request_queue.put(msg_item)
 
-
+    @logged_method
     def listen(self):
-        self.log_function_name()
+        connection_socket = None
         while True:
-            self.reqCount = self.reqCount + 1
+            self.req_count += 1
             try:
-                connectionSocket, addr = self.serverSocket.accept()
-                logger.debug(f"received message from {str(addr)}")
-                thread = Thread(target=self.processRequest,args=(connectionSocket,))
+                connection_socket, address = self.server_socket.accept()
+                logger.debug(f"received message from {str(address)}")
+                thread = Thread(target=self.process_request, args=(connection_socket,))
                 thread.start()
             except IOError as error:
                 logger.error(error)
-                connectionSocket.close()
+                if connection_socket:
+                    connection_socket.close()
 
-    def createListener(self):
-        self.log_function_name()
+    @logged_method
+    def create_listener(self):
+
         self.set_ip()
-        self.createSocket()
+        self.create_socket()
