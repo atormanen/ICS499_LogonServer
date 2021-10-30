@@ -14,7 +14,7 @@ from global_logger import logger, logged_method
 
 class RequestType:
     """Constants representing request types"""
-    REVOKE_FRIEND_REQUEST = 'revokeFriendRequest'
+    REVOKE_FRIEND_REQUEST = 'revoke_friend_request'
     GET_ACCOUNT_INFO = 'get_account_info'
     SAVE_ACCOUNT_INFO_BY_KEY = 'save_account_info_by_key'
     CHANGE_PASSWORD = 'change_password'
