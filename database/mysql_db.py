@@ -140,7 +140,7 @@ class MysqlDB:
     @logged_method
     def revoke_friend_request(self, user_id, friend_id) -> str:
         # FIXME
-        raise NotImplementedError('revokeFriendRequest has not been implemented yet')
+        raise NotImplementedError('revoke_friend_request has not been implemented yet')
         query = f'SELECT friend_list.user_id, '
 
         return query
