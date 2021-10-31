@@ -134,32 +134,6 @@ class DB:
             c.commit()
         return False if c.result is None else c.result
 
-        #  TODO delete this if the context manager works out
-        # mydb = None
-        # cursor = None
-        # result = False
-        #
-        # try:
-        #     mydb = mysql.connector.connect(user=self.user, password=self.password,
-        #                                    host=self.writer,
-        #                                    database=self.database,
-        #                                    auth_plugin='mysql_native_password')
-        #     cursor = mydb.cursor()
-        #     cursor.execute(statement)
-        #     mydb.commit()
-        #     result = True
-        # except mysql.connector.Error as error:
-        #     logger.error(error)
-        #     logger.debug(f"error in sql statement: {statement}")
-        #     result = False
-        # finally:
-        #     if (mydb.is_connected()):
-        #         if cursor:
-        #             cursor.close()
-        #         if mydb:
-        #             mydb.close()
-        #     return result
-
     @logged_method
     def db_fetch(self, statement: str) -> Optional[List[tuple]]:
 
@@ -168,28 +142,6 @@ class DB:
             c.execute(statement)
             c.fetchall()
         return c.fetched
-
-        #  TODO delete this if the context manager works out
-        # mydb = None
-        # cursor = None
-        # result = False
-        # try:
-        #     result = ''
-        #     mydb = mysql.connector.connect(user=self.user, password=self.password,
-        #                                    host=self.reader,
-        #                                    database=self.database,
-        #                                    auth_plugin='mysql_native_password')
-        #     cursor = mydb.cursor()
-        #     cursor.execute(statement)
-        #     result = cursor.fetchall()
-        # except mysql.connector.Error as e:
-        #     logger.error(e)
-        #     result = None
-        # finally:
-        #     if (mydb.is_connected()):
-        #         cursor.close()
-        #         mydb.close()
-        #     return result
 
     @logged_method
     def db_update(self, statement) -> bool:
@@ -205,28 +157,6 @@ class DB:
             c.commit()
         return False if c.result is None else c.result
 
-        #  TODO delete this if the context manager works out
-        # mydb = None
-        # cursor = None
-        # result = False
-        # try:
-        #     mydb = mysql.connector.connect(user=self.user, password=self.password,
-        #                                    host=self.writer,
-        #                                    database=self.database,
-        #                                    auth_plugin='mysql_native_password')
-        #     cursor = mydb.cursor()
-        #     cursor.execute(statement)
-        #     mydb.commit()
-        #     result = True
-        # except mysql.connector.Error as error:
-        #     logger.error(error)
-        #     result = False
-        # finally:
-        #     if (mydb.is_connected()):
-        #         cursor.close()
-        #         mydb.close()
-        #     return result
-
     @logged_method
     def db_delete(self, statement):
 
@@ -235,28 +165,6 @@ class DB:
             c.execute(statement)
             c.commit()
         return c.result
-
-        #  TODO delete this if the context manager works out
-        # mydb = None
-        # cursor = None
-        # result = False
-        # try:
-        #     mydb = mysql.connector.connect(user=self.user, password=self.password,
-        #                                    host=self.writer,
-        #                                    database=self.database,
-        #                                    auth_plugin='mysql_native_password')
-        #     cursor = mydb.cursor()
-        #     cursor.execute(statement)
-        #     mydb.commit()
-        #     result = True
-        # except mysql.connector.Error as error:
-        #     logger.error(error)
-        #     result = False
-        # finally:
-        #     if (mydb.is_connected()):
-        #         cursor.close()
-        #         mydb.close()
-        #     return result
 
     @logged_method
     def get_password_for(self, username):
@@ -385,22 +293,10 @@ class DB:
         user_id = self.db_fetch(self.builder.get_user_id(username))
         friends_id = self.db_fetch(self.builder.get_user_id(friends_username))
         if not self.check_if_friend_request_exists(friends_username, username):
+            # we don't need to check if username or friend_username correspond to existing
+            # accounts because that happens in the check_if_friend_request_exists call.
+            # That said, we should keep in mind that this can raise a UserNotFoundException
             raise FriendRequestNotFoundException()
-
-        # check that the sender and receiver make sense
-        # friends_friend_requests = self.check_for_friend_requests(username)
-        #
-        # found = False
-        # if isinstance(friends_friend_requests, list):
-        #     for request in friends_friend_requests:
-        #         sender = request[0]
-        #         receiver = request[1]
-        #         if receiver != username:
-        #             raise TryingToAcceptInviteTargetingOtherUserException()
-        #         elif sender == friends_username:
-        #             found = True
-        #     if not found:
-        #         raise FriendRequestNotFoundException()
 
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
