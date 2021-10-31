@@ -14,7 +14,7 @@ class Signin:
     @logged_method
     def validate_password(self, username, password):
 
-        if (self.db.validate_user_exists(username)):
+        if (self.db.user_exists(username)):
             db_password = self.db.get_password_for(username)
             db_password = db_password[0][0]
             # compare password to given get_password

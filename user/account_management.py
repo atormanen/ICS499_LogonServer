@@ -13,7 +13,7 @@ class AccountManagement:
 
     @logged_method
     def validate_username(self, username):
-        if (self.db.validate_user_exists(username)):
+        if (self.db.user_exists(username)):
             return True
         return False
 
@@ -41,10 +41,10 @@ class AccountManagement:
     def create_account(self, req_item):
         parsed_data = req_item.parsed_data
         # check if username exists
-        result = self.db.validate_username_available(parsed_data["username"])
+        result = self.db.username_is_available(parsed_data["username"])
 
         # call mysql_d_b to create CreateAccount
-        if result == 0:
+        if not result:
             self.db.create_user(parsed_data)
             req_item.set_create_account_response(True)
         else:
@@ -57,7 +57,7 @@ class AccountManagement:
 
     @logged_method
     def validate_password(self, username, password):
-        if (self.db.validate_user_exists(username)):
+        if (self.db.user_exists(username)):
             db_password = self.db.get_password_for(username)
             db_password = db_password[0][0]
             # compare password to given get_password
