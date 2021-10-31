@@ -1,6 +1,6 @@
 import time
 
-from database.db import DB
+from database.db import DB, UserNotFoundException
 from global_logger import logger, logged_method
 
 
@@ -80,7 +80,10 @@ class FriendsManagement:
         was_successful = False
         if self.validate_username(username):
             if self.validate_username(friends_username):
-                was_successful = self.db.accept_friend_request(username, friends_username, True)
+                try:
+                    was_successful = self.db.accept_friend_request(username, friends_username, True)
+                except UserNotFoundException as e:
+                    req_item.set_accept_friend_request_response(failure_reason=e.msg)
         req_item.set_accept_friend_request_response(was_successful)
 
     @logged_method

@@ -84,6 +84,32 @@ class _DBContextManager:
         return self.context.result
 
 
+class FailureException(Exception):
+    """An exception raised to give more information about the failure"""
+    def __init__(self, msg: str,  *args):
+        super().__init__(msg, *args)
+        self._msg: str = msg
+
+    @property
+    def msg(self):
+        """The message of the exception"""
+        return self._msg
+
+class UserNotFoundException(FailureException):
+    def __init__(self, username):
+        super().__init__(f'user with username {username!r} was not found')
+
+
+class TryingToAcceptInviteTargetingOtherUserException(FailureException):
+    def __init__(self):
+        super().__init__('A user cannot accept a friend request that was not sent to them')
+
+
+class FriendRequestNotFoundException(FailureException):
+    def __init__(self):
+        super().__init__('No matching friend request found')
+
+
 class DB:
 
     def __init__(self, user, password, reader, writer, database: MysqlDB):
@@ -343,14 +369,23 @@ class DB:
         if (friends_id is False):
             return False
 
+        if not self.check_if_friend_request_exists(friends_username, username):
+            raise FriendRequestNotFoundException()
+
         # check that the sender and receiver make sense
-        friends_friend_requests = self.check_for_friend_requests(friends_username)
-        if isinstance(friends_friend_requests, list):
-            for request in friends_friend_requests:
-                sender = request[0]
-                receiver = request[1]
-                if sender != friends_username or receiver != username:
-                    return False
+        # friends_friend_requests = self.check_for_friend_requests(username)
+        #
+        # found = False
+        # if isinstance(friends_friend_requests, list):
+        #     for request in friends_friend_requests:
+        #         sender = request[0]
+        #         receiver = request[1]
+        #         if receiver != username:
+        #             raise TryingToAcceptInviteTargetingOtherUserException()
+        #         elif sender == friends_username:
+        #             found = True
+        #     if not found:
+        #         raise FriendRequestNotFoundException()
 
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
