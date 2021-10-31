@@ -342,6 +342,16 @@ class DB:
             return False
         if (friends_id is False):
             return False
+
+        # check that the sender and receiver make sense
+        friends_friend_requests = self.check_for_friend_requests(friends_username)
+        if isinstance(friends_friend_requests, list):
+            for request in friends_friend_requests:
+                sender = request[0]
+                receiver = request[1]
+                if sender != friends_username or receiver != username:
+                    return False
+
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
         result = self.db_update(self.builder.accept_friend_request(user_id, friends_id, accepted_request))
