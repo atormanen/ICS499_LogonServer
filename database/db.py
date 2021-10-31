@@ -267,7 +267,7 @@ class DB:
         return result
 
     @logged_method
-    def get_token_creation_time(self, username: str) -> list[tuple]:
+    def get_token_creation_time(self, username: str) -> List[tuple]:
         """Gets the token creation time.
 
         :param username: The username of the user who's token creation time we are retrieving.
@@ -282,7 +282,7 @@ class DB:
         return result
 
     @logged_method
-    def get_friends_list(self, username: str) -> list[tuple]:
+    def get_friends_list(self, username: str) -> List[tuple]:
         """Gets the friends list of a target user
 
         :param username: The username of the user who's friends list will be returned.
