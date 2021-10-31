@@ -105,14 +105,14 @@ class UserNotFoundException(FailureException):
 
         :param username: The username of the user that could not be found.
         """
-        super().__init__(f'user with username {username!r} was not found')
+        super().__init__(f'user with username {username!r} was not found.')
 
 
 class FriendRequestNotFoundException(FailureException):
     """An exception to be raised if a friend request cannot be found."""
 
     def __init__(self):
-        super().__init__('No matching friend request found')
+        super().__init__('No matching friend request found.')
 
 
 class DB:
