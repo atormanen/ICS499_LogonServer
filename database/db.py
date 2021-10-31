@@ -86,26 +86,31 @@ class _DBContextManager:
 
 class FailureException(Exception):
     """An exception raised to give more information about the failure"""
-    def __init__(self, msg: str,  *args):
+
+    def __init__(self, msg: str, *args):
         super().__init__(msg, *args)
         self._msg: str = msg
 
     @property
-    def msg(self):
-        """The message of the exception"""
+    def msg(self) -> str:
+        """The exception's message"""
         return self._msg
 
+
 class UserNotFoundException(FailureException):
-    def __init__(self, username):
+    """An exception to be raised if a user cannot be found"""
+
+    def __init__(self, username: str):
+        """ Creates an instance of this exception
+
+        :param username: The username of the user that could not be found
+        """
         super().__init__(f'user with username {username!r} was not found')
 
 
-class TryingToAcceptInviteTargetingOtherUserException(FailureException):
-    def __init__(self):
-        super().__init__('A user cannot accept a friend request that was not sent to them')
-
-
 class FriendRequestNotFoundException(FailureException):
+    """An exception to be raised if a friend request cannot be found"""
+
     def __init__(self):
         super().__init__('No matching friend request found')
 
