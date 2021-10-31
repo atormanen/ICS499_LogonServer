@@ -1,6 +1,6 @@
 import time
 
-from database.db import DB
+from database.db import DB, FriendRequestNotFoundException
 from global_logger import logger, logged_method
 
 
@@ -27,7 +27,7 @@ class FriendsManagement:
 
     @logged_method
     def validate_username(self, username):
-        if (self.db.validate_user_exists(username)):
+        if (self.db.user_exists(username)):
             return True
         return False
 
@@ -57,7 +57,7 @@ class FriendsManagement:
 
         if (self.validate_username(username)):
             if (self.validate_username(friends_username)):
-                if (self.db.check_if_friend_request_exists(username, friends_username) == 0):
+                if (not self.db.check_if_friend_request_exists(username, friends_username)):
                     # Friend request does not exists so go and make a request
                     result = self.db.send_friend_request(username, friends_username)
                     if (result is True):
@@ -80,8 +80,11 @@ class FriendsManagement:
         was_successful = False
         if self.validate_username(username):
             if self.validate_username(friends_username):
-                was_successful = self.db.accept_friend_request(username, friends_username, True)
-        req_item.set_accept_friend_request_response(was_successful)
+                try:
+                    was_successful = self.db.accept_friend_request(username, friends_username, True)
+                    req_item.set_accept_friend_request_response(was_successful)
+                except FriendRequestNotFoundException as e:
+                    req_item.set_accept_friend_request_response(was_successful=False, failure_reason=e.msg)
 
     @logged_method
     def deny_friend_request(self):
