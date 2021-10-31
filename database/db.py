@@ -290,9 +290,9 @@ class DB:
         user_id = self.db_fetch(self.builder.get_user_id(username))
         friends_id = self.db_fetch(self.builder.get_user_id(friends_username))
         if (user_id is False):
-            return False
+            raise UserNotFoundException(username)
         if (friends_id is False):
-            return False
+            raise UserNotFoundException(friends_username)
         user_id = user_id[0][0]
         friends_id = friends_id[0][0]
         result = self.db_fetch(self.builder.check_if_friend_request_exists(user_id, friends_id))
@@ -333,6 +333,8 @@ class DB:
     @logged_method
     def get_friends_list(self, username):
         user_id = self.db_fetch(self.builder.get_user_id(username))
+        if (user_id is False):
+            raise UserNotFoundException(username)
         result = self.db_fetch(self.builder.get_friends_list(user_id[0][0]))
         return result
 
@@ -343,6 +345,8 @@ class DB:
     @logged_method
     def get_user_stats(self, username):
         user_id = self.db_fetch(self.builder.get_user_id(username))
+        if (user_id is False):
+            raise UserNotFoundException(username)
         user_id = str(user_id[0][0])
         result = self.db_fetch(self.builder.get_user_stats(user_id))
         return result
@@ -352,9 +356,9 @@ class DB:
         user_id = self.db_fetch(self.builder.get_user_id(username))
         friends_id = self.db_fetch(self.builder.get_user_id(friends_username))
         if (user_id is False):
-            return False
+            raise UserNotFoundException(username)
         if (friends_id is False):
-            return False
+            raise UserNotFoundException(friends_username)
         user_id = user_id[0][0]
         friends_id = friends_id[0][0]
         result = self.db_insert(self.builder.send_friend_request(user_id, friends_id))
@@ -364,11 +368,6 @@ class DB:
     def accept_friend_request(self, username, friends_username, accepted_request):
         user_id = self.db_fetch(self.builder.get_user_id(username))
         friends_id = self.db_fetch(self.builder.get_user_id(friends_username))
-        if (user_id is False):
-            return False
-        if (friends_id is False):
-            return False
-
         if not self.check_if_friend_request_exists(friends_username, username):
             raise FriendRequestNotFoundException()
 
@@ -398,9 +397,9 @@ class DB:
         user_id = self.db_fetch(self.builder.get_user_id(username))
         friends_id = self.db_fetch(self.builder.get_user_id(friends_username))
         if (user_id is False):
-            return False
+            raise UserNotFoundException(username)
         if (friends_id is False):
-            return False
+            raise UserNotFoundException(friends_username)
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
         result = self.db_delete(self.builder.remove_friend(user_id, friends_id))
@@ -411,7 +410,7 @@ class DB:
     def check_for_friend_requests(self, username):
         user_id = self.db_fetch(self.builder.get_user_id(username))
         if (user_id is False):
-            return False
+            raise UserNotFoundException(username)
         user_id = user_id[0][0]
         result = self.db_fetch(self.builder.check_for_friend_requests(user_id))
         return result
