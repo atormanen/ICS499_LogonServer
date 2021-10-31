@@ -20,7 +20,7 @@ class _DBContext:
         self.statements = []
 
     def execute(self, statement):
-        """Execute given statement on the database"""
+        """Execute given statement on the database."""
         self.statements.append(statement)
         try:
             return_value = self.cursor.execute(statement)
@@ -30,11 +30,11 @@ class _DBContext:
         return return_value
 
     def commit(self) -> None:
-        """Commits the current transaction"""
+        """Commits the current transaction."""
         self.db.commit()
 
     def fetchall(self) -> List[tuple]:
-        """Gets all rows of a query result, stores them in the context field `fetched` and also returned"""
+        """Gets all rows of a query result, stores them in the context field `fetched` and also returned."""
         self.fetched = self.cursor.fetchall()
         return self.fetched
 
@@ -85,7 +85,7 @@ class _DBContextManager:
 
 
 class FailureException(Exception):
-    """An exception raised to give more information about the failure"""
+    """An exception raised to give more information about the failure."""
 
     def __init__(self, msg: str, *args):
         super().__init__(msg, *args)
@@ -93,23 +93,23 @@ class FailureException(Exception):
 
     @property
     def msg(self) -> str:
-        """The exception's message"""
+        """The exception's message."""
         return self._msg
 
 
 class UserNotFoundException(FailureException):
-    """An exception to be raised if a user cannot be found"""
+    """An exception to be raised if a user cannot be found."""
 
     def __init__(self, username: str):
-        """ Creates an instance of this exception
+        """ Creates an instance of this exception.
 
-        :param username: The username of the user that could not be found
+        :param username: The username of the user that could not be found.
         """
         super().__init__(f'user with username {username!r} was not found')
 
 
 class FriendRequestNotFoundException(FailureException):
-    """An exception to be raised if a friend request cannot be found"""
+    """An exception to be raised if a friend request cannot be found."""
 
     def __init__(self):
         super().__init__('No matching friend request found')
@@ -126,13 +126,13 @@ class DB:
         self.database = database
 
     @logged_method
-    def db_insert(self, statement):
+    def db_insert(self, statement: str) -> bool:
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
                                auth_plugin='mysql_native_password') as c:
             c.execute(statement)
             c.commit()
-        return c.result
+        return False if c.result is None else c.result
 
         #  TODO delete this if the context manager works out
         # mydb = None
@@ -161,7 +161,7 @@ class DB:
         #     return result
 
     @logged_method
-    def db_fetch(self, statement):
+    def db_fetch(self, statement: str) -> Optional[List[tuple]]:
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
                                auth_plugin='mysql_native_password') as c:
@@ -193,17 +193,17 @@ class DB:
 
     @logged_method
     def db_update(self, statement) -> bool:
-        """Updates the database
+        """Updates the database.
 
-        :param statement: the query that will be executed
-        :return: true if successful, else false
+        :param statement: The query that will be executed.
+        :return: True if successful, else False.
         """
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
                                auth_plugin='mysql_native_password') as c:
             c.execute(statement)
             c.commit()
-        return c.result
+        return False if c.result is None else c.result
 
         #  TODO delete this if the context manager works out
         # mydb = None
@@ -370,7 +370,18 @@ class DB:
         return result
 
     @logged_method
-    def accept_friend_request(self, username, friends_username, accepted_request):
+    def accept_friend_request(self, username: str, friends_username: str, accepted_request: bool) -> bool:
+        """Accepts a friend request.
+
+        :param username: The username of the user accepting the request.
+        :param friends_username: The friend that sent the request.
+        :param accepted_request: True if accepting, else False.
+        :return: True if successful, else False.
+
+        :raises FriendRequestNotFoundException If a request cannot be found in the database matching the sender and
+        receiver.
+        :raises UserNotFoundException If either user cannot be found in the database.
+        """
         user_id = self.db_fetch(self.builder.get_user_id(username))
         friends_id = self.db_fetch(self.builder.get_user_id(friends_username))
         if not self.check_if_friend_request_exists(friends_username, username):
