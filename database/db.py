@@ -13,7 +13,7 @@ from global_logger import logger, logged_method
 
 class _DBContext:
     def __init__(self):
-        self.fetched = None
+        self.fetched: Optional[List[tuple]] = None
         self.db = None
         self.cursor = None
         self.result: Optional[bool] = None
