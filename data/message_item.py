@@ -60,6 +60,21 @@ class Status:
         """Gets a list of all items."""
         return [Status.FAIL, Status.SUCCESS]
 
+    @staticmethod
+    def was_success(was_success: bool) -> str:
+        """Gets the status given a boolean representing that the request was processed successfully.
+
+        Args:
+            was_success:
+                A boolean representing that the request was processed successfully.
+
+        Returns:
+            Status.SUCCESS if was_success argument evaluates to True when converted to bool or
+                Status.FAIL if was_success argument evaluates to False when converted to bool.
+
+        """
+        return Status.SUCCESS if bool(was_success) else Status.FAIL
+
 
 class FailureReasons:
     """Constants representing failure reason messages"""
