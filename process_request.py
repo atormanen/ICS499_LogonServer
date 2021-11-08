@@ -17,9 +17,8 @@ class ProcessRequest:
     # will hold the shared request queue object. It will pull requests
     # from the queue as they are inserted from the listener
     def __init__(self, request_queue):
-        f = open('./params.json', 'r')
-        data = json.loads(f.read())
-        f.close()
+        with open('./params.json', 'r') as f:
+            data = json.loads(f.read())
         reader = data['db_host']
         writer = data['db_host']
         username = data['db_username']
