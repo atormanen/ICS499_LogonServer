@@ -42,12 +42,17 @@ class _WrapperType(Enum):
     CLASS_METHOD = auto()
 
     def build_wrapper(self, __wrapped, __level: Optional[int] = None):
-        """ Builds a wrapper function
+        """Builds a wrapper function
 
-        :param __wrapped: The function or method to be wrapped
-        :param __level: The logging level. Use one of these constants from the global_logger module:
-        CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
-        :return: a function that wraps a function/method
+        Args:
+            __wrapped:
+                The function or method to be wrapped
+            __level:
+                The logging level. Use one of these constants from the global_logger module:
+                CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
+
+        Returns:
+            A function that wraps a function/method
         """
 
         @wraps(__wrapped)
@@ -120,7 +125,7 @@ class _WrapperType(Enum):
                 log_dict.update(self_object=self_obj.__repr__())
 
             # build the message
-            log_msg = f'CALL: {log_dict!r}'
+            log_msg = f'CALL - {log_dict!r}'
 
             # log the message
             if __level:
@@ -140,10 +145,17 @@ class _WrapperType(Enum):
 def logged_function(wrapped, level: Optional[int] = None):
     """An annotation that allows the annotated function to be logged when called.
 
-        :param wrapped: The function to be wrapped
-        :param level: The logging level. Use one of these constants from the global_logger module:
-        CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
-        """
+    Args:
+        wrapped:
+            The function to be wrapped.
+        level:
+            The logging level. Use one of these constants from the global_logger module:
+            CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
+
+    Returns:
+        A function that wraps a function
+
+    """
 
     return _WrapperType.FUNCTION.build_wrapper(wrapped, level)
 
@@ -151,10 +163,17 @@ def logged_function(wrapped, level: Optional[int] = None):
 def logged_method(wrapped, level: Optional[int] = None):
     """An annotation that allows the annotated method to be logged when called.
 
-        :param wrapped: The method to be wrapped
-        :param level: The logging level. Use one of these constants from the global_logger module:
-        CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
-        """
+    Args:
+        wrapped:
+            The method to be wrapped.
+        level:
+            The logging level. Use one of these constants from the global_logger module:
+            CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
+
+    Returns:
+        A function that wraps a method
+
+    """
 
     return _WrapperType.NORMAL_METHOD.build_wrapper(wrapped, level)
 
@@ -162,10 +181,16 @@ def logged_method(wrapped, level: Optional[int] = None):
 def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
     """An annotation that allows the annotated class method to be logged when called.
 
-        :param wrapped: The method to be wrapped
-        :param level: The logging level. Use one of these constants from the global_logger module:
-        CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
-        """
+    Args:
+        wrapped:
+            The class method to be wrapped
+        level:
+            The logging level. Use one of these constants from the global_logger module:
+            CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
+
+    Returns:
+        A function that wraps a class method
+    """
 
     return _WrapperType.CLASS_METHOD.build_wrapper(wrapped, level)
 

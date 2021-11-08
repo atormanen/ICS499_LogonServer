@@ -13,7 +13,7 @@ from global_logger import logger, logged_method
 
 
 class RequestType:
-    """Constants representing request types"""
+    """Constants representing request types."""
     REVOKE_FRIEND_REQUEST = 'revoke_friend_request'
     GET_ACCOUNT_INFO = 'get_account_info'
     SAVE_ACCOUNT_INFO_BY_KEY = 'save_account_info_by_key'
@@ -32,7 +32,7 @@ class RequestType:
 
     @classmethod
     def get_items(cls) -> List[str]:
-        """Gets a list of all items"""
+        """Gets a list of all items."""
         return [RequestType.REVOKE_FRIEND_REQUEST,
                 RequestType.GET_ACCOUNT_INFO,
                 RequestType.SAVE_ACCOUNT_INFO_BY_KEY,
@@ -51,13 +51,13 @@ class RequestType:
 
 
 class Status:
-    """Constants representing possible Status values"""
+    """Constants representing possible Status values."""
     FAIL = 'fail'
     SUCCESS = 'success'
 
     @classmethod
     def get_items(cls) -> List[str]:
-        """Gets a list of all items"""
+        """Gets a list of all items."""
         return [Status.FAIL, Status.SUCCESS]
 
 
@@ -69,7 +69,7 @@ class FailureReasons:
 
     @classmethod
     def get_items(cls) -> List[str]:
-        """Gets a list of all items"""
+        """Gets a list of all items."""
         return [FailureReasons.UNSPECIFIED,
                 FailureReasons.FRIENDS_LIST_WAS_NOT_FOUND,
                 FailureReasons.USER_STATS_COULD_NOT_BE_FOUND]
@@ -86,14 +86,20 @@ class MessageItem:
     @logged_method
     def set_invalid_request_response(self, request_type: Optional[str] = None,
                                      reason: Optional[str] = None, **kwargs) -> None:
-        """Sets the response for an invalid request
+        """Sets the response for an invalid request.
 
-        :param request_type: The type of request if it is recognized,
-        else it is assumed to be an unrecognized request type.
-        :param reason: The reason it is invalid, else the default reason will be
-        'Invalid request. Please double check request syntax'
-        :param kwargs: Any additional information to be sent.
-        :return: None
+        Args:
+            request_type:
+                The type of request if it is recognized, else it is assumed to be an unrecognized request type.
+            reason:
+                The reason it is invalid, else the default reason will be
+                'Invalid request. Please double check request syntax'.
+            **kwargs:
+                Any additional information to be sent.
+
+        Returns:
+            None
+
         """
 
         self._set_failure_response(request_type=request_type if request_type else 'unknown_request_type',
@@ -104,12 +110,16 @@ class MessageItem:
     @logged_method
     def set_signin_response(self, token: Optional[object], data: Optional[list],
                             failure_reason: Optional[str] = None) -> None:
-        """Sets the response for a signin request
+        """Sets the response for a signin request.
 
-        :param token: TODO
-        :param data: TODO
-        :param failure_reason a string representation of the reason for the failure
-        :return: None
+        Args:
+            token: TODO describe the token.
+            data: TODO What is expected? What is the structure required?
+            failure_reason: A string representation of the reason for the failure.
+
+        Returns:
+            None
+
         """
 
         request_type = RequestType.SIGNIN
@@ -132,12 +142,18 @@ class MessageItem:
 
     @logged_method
     def _set_success_response(self, request_type: str, **kwargs) -> None:
-        """Sets the response for a successful operation
+        """Sets the response for a successful operation.
 
-        :param request_type: The type of requests
-        :param kwargs: Any other data needed by as part of the response.
-        This will be appended in the json response message.
-        :return: None
+        Args:
+            request_type:
+                The type of request (see data.message_item.RequestType).
+            **kwargs:
+                Any other data needed by as part of the response.
+                This will be appended in the json response message.
+
+        Returns:
+            None
+
         """
 
         response = {
@@ -153,13 +169,19 @@ class MessageItem:
 
     @logged_method
     def _set_failure_response(self, request_type: str, reason: str, **kwargs) -> None:
-        """Sets the response for a failed operation
+        """Sets the response for a failed operation.
 
-        :param request_type: The type of requests
-        :param reason: A message explaining why the request failed.
-        :param kwargs: Any other data needed by as part of the response.
-        This will be appended in the json response message.
-        :return: None
+        Args:
+            request_type:
+                The type of requests (see data.message_item.RequestType).
+            reason:
+                A message explaining why the request failed.
+            **kwargs:
+                Any other data needed by as part of the response.
+
+        Returns:
+            None
+
         """
 
         response = {
@@ -176,10 +198,15 @@ class MessageItem:
 
     @logged_method
     def set_signin_response_failed(self, reason: str) -> None:
-        """Sets the response for a failed signin request
+        """Sets the response for a failed signin request.
 
-        :param reason: the reason the signin attempt failed
-        :return: None
+        Args:
+            reason:
+                The reason the signin attempt failed.
+
+        Returns:
+            None
+
         """
 
         self._set_failure_response(RequestType.SIGNIN, reason)
@@ -188,9 +215,15 @@ class MessageItem:
     def set_create_account_response(self, was_successful: bool, failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to create an account.
 
-        :param was_successful: True if account creation was successful, else False.
-        :param failure_reason: A message explaining why the operation failed.
-        :return: None
+        Args:
+            was_successful:
+                True if account creation was successful, else False.
+            failure_reason:
+                A message explaining why the operation failed.
+
+        Returns:
+            None
+
         """
 
         request_type = RequestType.CREATE_ACCOUNT

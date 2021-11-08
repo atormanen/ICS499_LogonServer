@@ -15,20 +15,28 @@ class Leaderboard:
                                number_of_games) -> None:  # TODO put type hint for number_of_games
         """Gets the longest consecutive string of wins not including games results that are omitted from leaderboards.
 
-        :param req_item: The message received by the server.
-        :param number_of_games: # TODO describe this argument
-        :return: None
+        Args:
+            req_item: The message received by the server.
+            number_of_games: # TODO describe this argument
+
+        Returns:
+            None
         """
         resp = self.db.get_longest_win_streak(number_of_games)
         req_item.set_longest_win_streak_response(number_of_games, resp)
 
     @logged_method
-    def get_most_chess_games_won(self, req_item: MessageItem, number_of_games):
-        """
+    def get_most_chess_games_won(self, req_item: MessageItem, number_of_games) -> None:
+        """ TODO describe what this method does exactly...
+                 If it just gets the number of games won, why have the word 'most'?
 
-        :param req_item: The message received by the server.
-        :param number_of_games: # TODO describe this argument
-        :return:
+        Args:
+            req_item: The message received by the server.
+            number_of_games: TODO describe this argument
+
+        Returns:
+            None
+
         """
         resp = self.db.get_most_chess_games_won(number_of_games)
 
