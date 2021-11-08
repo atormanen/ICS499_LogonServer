@@ -195,5 +195,23 @@ def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
     return _WrapperType.CLASS_METHOD.build_wrapper(wrapped, level)
 
 
-def log(msg='', *, label='generic_log_msg', level=DEBUG, **kwargs) -> None:
-    logger.log(msg=dict(msg=msg, **kwargs), level=level)
+def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
+    """Logs a message
+
+    Args:
+        msg:
+            The message to be logged.
+        label:
+            A label for the logged message
+        level:
+            A log level that the message should be logged as (default is DEBUG).
+            Use one of these constants from the global_logger module:
+            CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
+        **kwargs:
+            Any
+
+    Returns:
+
+    """
+    msg = f'{label} - {msg}' if label else msg
+    logger.log(level, msg, **kwargs)
