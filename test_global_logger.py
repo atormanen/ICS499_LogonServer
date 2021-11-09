@@ -21,6 +21,7 @@ class TestGlobalLogger(TestCase):
             expected_return_value_string = 'Someone pushed the button 3 times'
 
             length = []
+            # noinspection PyUnusedLocal
             actual_added_lines = []
             with open('./logs/logon_server.log', 'r') as f:
                 lines = f.read().splitlines()
@@ -53,6 +54,7 @@ class TestGlobalLogger(TestCase):
             expected_return_value_string = 'Someone pushed the button 3 times'
 
             length = []
+            # noinspection PyUnusedLocal
             actual_added_lines = []
             with open('./logs/logon_server.log', 'r') as f:
                 lines = f.read().splitlines()
@@ -101,6 +103,7 @@ class TestGlobalLogger(TestCase):
 
             button = Button()
             length = []
+            # noinspection PyUnusedLocal
             actual_added_lines = []
             with open('./logs/logon_server.log', 'r') as f:
                 lines = f.read().splitlines()
@@ -134,6 +137,7 @@ class TestGlobalLogger(TestCase):
 
             button = Button()
             length = []
+            # noinspection PyUnusedLocal
             actual_added_lines = []
             with open('./logs/logon_server.log', 'r') as f:
                 lines = f.read().splitlines()
@@ -176,6 +180,7 @@ class TestGlobalLogger(TestCase):
             expected_return_value_string = 'Someone pushed the button 3 times'
 
             length = []
+            # noinspection PyUnusedLocal
             actual_added_lines = []
             with open('./logs/logon_server.log', 'r') as f:
                 lines = f.read().splitlines()
@@ -208,6 +213,7 @@ class TestGlobalLogger(TestCase):
             expected_return_value_string = 'Someone pushed the button 3 times'
 
             length = []
+            # noinspection PyUnusedLocal
             actual_added_lines = []
             with open('./logs/logon_server.log', 'r') as f:
                 lines = f.read().splitlines()

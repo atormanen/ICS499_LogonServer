@@ -40,9 +40,9 @@ class Signin:
     @logged_method
     def signin(self, req_item: SigninRequest):
 
-        username = parsed_data["username"]
-        password = parsed_data["password"]
-        data = self.get_account_info(parsed_data)
+        username = req_item.username
+        password = req_item.password
+        data = self.get_account_info(req_item.parsed_data)
 
         if (self.validate_password(username, password)):
             if (self.token_up_to_date(username)):
@@ -53,7 +53,7 @@ class Signin:
                 if (signon_token is None):
                     signon_token = self.token.get_token()
                     self.db.signin(username, signon_token, self.token.get_token_creation_time())
-                req_item.set_response(token=signon_token,data=data)
+                req_item.set_response(token=signon_token, data=data)
             else:
                 signon_token = self.token.get_token()
                 self.db.signin(username, signon_token, self.token.get_token_creation_time())
@@ -65,8 +65,7 @@ class Signin:
     @logged_method
     def signout(self, req_item: SignoutRequest):
 
-        username = parsed_data["username"]
-        signon_token = parsed_data["signon_token"]
+        username = req_item.username
         saved_token = self.db.get_token(username)
         saved_token = saved_token[0][0]
         if saved_token is None:
@@ -74,7 +73,7 @@ class Signin:
             return
 
         self.db.logout(username)
-        self.db.save_account_info(username, parsed_data)
+        self.db.save_account_info(username, req_item.parsed_data)
         req_item.set_response()
 
     @logged_method

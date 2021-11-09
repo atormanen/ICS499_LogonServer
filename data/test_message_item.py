@@ -58,10 +58,9 @@ class TestBadRequest(TestCase):
             with self.subTest(subtest_msg):
                 socket = None
                 parsed_data = {'request_type': expected.request_type}
-                args = tuple()
                 kwargs = {}
                 generator = get_generator(subtest_msg)
-                request = build_request(socket, parsed_data, **kwargs)
+                request = generator(socket, parsed_data, **kwargs)
                 self.assertIsInstance(request, BadRequest, f'{request!r}')
                 # request = generator(socket, parsed_data,  **kwargs)
                 common_checks(request)
@@ -144,6 +143,7 @@ class TestRevokeFriendRequestRequest(TestCase):
             del expected
 
 
+# noinspection SpellCheckingInspection
 class TestGetAccountInfoRequest(TestCase):
     def test_response(self):
         with self.subTest('default fail response'):
@@ -1328,6 +1328,7 @@ class TestCreateAccountRequest(TestCase):
             del expected
 
 
+# noinspection SpellCheckingInspection,SpellCheckingInspection
 class TestSigninRequest(TestCase):
     def test_response(self):
         with self.subTest('default fail response'):

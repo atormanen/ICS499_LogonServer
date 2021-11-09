@@ -111,8 +111,8 @@ class UserNotFoundException(FailureException):
 class FriendRequestNotFoundException(FailureException):
     """An exception to be raised if a friend request cannot be found."""
 
-    def __init__(self):
-        super().__init__('No matching friend request found.')
+    def __init__(self, username, friend_username):
+        super().__init__(f'No friend request found from {friend_username} on {username}\'s list.')
 
 
 class DB:
@@ -301,10 +301,6 @@ class DB:
         return result
 
     @logged_method
-    def get_user_info(self, username):
-        return False  # FIXME
-
-    @logged_method
     def get_user_stats(self, username: str) -> List[tuple]:
         """Gets the user statistics.
 
@@ -362,7 +358,7 @@ class DB:
             # we don't need to check if username or friend_username correspond to existing
             # accounts because that happens in the check_if_friend_request_exists call.
             # That said, we should keep in mind that this can raise a UserNotFoundException
-            raise FriendRequestNotFoundException()
+            raise FriendRequestNotFoundException(username, friends_username)
 
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
@@ -371,7 +367,7 @@ class DB:
         return result
 
     @logged_method
-    def remove_friend(self, username: str, friends_username: str) -> bool:
+    def remove_friend(self, username: str, friends_username: str) -> None:
         """Removes a particular friend from a users friends list.
 
         :param username: The username of the user who is removing a friend.
@@ -387,9 +383,11 @@ class DB:
             raise UserNotFoundException(friends_username)
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
-        result = self.db_delete(self.builder.remove_friend(user_id, friends_id))
+        was_successful = self.db_delete(self.builder.remove_friend(user_id, friends_id))
         self.db_delete(self.builder.remove_friend(friends_id, user_id))
-        return result
+        if not was_successful:
+            raise FailureException(f'request to remove {friends_username} from {username}\'s '
+                                   f'friend list failed for unknown reasons.')
 
     @logged_method
     def check_for_friend_requests(self, username: str) -> List[tuple]:

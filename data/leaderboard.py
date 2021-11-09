@@ -1,6 +1,5 @@
 """This module holds the Leaderboard class used to retrieve leaderboard statistics"""
-from data import message_item
-from data.message_item import *
+from data.message_item import GetLongestWinStreakRequest, GetMostChessGamesWonRequest
 from database.db import FailureException
 from global_logger import logged_method
 

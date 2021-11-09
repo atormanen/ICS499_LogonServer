@@ -137,10 +137,12 @@ class MysqlDB:
         AND request_accepted = 0;'
         return query
 
+    #  FIXME Remove noinspection comment when implemented
+    # noinspection PyUnreachableCode,PyUnusedLocal
     @logged_method
     def revoke_friend_request(self, user_id, friend_id) -> str:
-        # FIXME
-        raise NotImplementedError('revoke_friend_request has not been implemented yet')
+
+        raise NotImplementedError('revoke_friend_request has not been implemented yet')  # FIXME remove when implemented
         query = f'SELECT friend_list.user_id, '
 
         return query

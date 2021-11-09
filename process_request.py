@@ -1,7 +1,7 @@
 import json
 
 from data.leaderboard import Leaderboard
-from data.message_item import RequestType, BaseRequest, BadRequest
+from data.message_item import BaseRequest
 from data.responder import Responder
 from data.test_message_item import REVOKE_FRIEND_REQUEST, GET_ACCOUNT_INFO, SAVE_ACCOUNT_INFO_BY_KEY, CHANGE_PASSWORD, \
     GET_MOST_CHESS_GAMES_WON, GET_LONGEST_WIN_STREAK, SIGNOUT, REMOVE_FRIEND, ACCEPT_FRIEND_REQUEST, \
@@ -43,6 +43,7 @@ class ProcessRequest:
     def process_request_type(self, req_item: BaseRequest):
 
         def _unimplemented(msg: str):
+            # noinspection PyUnusedLocal
             def _callable(*args, **kwargs):
                 raise NotImplementedError(msg)
             return _callable

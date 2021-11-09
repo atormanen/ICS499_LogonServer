@@ -65,7 +65,7 @@ class Listener:
                 try:
                     connection_socket.settimeout(3)
                     received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
-                except socket.timeout as err:
+                except socket.timeout:
                     # Expecting a timeout
                     break
             else:

@@ -1,7 +1,8 @@
 # Is this class necessary? Should it be combined with signin?
 import time
 from global_logger import logged_method
-from data.message_item import *
+from data.message_item import GetUserStatsRequest, ChangePasswordRequest, SaveAccountInfoByKeyRequest, \
+    CreateAccountRequest
 
 
 class AccountManagement:
@@ -100,11 +101,14 @@ class AccountManagement:
     @logged_method
     def save_account_info_by_key(self, req_item: SaveAccountInfoByKeyRequest):
         username = req_item.username
-        signon_token = req_item.signon_token
         hash_val = req_item.hash_val
         key = req_item.key
         value = req_item.value
-        type_val = req_item.type_val
+
+        # # FIXME remove if not needed
+        # signon_token = req_item.signon_token
+        # type_val = req_item.type_val
+
         if (self.validate_password(username, hash_val)):
             self.db.SaveAccountInfoByKey(username, key, value)
             req_item.set_response()
