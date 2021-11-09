@@ -1,6 +1,7 @@
 # Is this class necessary? Should it be combined with signin?
 import time
 from global_logger import logged_method
+from data.message_item import *
 
 
 class AccountManagement:
@@ -38,7 +39,7 @@ class AccountManagement:
             return False
 
     @logged_method
-    def create_account(self, req_item):
+    def create_account(self, req_item: CreateAccountRequest):
         parsed_data = req_item.parsed_data
         # check if username exists
         result = self.db.username_is_available(parsed_data["username"])
@@ -46,14 +47,14 @@ class AccountManagement:
         # call mysql_d_b to create CreateAccount
         if not result:
             self.db.create_user(parsed_data)
-            req_item.set_create_account_response(True)
+            req_item.set_response()
         else:
-            req_item.set_create_account_response(False, 'username already exists')
+            req_item.set_response(failure_reason='username already exists')
 
     @logged_method
-    def get_user_stats(self, parsed_data, req_item):
-        stats = self.db.get_user_stats(parsed_data["username"])
-        req_item.set_get_user_stats_response(stats[0])
+    def get_user_stats(self, req_item: GetUserStatsRequest):
+        stats = self.db.get_user_stats(req_item.username)
+        req_item.set_response(stats=stats[0])
 
     @logged_method
     def validate_password(self, username, password):
@@ -77,11 +78,11 @@ class AccountManagement:
         return True
 
     @logged_method
-    def change_password(self, parsed_data, req_item):
-        username = parsed_data["username"]
+    def change_password(self, req_item: ChangePasswordRequest):
+        username = req_item.username
         # signon_token = parsed_data["signon_token"]
-        old_password = parsed_data["old_password"]
-        new_password = parsed_data["new_password"]
+        old_password = req_item.old_password
+        new_password = req_item.new_password
         if self.validate_password(username, old_password):
             # TODO remove commented out code if it is not needed
             # if(True):
@@ -90,28 +91,22 @@ class AccountManagement:
 
             if (saved_password == old_password):
                 self.db.change_password(username, new_password)
-                req_item.set_change_password_response(was_successful=True)
+                req_item.set_response()
             else:
-                req_item.set_change_password_response(was_successful=False,
-                                                      failure_reason='Provided previous password was not a match')
-        # else:
-        #     print("token is not up to date")
-        #     req_item.set_change_password_response("fail")
+                req_item.set_response(failure_reason='Provided previous password was not a match')
         else:
-            req_item.set_change_password_response(was_successful=False,
-                                                  failure_reason='Unable to validate password.')
+            req_item.set_response(failure_reason='Unable to validate password.')
 
     @logged_method
-    def save_account_info_by_key(self, parsed_data, req_item):
-        username = parsed_data["username"]
-        signon_token = parsed_data["signon_token"]
-        hash_val = parsed_data["hash"]
-        key = parsed_data["key"]
-        value = parsed_data["value"]
-        type_val = parsed_data["type"]
+    def save_account_info_by_key(self, req_item: SaveAccountInfoByKeyRequest):
+        username = req_item.username
+        signon_token = req_item.signon_token
+        hash_val = req_item.hash_val
+        key = req_item.key
+        value = req_item.value
+        type_val = req_item.type_val
         if (self.validate_password(username, hash_val)):
-            self.db.save_account_info_by_key(username, key, value)
-            req_item.set_save_account_info_by_key_response(was_successful=True)
+            self.db.SaveAccountInfoByKey(username, key, value)
+            req_item.set_response()
         else:
-            req_item.set_save_account_info_by_key_response(was_successful=False,
-                                                           failure_reason="Unable to validate password")
+            req_item.set_response(failure_reason="Unable to validate password")

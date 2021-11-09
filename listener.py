@@ -1,9 +1,9 @@
 import socket
 from threading import Thread
 
-from data.message_item import MessageItem
 from manifest import Manifest
 from process_request import *
+from data.message_item import build_request
 
 
 # Class listener is used to listen on a servers ip address and port port_number
@@ -94,9 +94,9 @@ class Listener:
             logger.error(f"unable to load message into json: {full_msg}")
             self.send_bad_request(connection_socket)
             return
-        msg_item = MessageItem(connection_socket, parsed_data)
+        request = build_request(connection_socket, parsed_data)
         logger.debug(f"message item: {parsed_data}")
-        self.request_queue.put(msg_item)
+        self.request_queue.put(request)
 
     @logged_method
     def listen(self):

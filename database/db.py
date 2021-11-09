@@ -92,7 +92,7 @@ class FailureException(Exception):
         self._msg: str = msg
 
     @property
-    def msg(self) -> str:
+    def failure_reason_msg(self) -> str:
         """The exception's message."""
         return self._msg
 

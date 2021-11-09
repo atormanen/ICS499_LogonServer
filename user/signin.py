@@ -1,5 +1,6 @@
 import time
 
+from data.message_item import *
 from global_logger import logger, logged_method
 from user.tokens import Tokens
 
@@ -37,7 +38,7 @@ class Signin:
         return True
 
     @logged_method
-    def signin(self, parsed_data, req_item):
+    def signin(self, req_item: SigninRequest):
 
         username = parsed_data["username"]
         password = parsed_data["password"]
@@ -52,30 +53,29 @@ class Signin:
                 if (signon_token is None):
                     signon_token = self.token.get_token()
                     self.db.signin(username, signon_token, self.token.get_token_creation_time())
-                req_item.set_signin_response(signon_token, data)
+                req_item.set_response(token=signon_token,data=data)
             else:
                 signon_token = self.token.get_token()
                 self.db.signin(username, signon_token, self.token.get_token_creation_time())
-                req_item.set_signin_response(signon_token, data)
+                req_item.set_response(token=signon_token, data=data)
         else:
             logger.debug(f"signin failed for user {username}")
-            req_item.set_signin_response_failed('invalid password')
+            req_item.set_response(failure_reason='invalid password')
 
     @logged_method
-    def signout(self, parsed_data, req_item):
+    def signout(self, req_item: SignoutRequest):
 
         username = parsed_data["username"]
         signon_token = parsed_data["signon_token"]
         saved_token = self.db.get_token(username)
         saved_token = saved_token[0][0]
         if saved_token is None:
-            req_item.set_signout_response(was_successful=False,
-                                          failure_reason='currently not logged in')
+            req_item.set_response(failure_reason='currently not logged in')
             return
 
         self.db.logout(username)
         self.db.save_account_info(username, parsed_data)
-        req_item.set_signout_response(was_successful=True)
+        req_item.set_response()
 
     @logged_method
     def get_account_info(self, parsed_data):

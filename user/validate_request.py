@@ -17,7 +17,7 @@ class RequestValidator:
         # If any check returns True, the request is considered bad
         requirement_check_list = [
             # valid request type
-            lambda: parsed_data['request_type'] not in RequestType.get_items()
+            lambda: parsed_data['request_type'] not in RequestType.values()
         ]
         for requirement_check in requirement_check_list:
             if requirement_check():

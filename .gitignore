@@ -4,3 +4,4 @@ params.json
 /logs
 /.coverage
 /doc/
+/data/logs/logon_server.log
