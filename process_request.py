@@ -43,11 +43,9 @@ class ProcessRequest:
     def process_request_type(self, req_item: BaseRequest):
 
         def _unimplemented(msg: str):
-            def _wrapped(*args, **kwargs):
-                def _(*args, **kwargs):
-                    raise NotImplementedError(msg)
-
-            return _wrapped
+            def _callable(*args, **kwargs):
+                raise NotImplementedError(msg)
+            return _callable
 
         action_dict = {REVOKE_FRIEND_REQUEST: _unimplemented('revoke_friend_request has not been implemented yet'),
                        GET_ACCOUNT_INFO: _unimplemented('get_account_info has not been implemented yet'),
