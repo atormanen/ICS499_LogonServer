@@ -5,3 +5,4 @@ params.json
 /.coverage
 /doc/
 /data/logs/logon_server.log
+/.idea/inspectionProfiles/
