@@ -18,22 +18,26 @@ if __name__ == '__main__':
 
 
         def qprint(*args, **kwargs):
-            print(*args, **kwargs)
+            if any(args) or any(kwargs):
+                print(*args, **kwargs)
 
 
         def vprint(*args, **kwargs):
             if verbose:
-                print(*args, **kwargs)
+                if any(args) or any(kwargs):
+                    print(*args, **kwargs)
 
 
         def vnprint(*args, **kwargs):
             if not quiet:
-                print(*args, **kwargs)
+                if any(args) or any(kwargs):
+                    print(*args, **kwargs)
 
 
         def nprint(*args, **kwargs):
             if not verbose and not quiet:
-                print(*args, **kwargs)
+                if any(args) or any(kwargs):
+                    print(*args, **kwargs)
 
 
         print('start')
