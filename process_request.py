@@ -95,6 +95,8 @@ class RequestProcessor:
                 request_item = self.request_queue.get(timeout=self.timeout_seconds)
             except TimeoutError:
                 continue
+            except BaseException as e:
+                raise e
             # Decrypt parsed_data
             if request_item:
                 if not retry_send:
@@ -115,3 +117,5 @@ class RequestProcessor:
                     else:
                         retry_send = False
                         send_retry_count = 0
+                except BaseException as e:
+                    raise e
