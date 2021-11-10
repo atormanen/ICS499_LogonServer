@@ -6,8 +6,8 @@ from subprocess import run
 
 if __name__ == '__main__':
 
+    width = 40
     try:
-        width = 40
         verbose = True
         quiet = False
         should_monitor_log = True
@@ -174,8 +174,13 @@ if __name__ == '__main__':
             vnprint('-' * width)
             vnprint('-' * width)
     except subprocess.CalledProcessError as e:
-        print(e.cmd)
-        print(e.args)
-        print(e.stdout)
-        print(e.stderr, sys.stderr)
+        def sprint(s, *args, **kwargs):
+            print(f"*{str(s).strip().center(width-2)}*", *args, **kwargs)
+        print('*' * width)
+        sprint('Stopping Service')
+        print('*' * width)
+        sprint(e.cmd)
+        sprint(e.args)
+        sprint(e.stdout)
+        sprint(e.stderr, sys.stderr)
         raise e
