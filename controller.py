@@ -86,16 +86,18 @@ class Controller:
         try:
             req = RequestProcessor(self, self.request_queue, REQUEST_PROCESSOR_TIMEOUT_SECONDS)
             req.process_requests()
-            retries = 0
-        except RequestProcessor as e:
+        except RuntimeError as e:
             if retries < allowed_retries:
                 retries += 1
             else:
                 self.error = e
                 self.should_stay_alive = False
         except BaseException as e:
-            self.error = e
-            self.should_stay_alive = False
+            if retries < allowed_retries:
+                retries += 1
+            else:
+                self.error = e
+                self.should_stay_alive = False
 
 
     @logged_method
