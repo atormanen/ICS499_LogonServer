@@ -4,6 +4,7 @@ from subprocess import run
 
 if __name__ == '__main__':
 
+    print('start')
     process = run(['id', '-u'], check=True, text=True, capture_output=True)
     uid = str(process.stdout)
     if int(uid) != 0:
@@ -36,3 +37,5 @@ if __name__ == '__main__':
     #               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     # status_output = str(process.stdout)
     # print(status_output)
+
+    print('done')
