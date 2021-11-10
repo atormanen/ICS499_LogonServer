@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import queue
 from threading import Thread, RLock, Condition
 from typing import List
@@ -29,11 +30,9 @@ class Controller:
             self.manifest = Manifest()
             self.request_queue = queue.Queue
             self.listener = Listener(self, self.request_queue, LISTENER_TIMEOUT_SECONDS)
-
-            self.processors: List[Thread] = []
-
+            self.processor_threads: List[Thread] = []
             self.create_request_processors()
-            self.create_listener()
+            self.listener_thread = self.create_listener()
 
             self._wait_until_no_longer_should_stay_alive()
         finally:
@@ -42,8 +41,17 @@ class Controller:
                 e_msg = f'Shutting down with error {self.error!r}'
                 logger.error(e_msg)
             logger.info('')
-            logger.info('stopping logon server')
+            logger.info(f'stopping logon server (pid={os.getpid()})')
             logger.info('')
+
+            for i in range(len(self.processor_threads)):
+                logger.debug(f'trying to join processor thread {i + 1} of {len(self.processor_threads)}...')
+                self.processor_threads[i].join()
+                logger.debug(f'finished to join processor thread {i + 1} of {len(self.processor_threads)}')
+
+            logger.debug('trying to join Listener thread ...')
+            self.listener_thread.join()
+            logger.debug('finished to join Listener thread ...')
 
     @property
     def error(self) -> BaseException:
@@ -91,8 +99,8 @@ class Controller:
         for i in range(self.manifest.number_of_request_processors):
             logger.info(f"creating request processor {str(i)}")
             # print('Creating processes %d' % i)
-            self.processors.append(Thread(target=self.create_request_processor))
-        for i in self.processors:
+            self.processor_threads.append(Thread(target=self.create_request_processor))
+        for i in self.processor_threads:
             i.start()
 
     @logged_method
@@ -101,7 +109,8 @@ class Controller:
         self.listener.create_listener()
         thread = Thread(target=self.listener.listen)
         thread.start()
-        thread.join()
+        return thread
+        # thread.join()
 
 
 if __name__ == '__main__':
