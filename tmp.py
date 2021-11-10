@@ -18,7 +18,7 @@ if __name__ == '__main__':
     run(['git', 'stash'], check=True, text=True)
     run(['git', 'fetch'], check=True, text=True)
     run(['git', 'pull'], check=True, text=True)
-    run(['chown', '-R', 'jar_user:jar_user', '*'], check=True, text=True)
+    run(['chown', '-R', 'jar_user:jar_user', '*'],  text=True)
 
     process = run("grep -rl '^#!/.*' .", text=True, capture_output=True, shell=True)
     lines = str(process.stdout).strip().split('\n')
