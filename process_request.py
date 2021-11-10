@@ -7,7 +7,7 @@ from data.test_message_item import REVOKE_FRIEND_REQUEST, GET_ACCOUNT_INFO, SAVE
     GET_MOST_CHESS_GAMES_WON, GET_LONGEST_WIN_STREAK, SIGNOUT, REMOVE_FRIEND, ACCEPT_FRIEND_REQUEST, \
     SEND_FRIEND_REQUEST, GET_FRIEND_REQUESTS, GET_FRIENDS_LIST, GET_USER_STATS, CREATE_ACCOUNT, SIGNIN
 from database.db import DB, CouldNotConnectException
-from global_logger import logger, logged_method
+from global_logger import *
 from user.account_management import AccountManagement
 from user.friends_management import FriendsManagement
 from user.signin import Signin
@@ -31,7 +31,7 @@ class RequestProcessor:
         try:
             self.database = DB(username, password, reader, writer, db_name)
         except CouldNotConnectException as e:
-            logger.error(e)
+            log_error(e)
             raise RuntimeError("Startup failed due to inability to connect to db during initialization.") from e
         # self.database = DB('app','123','192.168.1.106','db_name')
         self.timeout_seconds = timeout_seconds

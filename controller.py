@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-import os
 import queue
 from threading import Thread, RLock, Condition
 from typing import List
 
-from global_logger import logged_method, logger
+from global_logger import *
 from listener import Listener
 from manifest import Manifest
 from process_request import RequestProcessor
@@ -39,7 +38,7 @@ class Controller:
             self.should_stay_alive = False  # ensures that all threads will eventually stop
             if self.error:
                 e_msg = f'Shutting down with error {self.error!r}'
-                logger.error(e_msg)
+                log_error(e_msg)
             logger.info('')
             logger.info(f'stopping logon server (pid={os.getpid()})')
             logger.info('')

@@ -1,9 +1,8 @@
 from typing import Optional, List
 
 import mysql.connector
-
 from database.mysql_db import MysqlDB
-from global_logger import logger, logged_method
+from global_logger import *
 
 
 # from query_builder import query_builder
@@ -65,7 +64,7 @@ class _DBContextManager:
     def __exit__(self, exc_type, exc_val, exc_tb):
 
         if exc_val:
-            logger.error(exc_val)
+            log_error(exc_val)
             self.context.result = False
         else:
             self.context.result = True
@@ -74,12 +73,12 @@ class _DBContextManager:
             if self.context.cursor:
                 self.context.cursor.close()
         except BaseException as e0:
-            logger.error(e0)
+            log_error(e0)
         try:
             if self.context.db:
                 self.context.db.close()
         except BaseException as e1:
-            logger.error(e1)
+            log_error(e1)
 
         return self.context.result
 

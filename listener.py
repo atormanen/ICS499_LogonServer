@@ -37,7 +37,7 @@ class Listener:
             self.server_socket.bind((self.server_ip, self.port_number))
             self.server_socket.listen(5)
         except OSError as error:
-            logger.error(error)
+            log_error(error)
         logger.debug(f"server socket: {str(self.server_socket)}")
 
     @logged_method
@@ -98,7 +98,7 @@ class Listener:
             if not (full_msg[0] == "{"):
                 full_msg = full_msg[2::]
         except IndexError as error:
-            logger.error(error)
+            log_error(error)
             return
         try:
             parsed_data = json.loads(full_msg)
@@ -127,7 +127,7 @@ class Listener:
                 thread = Thread(target=self.process_request, args=(connection_socket,))
                 thread.start()
             except IOError as error:
-                logger.error(error)
+                log_error(error)
                 if connection_socket:
                     connection_socket.close()
 

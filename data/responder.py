@@ -1,7 +1,7 @@
 from socket import socket
 
 from data.message_item import BaseRequest
-from global_logger import logger, logged_method
+from global_logger import *
 
 
 # from MessageItem import MessageItem
@@ -43,4 +43,4 @@ class Responder:
             msg_item.socket.settimeout(timeout_seconds)
             msg_item.socket.send(msg_item.response.encode())
         except ConnectionResetError as e:
-            logger.error(e)
+            log_error(e)
