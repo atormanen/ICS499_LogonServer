@@ -1,6 +1,5 @@
 import json
 
-from controller import Controller
 from data.leaderboard import Leaderboard
 from data.message_item import BaseRequest
 from data.responder import Responder
@@ -13,6 +12,7 @@ from user.account_management import AccountManagement
 from user.friends_management import FriendsManagement
 from user.signin import Signin
 from user.validate_request import RequestValidator
+from util.threading import ThreadController
 
 
 class RequestProcessor:
@@ -20,7 +20,7 @@ class RequestProcessor:
     # PrecessRequest is set up to be a separate process in the OS and
     # will hold the shared request queue object. It will pull requests
     # from the queue as they are inserted from the listener
-    def __init__(self, controller: Controller, timeout_seconds: float):
+    def __init__(self, controller: ThreadController, request_queue, timeout_seconds: float):
         with open('./params.json', 'r') as f:
             data = json.loads(f.read())
         reader = data['db_host']
@@ -35,6 +35,7 @@ class RequestProcessor:
             raise RuntimeError("Startup failed due to inability to connect to db during initialization.") from e
         # self.database = DB('app','123','192.168.1.106','db_name')
         self.timeout_seconds = timeout_seconds
+        self.request_queue = request_queue
         self.controller = controller
         self.signin = Signin(self.database)
         self.account_manager = AccountManagement(self.database)
@@ -42,10 +43,6 @@ class RequestProcessor:
         self.req_validation = RequestValidator()
         self.responder = Responder(timeout_seconds=timeout_seconds)
         self.leaderboard = Leaderboard(self.database)
-
-    @property
-    def request_queue(self):
-        return self.controller.request_queue
 
     # TODO: find a better way to process these requests types.
     @logged_method

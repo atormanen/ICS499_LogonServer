@@ -5,16 +5,19 @@ from threading import Thread
 from data.message_item import build_request
 from global_logger import *
 from manifest import Manifest
-from process_request import Controller
 
 
 # Class listener is used to listen on a servers ip address and port port_number
 # 12345 for incoming requests.
+from util.threading import ThreadController
+
+
 class Listener:
     hostname = socket.gethostname()
 
-    def __init__(self, controller: Controller, timeout_seconds: float):
+    def __init__(self, controller: ThreadController, request_queue, timeout_seconds: float):
         self.timeout_seconds = timeout_seconds
+        self.request_queue = request_queue
         self.manifest = Manifest()
         self.controller = controller
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -25,9 +28,6 @@ class Listener:
         self.server_ip = ''
         self.req_count = 0
 
-    @property
-    def request_queue(self):
-        return self.controller.request_queue
 
     @logged_method
     def create_socket(self):

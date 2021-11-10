@@ -28,7 +28,7 @@ class Controller:
             self.condition = Condition(self.lock)
             self.manifest = Manifest()
             self.request_queue = queue.Queue
-            self.listener = Listener(self, LISTENER_TIMEOUT_SECONDS)
+            self.listener = Listener(self, self.request_queue, LISTENER_TIMEOUT_SECONDS)
 
             self.processors: List[Thread] = []
 
@@ -80,7 +80,7 @@ class Controller:
         allowed_retries = 5
         retries = 0
         try:
-            req = RequestProcessor(self, REQUEST_PROCESSOR_TIMEOUT_SECONDS)
+            req = RequestProcessor(self, self.request_queue, REQUEST_PROCESSOR_TIMEOUT_SECONDS)
             req.process_requests()
         except RuntimeError as e:
             if retries < allowed_retries:
