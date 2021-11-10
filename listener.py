@@ -127,7 +127,7 @@ class Listener:
                 self.req_count += 1
                 thread.start()
             except IOError as error:
-                log_error(error, 'Listener.listen IOError catch')
+                log_error(error, f'Listener.listen IOError catch - {self.controller.should_stay_alive}')
                 if connection_socket:
                     connection_socket.close()
 
