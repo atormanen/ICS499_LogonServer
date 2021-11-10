@@ -146,7 +146,6 @@ class DB:
         # check to see that connection is good... if not the caller wants to know asap
         self._test_db_connection()  # this raises CouldNotConnectException if connection fails
 
-    @logged_method
     def db_insert(self, statement: str) -> bool:
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
@@ -155,7 +154,6 @@ class DB:
             c.commit()
         return False if c.result is None else c.result
 
-    @logged_method
     def db_fetch(self, statement: str) -> List[tuple]:
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
@@ -164,7 +162,6 @@ class DB:
             c.fetchall()
         return c.fetched
 
-    @logged_method
     def db_update(self, statement: str) -> bool:
         """Updates the database.
 
