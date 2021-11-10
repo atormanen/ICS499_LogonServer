@@ -27,7 +27,7 @@ class Controller:
             self.lock = RLock()
             self.condition = Condition(self.lock)
             self.manifest = Manifest()
-            self.request_queue = queue.Queue
+            self.request_queue = queue.Queue()
             self.listener = Listener(self, self.request_queue, LISTENER_TIMEOUT_SECONDS)
             self.processor_threads: List[Thread] = []
             self.create_request_processors()
