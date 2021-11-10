@@ -7,7 +7,7 @@ from subprocess import run
 
 if __name__ == '__main__':
 
-    width = shutil.get_terminal_size((80, 20)).columns
+    width = int(shutil.get_terminal_size((80, 20)).columns * 0.8)
     try:
         verbose = True
         quiet = False
