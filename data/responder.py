@@ -1,3 +1,4 @@
+from data.message_item import BaseRequest
 from global_logger import logger, logged_method
 
 
@@ -32,10 +33,11 @@ class Responder:
         connection_socket.send(status.encode())
 
     @logged_method
-    def send_response(self, msg_item):
+    def send_response(self, msg_item: BaseRequest, timeout_seconds: float):
 
-        logger.debug(msg_item.response_obj)
+        logger.debug(msg_item.response)
         try:
-            msg_item.connection_socket.send(msg_item.response_obj.encode())
+            msg_item.socket.settimeout(timeout_seconds)
+            msg_item.socket.send(msg_item.response.encode())
         except ConnectionResetError as e:
             logger.error(e)

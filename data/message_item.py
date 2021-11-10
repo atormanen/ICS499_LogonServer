@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from abc import abstractmethod, ABC
 from typing import Optional, Type
+from socket import socket as socket_cls
 
 from global_logger import logger, logged_method
 from util.const import ConstContainerClass as ConstContainer
@@ -66,7 +67,7 @@ class FailureReasons(ConstContainer):
 class BaseRequest(ABC):
     class Builder:
         @classmethod
-        def build(cls, connection_socket, parsed_data: dict, *args, **kwargs) -> BaseRequest:
+        def build(cls, connection_socket: socket_cls, parsed_data: dict, *args, **kwargs) -> BaseRequest:
             selected_subclass = BadRequest
             request_type = parsed_data['request_type'] if \
                 isinstance(parsed_data, dict) and 'request_type' in parsed_data.keys() else None
@@ -88,10 +89,10 @@ class BaseRequest(ABC):
                 selected = cls._check_subclasses(subclass, request_type)
             return selected if selected is not None else BadRequest
 
-    def __init__(self, connection_socket, parsed_data: dict, *args, **kwargs):
+    def __init__(self, connection_socket: socket_cls, parsed_data: dict, *args, **kwargs):
         if not isinstance(parsed_data, dict):
             raise TypeError(f'parsed_data must be a dict, but it was {type(parsed_data).__name__}')
-        self._connection_socket = connection_socket
+        self._connection_socket: socket_cls = connection_socket
         self._parsed_data: dict = parsed_data
         self._response: str = json.dumps({'request_type': self.request_type,
                                           'status': Status.FAIL,
@@ -114,6 +115,10 @@ class BaseRequest(ABC):
     @property
     def parsed_data(self):
         return self._parsed_data
+
+    @property
+    def socket(self) -> socket_cls:
+        return self._connection_socket
 
     @classmethod
     @abstractmethod

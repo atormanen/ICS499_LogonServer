@@ -96,6 +96,11 @@ class FailureException(Exception):
         """The exception's message."""
         return self._msg
 
+class CouldNotConnectException(FailureException):
+    """An exception that is raised if a database connection check fails"""
+
+    def __init__(self):
+        super().__init__('Could not connect to database')
 
 class UserNotFoundException(FailureException):
     """An exception to be raised if a user cannot be found."""
@@ -118,12 +123,27 @@ class FriendRequestNotFoundException(FailureException):
 class DB:
 
     def __init__(self, user, password, reader, writer, database: MysqlDB):
+        """ Initializes the DB object.
+
+        Args:
+            user: The user accessing the database.
+            password: The password used to access database.
+            reader: TODO
+            writer: TODO
+            database: The name of the database being accessed.
+
+        Raises:
+            CouldNotConnectException: If connection test fails.
+        """
         self.builder = MysqlDB()
         self.user = user
         self.password = password
         self.reader = reader
         self.writer = writer
         self.database = database
+
+        # check to see that connection is good... if not the caller wants to know asap
+        self._test_db_connection()  # this raises CouldNotConnectException if connection fails
 
     @logged_method
     def db_insert(self, statement: str) -> bool:
@@ -439,3 +459,20 @@ class DB:
             return
         else:
             self.db_update(query)
+
+    @logged_method
+    def _test_db_connection(self):
+        """tests the database connection.
+
+        Note that this should only be used when initializing the DB object
+
+        Raises:
+            CouldNotConnectException: If the test fails to connect.
+
+        """
+        try:
+            self.db_fetch(self.builder.db_check())
+        except CouldNotConnectException as e:
+            raise e
+        except BaseException as e:
+            raise CouldNotConnectException from e

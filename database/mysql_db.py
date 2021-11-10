@@ -211,3 +211,6 @@ class MysqlDB:
             "level": "user_statistics.level"
         }
         return columns.get(key)
+
+    def db_check(self):
+        return"SELECT user_id FROM user;"
