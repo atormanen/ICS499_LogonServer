@@ -13,5 +13,6 @@ chmod +x ./controller.py
 chmod 0554 -R *
 chmod 0664 ./logs/logon_server.log
 chmod 0440 ./params.json
-systemctl restart jar_logon.service
-tail -n 100 -f ./logs/logon_server.log
+systemctl start jar_logon.service
+systemctl status jar_logon.service
+#tail -n 100 -f ./logs/logon_server.log
