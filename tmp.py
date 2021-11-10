@@ -173,6 +173,7 @@ if __name__ == '__main__':
                 print('.' * width)
                 print('log'.center(width))
                 t = run(['tail', '-n', '100', './logs/logon_server.log'], text=True)
+                exit(2)
             vnprint('Service Status'.center(width))
             vprint(process.stdout)
             vnprint(process.stderr, file=sys.stderr)
