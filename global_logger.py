@@ -194,8 +194,8 @@ def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
 
     return _WrapperType.CLASS_METHOD.build_wrapper(wrapped, level)
 
-def log_error(e):
-    logger.error(repr(e))
+def log_error(e: BaseException, msg = ''):
+    logger.error(f'{msg} - {e!r}')
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:

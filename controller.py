@@ -38,7 +38,7 @@ class Controller:
             self.should_stay_alive = False  # ensures that all threads will eventually stop
             if self.error:
                 e_msg = f'Shutting down with error {self.error!r}'
-                log_error(e_msg)
+                log_error(self.error, e_msg)
             logger.info('')
             logger.info(f'stopping logon server (pid={os.getpid()})')
             logger.info('')
@@ -98,7 +98,8 @@ class Controller:
         for i in range(self.manifest.number_of_request_processors):
             logger.info(f"creating request processor {str(i)}")
             # print('Creating processes %d' % i)
-            self.processor_threads.append(Thread(target=self.create_request_processor))
+            self.processor_threads.append(
+                Thread(target=self.create_request_processor, name=f'req_processor_thread_{i}'))
         for i in self.processor_threads:
             i.start()
 
@@ -106,7 +107,7 @@ class Controller:
     def create_listener(self):
         logger.info('creating request listener')
         self.listener.create_listener()
-        thread = Thread(target=self.listener.listen)
+        thread = Thread(target=self.listener.listen, name='listener_thread')
         thread.start()
         return thread
         # thread.join()

@@ -31,7 +31,7 @@ class RequestProcessor:
         try:
             self.database = DB(username, password, reader, writer, db_name)
         except CouldNotConnectException as e:
-            log_error(e)
+            log_error(e, 'failed to setup db connection')
             raise RuntimeError("Startup failed due to inability to connect to db during initialization.") from e
         # self.database = DB('app','123','192.168.1.106','db_name')
         self.timeout_seconds = timeout_seconds

@@ -43,4 +43,4 @@ class Responder:
             msg_item.socket.settimeout(timeout_seconds)
             msg_item.socket.send(msg_item.response.encode())
         except ConnectionResetError as e:
-            log_error(e)
+            log_error(e, 'connection reset')

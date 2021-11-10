@@ -119,15 +119,15 @@ class Listener:
 
         connection_socket = None
         while self.controller.should_stay_alive:
-            self.req_count += 1
             try:
                 self.server_socket.settimeout(self.timeout_seconds)
                 connection_socket, address = self.server_socket.accept()
                 logger.debug(f"received message from {str(address)}")
-                thread = Thread(target=self.process_request, args=(connection_socket,))
+                thread = Thread(target=self.process_request, args=(connection_socket,), name=f'listener_sub_thread_{self.req_count}')
+                self.req_count += 1
                 thread.start()
             except IOError as error:
-                log_error(error)
+                log_error(error, 'Listener.listen IOError catch')
                 if connection_socket:
                     connection_socket.close()
 
