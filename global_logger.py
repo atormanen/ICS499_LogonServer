@@ -1,3 +1,4 @@
+import json
 import logging.handlers
 import os
 import time
@@ -16,6 +17,9 @@ DEBUG = logging.DEBUG  # 10
 # Setup internal vars
 _verbose_level_name = 'VERBOSE'
 _log_file = './logs/logon_server.log'
+with open('./params.json', 'r') as f:
+    data = json.loads(f.read())
+project_path = data['project_path']
 
 # noinspection SpellCheckingInspection
 _log_formatter = logging.Formatter(
