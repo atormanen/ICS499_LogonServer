@@ -96,11 +96,13 @@ class FailureException(Exception):
         """The exception's message."""
         return self._msg
 
+
 class CouldNotConnectException(FailureException):
     """An exception that is raised if a database connection check fails"""
 
     def __init__(self):
         super().__init__('Could not connect to database')
+
 
 class UserNotFoundException(FailureException):
     """An exception to be raised if a user cannot be found."""

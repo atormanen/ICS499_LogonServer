@@ -1,11 +1,9 @@
 import socket
 from threading import Thread
-from typing import Optional
 
-from controller import Controller
+from data.message_item import build_request
 from manifest import Manifest
 from process_request import *
-from data.message_item import build_request
 
 
 # Class listener is used to listen on a servers ip address and port port_number

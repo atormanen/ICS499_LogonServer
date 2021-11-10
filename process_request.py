@@ -1,5 +1,4 @@
 import json
-from typing import Optional
 
 from controller import Controller
 from data.leaderboard import Leaderboard
@@ -41,7 +40,7 @@ class RequestProcessor:
         self.account_manager = AccountManagement(self.database)
         self.friends_manager = FriendsManagement(self.database)
         self.req_validation = RequestValidator()
-        self.responder = Responder(timeout_seconds)
+        self.responder = Responder(timeout_seconds=timeout_seconds)
         self.leaderboard = Leaderboard(self.database)
 
     @property
@@ -56,6 +55,7 @@ class RequestProcessor:
             # noinspection PyUnusedLocal
             def _callable(*args, **kwargs):
                 raise NotImplementedError(msg)
+
             return _callable
 
         action_dict = {REVOKE_FRIEND_REQUEST: _unimplemented('revoke_friend_request has not been implemented yet'),
@@ -76,7 +76,6 @@ class RequestProcessor:
 
         action_dict[req_item.request_type](req_item)
 
-
     # The process thread will block on request_queue.get() until something
     # arrives.
     @logged_method
@@ -94,11 +93,12 @@ class RequestProcessor:
         send_retry_count = 0
         max_send_retries = 5
         while self.controller.should_stay_alive:
-            request_item = None
-            request_item = self.request_queue.get(timeout_seconds=self.timeout_seconds)
+            try:
+                request_item = self.request_queue.get(timeout_seconds=self.timeout_seconds)
+            except TimeoutError:
+                continue
             # Decrypt parsed_data
             if request_item:
-
                 if not retry_send:
                     # make response by processing the request
                     #   Note that we don't want this in a try.

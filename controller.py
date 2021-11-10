@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-import multiprocessing
 import queue
-from abc import abstractmethod
 from threading import Thread, RLock, Condition
-from typing import List, runtime_checkable, Protocol
+from typing import List
 
 from global_logger import logged_method, logger
 from listener import Listener
@@ -76,6 +74,7 @@ class Controller:
         with self.condition:
             while self._should_stay_alive:
                 self.condition.wait()
+
     @logged_method
     def create_request_processor(self):
         allowed_retries = 5
@@ -89,7 +88,6 @@ class Controller:
             else:
                 self.error = e
                 self.should_stay_alive = False
-
 
     @logged_method
     def create_request_processors(self):

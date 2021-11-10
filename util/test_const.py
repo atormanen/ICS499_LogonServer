@@ -61,21 +61,20 @@ class _TestTemplate:
 class TestConstContainerClass(TestCase):
 
     def test_string_contents_only(self):
-            d = dict(U_BAD_FRIENDS_LIST_PROVIDED='Unexpected Error - There was a problem reading friends list',
-                     U_ACCOUNT_DATA_NOT_FOUND='Unexpected Error - Account data was not provided by server.',
-                     U_UNSPECIFIED='Unexpected Error - unspecified',
-                     U_USER_STATS_COULD_NOT_BE_FOUND='Unexpected Error - User stats could not be found',
-                     U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER='Unexpected Error - No friends list provided by server',
-                     U_NO_RESPONSE_SET_BY_SERVER='Unexpected Error - No response set by server')
+        d = dict(U_BAD_FRIENDS_LIST_PROVIDED='Unexpected Error - There was a problem reading friends list',
+                 U_ACCOUNT_DATA_NOT_FOUND='Unexpected Error - Account data was not provided by server.',
+                 U_UNSPECIFIED='Unexpected Error - unspecified',
+                 U_USER_STATS_COULD_NOT_BE_FOUND='Unexpected Error - User stats could not be found',
+                 U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER='Unexpected Error - No friends list provided by server',
+                 U_NO_RESPONSE_SET_BY_SERVER='Unexpected Error - No response set by server')
 
-            class ConstantClass(ConstContainerClass):
-                U_BAD_FRIENDS_LIST_PROVIDED = 'Unexpected Error - There was a problem reading friends list'
-                U_ACCOUNT_DATA_NOT_FOUND = 'Unexpected Error - Account data was not provided by server.'
-                U_UNSPECIFIED = 'Unexpected Error - unspecified'
-                U_USER_STATS_COULD_NOT_BE_FOUND = 'Unexpected Error - User stats could not be found'
-                U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER = 'Unexpected Error - No friends list provided by server'
-                U_NO_RESPONSE_SET_BY_SERVER = 'Unexpected Error - No response set by server'
+        class ConstantClass(ConstContainerClass):
+            U_BAD_FRIENDS_LIST_PROVIDED = 'Unexpected Error - There was a problem reading friends list'
+            U_ACCOUNT_DATA_NOT_FOUND = 'Unexpected Error - Account data was not provided by server.'
+            U_UNSPECIFIED = 'Unexpected Error - unspecified'
+            U_USER_STATS_COULD_NOT_BE_FOUND = 'Unexpected Error - User stats could not be found'
+            U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER = 'Unexpected Error - No friends list provided by server'
+            U_NO_RESPONSE_SET_BY_SERVER = 'Unexpected Error - No response set by server'
 
-            t = _TestTemplate(self, d, ConstantClass)
-            t()
-
+        t = _TestTemplate(self, d, ConstantClass)
+        t()
