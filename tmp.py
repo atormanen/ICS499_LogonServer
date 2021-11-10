@@ -16,6 +16,8 @@ if __name__ == '__main__':
 
         c_operation = operation.strip().lower()
 
+        def sprint(s, *args, **kwargs):
+            print(f"*{str(s).strip().center(width-2)}*", *args, **kwargs)
 
         def qprint(*args, **kwargs):
             if any(args) or any(kwargs):
@@ -158,7 +160,19 @@ if __name__ == '__main__':
             vnprint('-' * width)
             vnprint('Waiting on Service Status'.center(width), end='\r')
             sleep(5.0)
-            process = run(['systemctl', 'status', '-n', '100', 'jar_logon.service'], check=True, text=True, capture_output=True)
+            try:
+                process = run(['systemctl', 'status', '-n', '100', 'jar_logon.service'], check=True, text=True, capture_output=True)
+            except subprocess.CalledProcessError as e:
+                vnprint('Service Status'.center(width), end='\r')
+                print('.' * width)
+                print('stdout'.center(width))
+                print(e.stdout)
+                print('.' * width)
+                print('stderr'.center(width))
+                print(e.stderr, sys.stderr)
+                print('.' * width)
+                print('log'.center(width))
+                t = run(['tail', '-n', '100', './logs/logon_server.log'], text=True)
             vnprint('Service Status'.center(width))
             vprint(process.stdout)
             vnprint(process.stderr, file=sys.stderr)
@@ -174,8 +188,7 @@ if __name__ == '__main__':
             vnprint('-' * width)
             vnprint('-' * width)
     except subprocess.CalledProcessError as e:
-        def sprint(s, *args, **kwargs):
-            print(f"*{str(s).strip().center(width-2)}*", *args, **kwargs)
+
         print('*' * width)
         sprint('CalledProcessError')
         print('*' * width)
