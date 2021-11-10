@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import shutil
 import subprocess
 import sys
 from time import sleep
@@ -6,7 +7,7 @@ from subprocess import run
 
 if __name__ == '__main__':
 
-    width = 40
+    width = shutil.get_terminal_size((80, 20)).columns
     try:
         verbose = True
         quiet = False
