@@ -170,7 +170,7 @@ if __name__ == '__main__':
                 print(e.stdout)
                 print('.' * width)
                 print('stderr'.center(width))
-                print(str(e.stderr), sys.stderr)
+                print(e.stderr.decode('utf8', 'ignore'), sys.stderr)
                 print('.' * width)
                 print('log'.center(width))
                 t = run(['tail', '-n', '100', './logs/logon_server.log'], text=True)
