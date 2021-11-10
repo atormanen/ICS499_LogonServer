@@ -26,12 +26,13 @@ if __name__ == '__main__':
         for item in lines:
             if '/.git/' not in item:
                 run(['chmod', '+x', item], check=True, text=True)
+
     # run(['chmod', '0554', '-R', '.'], check=True, text=True, shell=True)
-    run('chmod 0554 -R .', check=True, text=True, shell=True)
-    run(['chmod', '0664', './logs/logon_server.log'], check=True, text=True)
-    run(['chmod', '0440', './params.json'], check=True, text=True)
+    run('chmod 0554 -R .', check=True, text=True, shell=True, capture_output=True)
+    run(['chmod', '0664', './logs/logon_server.log'], check=True, text=True, capture_output=True)
+    run(['chmod', '0440', './params.json'], check=True, text=True, capture_output=True)
     run(['systemctl', 'start', 'jar_logon.service'], check=True, text=True, capture_output=True)
     # process = run(['systemctl', 'status', '-n', '100', 'jar_logon.service'], check=True, text=True,
     #               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    status_output = str(process.stdout)
-    print(status_output)
+    # status_output = str(process.stdout)
+    # print(status_output)
