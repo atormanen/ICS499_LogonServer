@@ -177,10 +177,17 @@ if __name__ == '__main__':
         def sprint(s, *args, **kwargs):
             print(f"*{str(s).strip().center(width-2)}*", *args, **kwargs)
         print('*' * width)
-        sprint('Stopping Service')
+        sprint('CalledProcessError')
         print('*' * width)
+        print('cmd'.center(width))
         print(e.cmd)
+        print('-' * width)
+        print('args'.center(width))
         print(e.args)
+        print('-' * width)
+        print('stdout'.center(width))
         print(e.stdout)
+        print('-' * width)
+        print('stderr'.center(width))
         print(e.stderr, sys.stderr)
         raise e
