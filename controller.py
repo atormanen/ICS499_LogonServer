@@ -46,6 +46,9 @@ class Controller:
             if self.error:
                 e_msg = f'Shutting down with error {self.error!r}'
                 logger.error(e_msg)
+            logger.info('')
+            logger.info('stopping logon server')
+            logger.info('')
 
     @property
     def error(self) -> BaseException:
