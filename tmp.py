@@ -170,7 +170,7 @@ if __name__ == '__main__':
                 print(e.stdout)
                 print('.' * width)
                 print('stderr'.center(width))
-                print(e.stderr.read(), sys.stderr)
+                print(e.stderr)
                 # print(e.stderr.decode('utf8', 'ignore'), sys.stderr)
                 print('.' * width)
                 print('log'.center(width))
