@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 import sys
-from asyncio import sleep
+from time import sleep
 from subprocess import run
 
 if __name__ == '__main__':
