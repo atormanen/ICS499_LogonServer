@@ -11,14 +11,19 @@ if __name__ == '__main__':
         print("Unauthorized - Try running with sudo.")
         exit(1)
 
+    print('---------------------------------------')
     run(['systemctl', 'stop', 'jar_logon.service'], check=True, text=True)
 
     with open('./logs/logon_server.log', 'w'):
         ...  # clear the log
 
+    print('---------------------------------------')
     run(['git', 'stash'], check=True, text=True)
+    print('---------------------------------------')
     run(['git', 'fetch'], check=True, text=True)
+    print('---------------------------------------')
     run(['git', 'pull'], check=True, text=True)
+    print('---------------------------------------')
     run(['chown', '-R', 'jar_user:jar_user', '.'],  text=True)
 
     process = run("grep -rl '^#!/.*' .", text=True, capture_output=True, shell=True)
