@@ -1,4 +1,5 @@
 import json
+import queue
 
 from data.leaderboard import Leaderboard
 from data.message_item import BaseRequest
@@ -20,7 +21,7 @@ class RequestProcessor:
     # PrecessRequest is set up to be a separate process in the OS and
     # will hold the shared request queue object. It will pull requests
     # from the queue as they are inserted from the listener
-    def __init__(self, controller: ThreadController, request_queue, timeout_seconds: float):
+    def __init__(self, controller: ThreadController, request_queue: queue.Queue, timeout_seconds: float):
         with open('./params.json', 'r') as f:
             data = json.loads(f.read())
         reader = data['db_host']
@@ -91,7 +92,7 @@ class RequestProcessor:
         max_send_retries = 5
         while self.controller.should_stay_alive:
             try:
-                request_item = self.request_queue.get(timeout_seconds=self.timeout_seconds)
+                request_item = self.request_queue.get(timeout=self.timeout_seconds)
             except TimeoutError:
                 continue
             # Decrypt parsed_data
