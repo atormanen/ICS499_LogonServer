@@ -107,25 +107,6 @@ if __name__ == '__main__':
         vnprint(process.stderr, file=sys.stderr)
 
         # --------------------------------------------
-        #           Making Scripts Executable
-        vnprint('-' * width)
-        vnprint('Making Scripts Executable'.center(width), end='\r')
-        processes = [None, None]
-        processes[0] = run("grep -rl '^#!/.*' .", text=True,  shell=True, capture_output=True)
-        lines = str(process.stdout).strip().split('\n')
-        if lines and not lines[0].startswith('grep:'):
-            for item in lines:
-                if '/.git/' not in item:
-                    processes[1] = run(['chmod', '+x', item], check=True, text=True, capture_output=True)
-
-        vnprint('Made Scripts Executable'.center(width))
-
-        for process in processes:
-            if process:
-                vprint(process.stdout)
-                vnprint(process.stderr, file=sys.stderr)
-
-        # --------------------------------------------
         #           Changing Mode Bits
         vnprint('-' * width)
         vnprint('Changing Mode Bits'.center(width), end='\r')
@@ -139,6 +120,25 @@ if __name__ == '__main__':
             vnprint(process.stderr, file=sys.stderr)
 
         # --------------------------------------------
+        #           Making Scripts Executable
+        vnprint('-' * width)
+        vnprint('Making Scripts Executable'.center(width), end='\r')
+        processes = [None, None]
+        processes[0] = run("grep -rl '^#!/.*' .", text=True, shell=True, capture_output=True)
+        lines = str(process.stdout).strip().split('\n')
+        if lines and not lines[0].startswith('grep:'):
+            for item in lines:
+                if item and '/.git/' not in item:
+                    processes[1] = run(['chmod', '+x', item], check=True, text=True, capture_output=True)
+
+        vnprint('Made Scripts Executable'.center(width))
+
+        for process in processes:
+            if process:
+                vprint(process.stdout)
+                vnprint(process.stderr, file=sys.stderr)
+
+        # --------------------------------------------
         #           Restarting Service
         vnprint('-' * width)
         vnprint('Restarting Service'.center(width), end='\r')
@@ -147,7 +147,7 @@ if __name__ == '__main__':
         vprint(process.stdout)
         vnprint(process.stderr, file=sys.stderr)
 
-        if(should_show_service_status):
+        if (should_show_service_status):
             # --------------------------------------------
             #           Service Status
             sleep(5.0)  # to see if the server false to get started
@@ -156,7 +156,7 @@ if __name__ == '__main__':
             process = run(['systemctl', 'status', '-n', '100', 'jar_logon.service'], check=True, text=True)
             vnprint('Service Status'.center(width))
 
-        if(should_monitor_log):
+        if (should_monitor_log):
             # --------------------------------------------
             #           Log Monitor
             vnprint('-' * width)
@@ -171,5 +171,3 @@ if __name__ == '__main__':
         print(e.args)
         print(e.stdout)
         print(e.stderr, sys.stderr)
-        
-
