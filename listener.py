@@ -75,14 +75,17 @@ class Listener:
         while self.controller.should_stay_alive:
             if buffer_exceeded:
                 try:
-                    connection_socket.settimeout(self.timeout_seconds)
+
+                    logger.debug('!trying to receive when buffer exceeded')
                     received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
+                    logger.debug('!msg received')
                 except TimeoutError:
                     # Expecting a timeout
+                    logger.debug('!timeout raised, breaking out')
                     break
             else:
                 try:
-                    connection_socket.settimeout(self.timeout_seconds)
+                    logger.debug('!trying to receive')
                     received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
                 except UnicodeDecodeError:
                     self.send_bad_request(connection_socket)
@@ -106,9 +109,15 @@ class Listener:
             logger.error(f"unable to load message into json: {full_msg}")
             self.send_bad_request(connection_socket)
             return
+
+        logger.debug('!trying to build request')
         request = build_request(connection_socket, parsed_data)
         logger.debug(f"message item: {parsed_data}")
+
+        logger.debug('!trying to put request in queue')
         self.request_queue.put(request, timeout=self.timeout_seconds)
+
+        logger.debug('!request is in the queue')
 
     @logged_method
     def listen(self):
