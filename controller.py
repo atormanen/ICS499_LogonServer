@@ -20,7 +20,7 @@ class Controller:
 
     # requestQueue is shared queue among all processes
     @logged_method
-    def __init__(self, timeout_on_join=None):
+    def __init__(self):
         try:
             self._error = None
             self._should_stay_alive = True
@@ -36,9 +36,6 @@ class Controller:
             self.create_listener()
 
             self._wait_until_no_longer_should_stay_alive()
-
-            for p in self.processors:
-                p.join(timeout_on_join)
         finally:
             self.should_stay_alive = False  # ensures that all threads will eventually stop
             if self.error:
@@ -101,7 +98,7 @@ class Controller:
     @logged_method
     def create_listener(self):
         logger.info('creating request listener')
-        self.listener.create_listener(self)
+        self.listener.create_listener()
         thread = Thread(target=self.listener.listen)
         thread.start()
         thread.join()
