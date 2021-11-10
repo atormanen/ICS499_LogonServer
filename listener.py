@@ -126,7 +126,7 @@ class Listener:
                 thread = Thread(target=self.process_request, args=(connection_socket,), name=f'listener_sub_thread_{self.req_count}')
                 self.req_count += 1
                 thread.start()
-            except TimeoutError:
+            except (TimeoutError, socket.timeout):
                 continue
             except IOError as error:
                 log_error(error, f'Listener.listen IOError catch - {self.controller.should_stay_alive}')
