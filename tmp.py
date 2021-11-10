@@ -150,7 +150,7 @@ if __name__ == '__main__':
         if (should_show_service_status):
             # --------------------------------------------
             #           Service Status
-            sleep(5.0)  # to see if the server false to get started
+            sleep(20.0)  # to see if the server false to get started
             vnprint('-' * width)
             vnprint('Waiting on Service Status'.center(width), end='\r')
             process = run(['systemctl', 'status', '-n', '100', 'jar_logon.service'], check=True, text=True)
