@@ -212,5 +212,6 @@ class MysqlDB:
         }
         return columns.get(key)
 
-    def db_check(self):
+    @staticmethod
+    def db_check():
         return"SELECT user_id FROM user;"
