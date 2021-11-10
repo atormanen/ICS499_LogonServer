@@ -24,7 +24,10 @@ logger = logging.getLogger()
 logging.addLevelName(VERBOSE, _verbose_level_name)
 
 # Make directory (if it doesn't exist)
-os.makedirs(os.path.dirname(_log_file), exist_ok=True)
+try:
+    os.makedirs(os.path.dirname(_log_file), exist_ok=True)
+except PermissionError:
+    ...  # hope that the directory exists and continue
 
 # Setup handlers
 file_handler = logging.handlers.WatchedFileHandler(filename=os.environ.get('LOGFILE', _log_file), mode='a+')
