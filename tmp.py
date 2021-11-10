@@ -26,7 +26,8 @@ if __name__ == '__main__':
         for item in lines:
             if '/.git/' not in item:
                 run(['chmod', '+x', item], check=True, text=True)
-    run(['chmod', '0554', '-R', '*'], check=True, text=True, shell=True)
+    # run(['chmod', '0554', '-R', '*'], check=True, text=True, shell=True)
+    run('chmod 0554 -R *', check=True, text=True, shell=True)
     run(['chmod', '0664', './logs/logon_server.log'], check=True, text=True)
     run(['chmod', '0440', './params.json'], check=True, text=True)
     run(['systemctl', 'start', 'jar_logon.service'], check=True, text=True, capture_output=True)
