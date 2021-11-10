@@ -1,4 +1,8 @@
 #!/bin/bash
+if [ $(id -u) -ne 0 ]
+  then echo "Unauthorized"
+  exit
+fi
 systemctl stop jar_logon.service
 git stash
 git fetch
