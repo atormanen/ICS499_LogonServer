@@ -167,7 +167,7 @@ if __name__ == '__main__':
                 vnprint('Service Status'.center(width), end='\r')
                 print('.' * width)
                 print('stdout'.center(width))
-                print(e.stdout.read())
+                print(e.stdout)
                 print('.' * width)
                 print('stderr'.center(width))
                 print(e.stderr.read(), sys.stderr)
