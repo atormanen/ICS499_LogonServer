@@ -7,7 +7,7 @@ from typing import Optional, Type
 from socket import socket as socket_cls
 
 from global_logger import logger, logged_method
-from util.const import ConstContainerClass as ConstContainer
+from util.const import ConstContainer as ConstContainer
 
 
 class RequestType(ConstContainer):

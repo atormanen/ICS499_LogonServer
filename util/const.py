@@ -1,7 +1,7 @@
 from typing import Tuple, Dict
 
 
-class ConstContainerClass:
+class ConstContainer:
     """By inheriting from this class, all class constants stored with capitalized
     names will be accessible as a collection via class methods."""
 

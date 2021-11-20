@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 
-from util.const import ConstContainerClass
+from util.const import ConstContainer
 from util.testing import EnhancedTestCase
 
 if __name__ == '__main__':
@@ -18,7 +18,7 @@ class TestConstContainerClass(EnhancedTestCase):
                              U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER='Unexpected Error - No friends list provided by server',
                              U_NO_RESPONSE_SET_BY_SERVER='Unexpected Error - No response set by server')
 
-        class ClassUnderTest(ConstContainerClass):
+        class ClassUnderTest(ConstContainer):
             U_BAD_FRIENDS_LIST_PROVIDED = 'Unexpected Error - There was a problem reading friends list'
             U_ACCOUNT_DATA_NOT_FOUND = 'Unexpected Error - Account data was not provided by server.'
             U_UNSPECIFIED = 'Unexpected Error - unspecified'
@@ -28,7 +28,7 @@ class TestConstContainerClass(EnhancedTestCase):
 
         @self.inplace_subtest('test_class_is_subclass_ConstContainerClass')
         def subtest():
-            self.assertTrue(issubclass(ClassUnderTest, ConstContainerClass))
+            self.assertTrue(issubclass(ClassUnderTest, ConstContainer))
 
         @self.inplace_subtest('test_values_match')
         def subtest():
