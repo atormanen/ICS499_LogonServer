@@ -17,12 +17,6 @@ DEBUG = logging.DEBUG  # 10
 # Setup internal vars
 _verbose_level_name = 'VERBOSE'
 _log_file = './logs/logon_server.log'
-try:
-    with open('./params.json', 'r') as f:
-        data = json.loads(f.read())
-    project_path = data['project_path']
-except FileNotFoundError as e:
-    raise FileNotFoundError(f'{os.getcwd()}')
 
 # noinspection SpellCheckingInspection
 _log_formatter = logging.Formatter(
