@@ -4,6 +4,7 @@ if [ $(id -u) -ne 0 ]
   exit
 fi
 systemctl stop jar_logon.service
+echo '' > ./logs/logon_server.log # clear log
 git stash
 git fetch
 git pull
