@@ -22,17 +22,14 @@ class Responder:
         connection_socket.send(msg.encode('utf-8'))
         connection_socket.close()
 
-    @logged_method
+    @depreciated
     def send_requested_data(self, connection_socket: socket, requested_data):
         connection_socket.settimeout(self.timeout_seconds)
-        logger.error('sendRequestedData is deprecated... do not use!')
         connection_socket.send(requested_data.encode())
 
-    @logged_method
+    @depreciated
     def send_account_creation_status(self, connection_socket: socket, status):
-
         connection_socket.settimeout(self.timeout_seconds)
-        logger.error('sendAccountCreationStatus is deprecated... do not use!')
         status = '' + status
         connection_socket.send(status.encode())
 
