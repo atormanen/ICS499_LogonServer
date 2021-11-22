@@ -359,5 +359,3 @@ class TestDepreciated(EnhancedTestCase):
                 for str_to_find in list_that_must_be_in_actual:
                     self.assertTrue(str_to_find in actual_added_lines[-1],
                                     f'"{str_to_find}" was not found in "{actual_added_lines[-1]}"')
-# push is deprecated, consider using push_a or push_b.
-# push is depreciated, consider using push_a or push_b.
