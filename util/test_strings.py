@@ -1,5 +1,5 @@
 import unittest
-from unittest import TestCase
+
 from util.strings import cslist
 from util.testing import EnhancedTestCase
 

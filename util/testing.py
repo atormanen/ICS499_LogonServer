@@ -1,9 +1,9 @@
 
 # noinspection PyPep8Naming
-import unittest
 from abc import ABC
-from unittest import TestCase
 from typing import Callable
+from unittest import TestCase
+
 
 class EnhancedTestCase(TestCase):
     def inplace_subtest(self, msg, **params):

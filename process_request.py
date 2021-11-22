@@ -35,7 +35,7 @@ class ProcessRequest:
         self.account_manager = AccountManagement(self.database)
         self.friends_manager = FriendsManagement(self.database)
         self.req_validation = RequestValidator()
-        self.responder = Responder()
+        self.responder = Responder(10.0)
         self.leaderboard = Leaderboard(self.database)
 
     # TODO: find a better way to process these requests types.

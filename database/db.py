@@ -1,6 +1,7 @@
-from typing import Optional, List
+from typing import List
 
 import mysql.connector
+
 from database.mysql_db import MysqlDB
 from global_logger import *
 

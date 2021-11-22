@@ -1,4 +1,4 @@
-from typing import Iterable, Sized, Collection
+from typing import Collection
 
 
 def cslist(items: Collection = None,  conjunction='and', *, use_oxford_comma=True, sepr: str = ', ',):

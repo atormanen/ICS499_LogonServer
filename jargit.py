@@ -4,9 +4,9 @@ from __future__ import annotations
 import shutil
 import subprocess
 import sys
-from subprocess import run, CalledProcessError
+from subprocess import run
 from time import sleep
-from typing import List, Optional, Dict
+from typing import List, Optional
 
 # Help Documentation Constants
 from util.args import CommandDict
@@ -236,18 +236,18 @@ def __perform_git_op(git_op: str, parsed_args) -> None:
 
 
 @commands.add(description='pull changes and restart service')
-def pull(parsed_args, *args) -> None:
-    __perform_git_op(GitOp.PULL, parsed_args, *args)
+def pull(parsed_args) -> None:
+    __perform_git_op(GitOp.PULL, parsed_args)
 
 
 @commands.add(description='push changes and restart service')
-def push(parsed_args, *args) -> None:
-    __perform_git_op(GitOp.PUSH, parsed_args, *args)
+def push(parsed_args) -> None:
+    __perform_git_op(GitOp.PUSH, parsed_args)
 
 
 @commands.add(description='push changes and restart service')
-def checkout(branch, parsed_args, *args) -> None:
-    __perform_git_op(GitOp.CHECKOUT, parsed_args, branch, *args)
+def checkout(branch, parsed_args) -> None:
+    __perform_git_op(GitOp.CHECKOUT, parsed_args)
 
 
 def main(args: Optional[List[str]]):

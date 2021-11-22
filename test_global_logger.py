@@ -1,5 +1,5 @@
 import unittest
-from unittest import TestCase
+
 import global_logger
 from global_logger import logged_method, logged_function, logged_class_method, depreciated
 from util.testing import EnhancedTestCase
