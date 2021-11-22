@@ -166,13 +166,13 @@ def logged_function(wrapped, level: Optional[int] = None):
     return _LoggedWrapperType.FUNCTION.build_wrapper(wrapped, level)
 
 
-def depreciated(wrapped = None, alternitives: Optional[Union[Callable, Collection[Callable]]] = None) -> Callable:
+def depreciated(wrapped = None, alternatives: Optional[Union[Callable, Collection[Callable]]] = None) -> Callable:
     """An annotation that logs a warning that the method/function is deprecated.
 
     Args:
         wrapped:
             The function to be wrapped.
-        alternitives:
+        alternatives:
             The function(s) that should be used instead
 
     Returns:
@@ -182,11 +182,11 @@ def depreciated(wrapped = None, alternitives: Optional[Union[Callable, Collectio
 
     def _outer_wrapper(func):
         alts = None
-        if alternitives:
-            if isinstance(alternitives, Collection):
-                alts = [f.__name__ for f in alternitives]
+        if alternatives:
+            if isinstance(alternatives, Collection):
+                alts = [f.__name__ for f in alternatives]
             else:
-                alts = (alternitives.__name__, )
+                alts = (alternatives.__name__,)
 
         depreciated_name = func.__name__
         alt_part_of_msg = '.' if not alts else f", consider using {cslist(alts, conjunction='or')}."
