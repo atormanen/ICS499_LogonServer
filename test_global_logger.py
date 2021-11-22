@@ -251,7 +251,10 @@ if __name__ == '__main__':
 class TestDepreciated(EnhancedTestCase):
     def test_depreciated(self):
 
-
+        @depreciated
+        def push(times_pressed=1) -> str:
+            tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
+            return f'Someone pushed the button{tmp_str}'
 
         expected_return_value_string = 'Someone pushed the button 3 times'
 
@@ -262,10 +265,7 @@ class TestDepreciated(EnhancedTestCase):
             lines = f.read().splitlines()
             length.append(len(lines))
 
-        @depreciated
-        def push(times_pressed=1) -> str:
-            tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
-            return f'Someone pushed the button{tmp_str}'
+        actual_return_value_string = push(3)
 
         with open('./logs/logon_server.log', 'r') as f:
             lines = f.read().splitlines()
@@ -275,27 +275,17 @@ class TestDepreciated(EnhancedTestCase):
         # make sure only one line was added
         self.assertEqual(1, length[1] - length[0], "The number of lines added was not 1")
 
-        actual_return_value_string = push(3)
+        # check that the expected result was returned
         self.assertEqual(expected_return_value_string, actual_return_value_string,
                          f'The returned string "{actual_return_value_string}" did not match \
                          "{expected_return_value_string}" when pushing button.')
 
-
-
-        # check that the line has the correct function
+        # check that the expected content was logged
         list_that_must_be_in_actual = ['push is depreciated.']
-
         for str_to_find in list_that_must_be_in_actual:
             self.assertTrue(str_to_find in actual_added_lines[-1],
                             f'"{str_to_find}" was not found in "{actual_added_lines[-1]}"')
 
-        with open('./logs/logon_server.log', 'r') as f:
-            lines = f.read().splitlines()
-            length.append(len(lines))
-            actual_added_lines = lines[length[0]:]
-
-        # make sure only one line was added
-        self.assertEqual(0, length[2] - length[1], "unexpected lines logged")
 
     def test_depreciated_with_alternitives(self):
 
@@ -325,6 +315,10 @@ class TestDepreciated(EnhancedTestCase):
             @self.inplace_subtest(data.label)
             def _():
 
+                @depreciated(alternitives=data.alts)
+                def push(times_pressed=1) -> str:
+                    tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
+                    return f'Someone pushed the button{tmp_str}'
 
                 expected_return_value_string = 'Someone pushed the button 3 times'
 
@@ -335,12 +329,10 @@ class TestDepreciated(EnhancedTestCase):
                     lines = f.read().splitlines()
                     length.append(len(lines))
 
-                @depreciated(alternitives=data.alts)
-                def push(times_pressed=1) -> str:
-                    tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
-                    return f'Someone pushed the button{tmp_str}'
 
                 actual_return_value_string = push(3)
+
+                # check that the correct value was returned
                 self.assertEqual(expected_return_value_string, actual_return_value_string,
                                  f'The returned string "{actual_return_value_string}" did not match \
                                  "{expected_return_value_string}" when pushing button.')
@@ -353,9 +345,8 @@ class TestDepreciated(EnhancedTestCase):
                 # make sure only one line was added
                 self.assertEqual(1, length[1] - length[0])
 
-                # check that the line has the correct function
+                # check that the correct content was logged
                 list_that_must_be_in_actual = [data.expected_str]
-
                 for str_to_find in list_that_must_be_in_actual:
                     self.assertTrue(str_to_find in actual_added_lines[-1],
                                     f'"{str_to_find}" was not found in "{actual_added_lines[-1]}"')

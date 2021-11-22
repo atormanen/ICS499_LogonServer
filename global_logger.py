@@ -192,9 +192,9 @@ def depreciated(wrapped = None, alternitives: Optional[Union[Callable, Collectio
         depreciated_name = func.__name__
         alt_part_of_msg = '.' if not alts else f", consider using {cslist(alts, conjunction='or')}."
         msg = f'{depreciated_name} is depreciated{alt_part_of_msg}'
-        logger.warning(msg)
 
         def _wrapper(*args, **kwargs):
+            logger.warning(msg)
             return func(*args, **kwargs)
 
         return classmethod(_wrapper) if isinstance(func, classmethod) \
