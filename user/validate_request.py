@@ -11,7 +11,7 @@ class RequestValidator:
     def __init__(self):
         self.num = 0
 
-    @logged_method
+    #@logged_method
     def is_bad_request(self, parsed_data):
 
         # If any check returns True, the request is considered bad

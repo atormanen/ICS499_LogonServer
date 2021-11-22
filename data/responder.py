@@ -14,7 +14,7 @@ class Responder:
         self.num = 0
         self.timeout_seconds = timeout_seconds
 
-    @logged_method
+    #@logged_method
     def send_bad_request(self, connection_socket: socket):
         connection_socket.settimeout(self.timeout_seconds)
         logger.verbose(f"bad request")
@@ -33,7 +33,7 @@ class Responder:
         status = '' + status
         connection_socket.send(status.encode())
 
-    @logged_method
+    #@logged_method
     def send_response(self, msg_item: BaseRequest, timeout_seconds: float):
         logger.debug(msg_item.response)
         try:
