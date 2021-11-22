@@ -31,7 +31,6 @@ class CommandDict():
     def __sizeof__(self) -> int:
         return self._command_dict.__sizeof__()
 
-
     def clear(self) -> None:
         self._command_dict.clear()
 

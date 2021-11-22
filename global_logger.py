@@ -166,7 +166,7 @@ def logged_function(wrapped, level: Optional[int] = None):
     return _LoggedWrapperType.FUNCTION.build_wrapper(wrapped, level)
 
 
-def depreciated(wrapped = None, alternatives: Optional[Union[Callable, Collection[Callable]]] = None) -> Callable:
+def depreciated(wrapped=None, alternatives: Optional[Union[Callable, Collection[Callable]]] = None) -> Callable:
     """An annotation that logs a warning that the method/function is deprecated.
 
     Args:
@@ -204,6 +204,7 @@ def depreciated(wrapped = None, alternatives: Optional[Union[Callable, Collectio
         return _outer_wrapper
     else:
         return _outer_wrapper(wrapped)
+
 
 def logged_method(wrapped, level: Optional[int] = None):
     """An annotation that allows the annotated method to be logged when called.

@@ -7,7 +7,6 @@ from util.testing import EnhancedTestCase
 
 class TestCommandDict(EnhancedTestCase):
     def test_add(self):
-
         @self.inplace_subtest('add and subtract')
         def subtest():
             commands: CommandDict = CommandDict()
@@ -29,8 +28,6 @@ class TestCommandDict(EnhancedTestCase):
             self.assertEqual('subtract', commands['subtract'].name)
             self.assertEqual('subtract two values', commands['subtract'].description)
             self.assertEqual(6, commands['subtract'].action(9, 3))
-
-
 
 
 if __name__ == '__main__':

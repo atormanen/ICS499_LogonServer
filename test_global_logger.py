@@ -286,8 +286,7 @@ class TestDepreciated(EnhancedTestCase):
             self.assertTrue(str_to_find in actual_added_lines[-1],
                             f'"{str_to_find}" was not found in "{actual_added_lines[-1]}"')
 
-
-    def test_depreciated_with_alternitives(self):
+    def test_depreciated_with_alternatives(self):
 
         def push_a():
             ...
@@ -311,11 +310,10 @@ class TestDepreciated(EnhancedTestCase):
                                                                'push_b, or push_c.', [push_a, push_b, push_c])]
         for data in data_list:
 
-
             @self.inplace_subtest(data.label)
             def _():
 
-                @depreciated(alternitives=data.alts)
+                @depreciated(alternatives=data.alts)
                 def push(times_pressed=1) -> str:
                     tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
                     return f'Someone pushed the button{tmp_str}'
@@ -328,7 +326,6 @@ class TestDepreciated(EnhancedTestCase):
                 with open('./logs/logon_server.log', 'r') as f:
                     lines = f.read().splitlines()
                     length.append(len(lines))
-
 
                 actual_return_value_string = push(3)
 
