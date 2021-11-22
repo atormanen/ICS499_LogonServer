@@ -1,10 +1,10 @@
-import json
+import logging.handlers
 import logging.handlers
 import os
 import time
 from enum import auto, Enum
 from functools import wraps
-from typing import Optional, Union, Callable, Set, Collection
+from typing import Optional, Union, Callable, Collection
 
 # Set up logging level constants
 from util.strings import cslist
@@ -172,9 +172,8 @@ def depreciated(wrapped = None, alternitives: Optional[Union[Callable, Collectio
     Args:
         wrapped:
             The function to be wrapped.
-        level:
-            The logging level. Use one of these constants from the global_logger module:
-            CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
+        alternitives:
+            The function(s) that should be used instead
 
     Returns:
         A function that wraps a function
