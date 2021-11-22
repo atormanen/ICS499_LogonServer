@@ -66,7 +66,7 @@ class ProcessRequest:
 
         action_dict[req_item.request_type](req_item)
 
-        self.responder.send_response(req_item.response)
+        self.responder.send_response(req_item.response, 10.0)
 
     # The process thread will block on request_queue.get() until something
     # arrives.
@@ -81,4 +81,4 @@ class ProcessRequest:
             except Exception as e:
                 logger.error(e)
                 request_item.set_invalid_request_response()
-                self.responder.send_response(request_item)
+                self.responder.send_response(request_item, 10.0)
