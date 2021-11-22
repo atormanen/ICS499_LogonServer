@@ -4,9 +4,11 @@ import os
 import time
 from enum import auto, Enum
 from functools import wraps
-from typing import Optional
+from typing import Optional, Union, Callable, Set, Collection
 
 # Set up logging level constants
+from util.strings import cslist
+
 CRITICAL = logging.CRITICAL  # 50
 ERROR = logging.ERROR  # 40
 WARNING = logging.WARNING  # 30
@@ -40,7 +42,7 @@ logger.addHandler(console_handler)
 logger.setLevel(logging.DEBUG)
 
 
-class _WrapperType(Enum):
+class _LoggedWrapperType(Enum):
     FUNCTION = auto()
     NORMAL_METHOD = auto()
     CLASS_METHOD = auto()
@@ -68,13 +70,13 @@ class _WrapperType(Enum):
             return_value = None
 
             # extract the class or self arguments if needed
-            if self is _WrapperType.NORMAL_METHOD:
+            if self is _LoggedWrapperType.NORMAL_METHOD:
                 if args:
                     self_obj = args[0]
                     args = tuple(args[1:]) if len(args) > 1 else ()
                 else:
                     raise TypeError("self must not be None for methods.")
-            if self is _WrapperType.CLASS_METHOD:
+            if self is _LoggedWrapperType.CLASS_METHOD:
                 if args:
                     cls = args[0]
                     args = tuple(args[1:]) if len(args) > 1 else ()
@@ -84,11 +86,11 @@ class _WrapperType(Enum):
             # time the execution of the function/method
             start_time_seconds = time.perf_counter()
             try:
-                if self is _WrapperType.FUNCTION:
+                if self is _LoggedWrapperType.FUNCTION:
                     return_value = __wrapped(*args, **kwargs)
-                elif self is _WrapperType.NORMAL_METHOD:
+                elif self is _LoggedWrapperType.NORMAL_METHOD:
                     return_value = __wrapped(self_obj, *args, **kwargs)
-                elif self is _WrapperType.CLASS_METHOD:
+                elif self is _LoggedWrapperType.CLASS_METHOD:
                     return_value = __wrapped(cls, *args, **kwargs)
             except Exception as e:
                 exception = e
@@ -101,11 +103,11 @@ class _WrapperType(Enum):
             log_dict: dict = {}
 
             #   Add the function/method name
-            if self is _WrapperType.FUNCTION:
+            if self is _LoggedWrapperType.FUNCTION:
                 log_dict.update(function=__wrapped.__name__)
-            elif self is _WrapperType.NORMAL_METHOD:
+            elif self is _LoggedWrapperType.NORMAL_METHOD:
                 log_dict.update(method=f'{type(self_obj).__name__}.{__wrapped.__name__}')
-            elif self is _WrapperType.CLASS_METHOD:
+            elif self is _LoggedWrapperType.CLASS_METHOD:
                 log_dict.update(method=f'{cls.__name__}.{__wrapped.__name__}')
             else:
                 raise ValueError(f'Unsupported _WrapperType: {self}')
@@ -125,7 +127,7 @@ class _WrapperType(Enum):
             log_dict.update({'run_time': f'{run_time_seconds:.5f} seconds'})
 
             #   Add info about the self instance if it is a normal method
-            if self is _WrapperType.NORMAL_METHOD:
+            if self is _LoggedWrapperType.NORMAL_METHOD:
                 log_dict.update(self_object=self_obj.__repr__())
 
             # build the message
@@ -143,7 +145,7 @@ class _WrapperType(Enum):
             else:
                 return return_value
 
-        return classmethod(_wrapper) if self is _WrapperType.CLASS_METHOD else _wrapper
+        return classmethod(_wrapper) if self is _LoggedWrapperType.CLASS_METHOD else _wrapper
 
 
 def logged_function(wrapped, level: Optional[int] = None):
@@ -161,8 +163,48 @@ def logged_function(wrapped, level: Optional[int] = None):
 
     """
 
-    return _WrapperType.FUNCTION.build_wrapper(wrapped, level)
+    return _LoggedWrapperType.FUNCTION.build_wrapper(wrapped, level)
 
+
+def depreciated(wrapped = None, alternitives: Optional[Union[Callable, Collection[Callable]]] = None) -> Callable:
+    """An annotation that logs a warning that the method/function is deprecated.
+
+    Args:
+        wrapped:
+            The function to be wrapped.
+        level:
+            The logging level. Use one of these constants from the global_logger module:
+            CRITICAL, ERROR, WARNING, INFO, VERBOSE, or DEBUG
+
+    Returns:
+        A function that wraps a function
+
+    """
+
+    def _outer_wrapper(func):
+        alts = None
+        if alternitives:
+            if isinstance(alternitives, Collection):
+                alts = [f.__name__ for f in alternitives]
+            else:
+                alts = (alternitives.__name__, )
+
+        depreciated_name = func.__name__
+        alt_part_of_msg = '.' if not alts else f", consider using {cslist(alts, conjunction='or')}."
+        msg = f'{depreciated_name} is depreciated{alt_part_of_msg}'
+        logger.warning(msg)
+
+        def _wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+
+        return classmethod(_wrapper) if isinstance(func, classmethod) \
+            else staticmethod(_wrapper) if isinstance(func, staticmethod) \
+            else _wrapper
+
+    if wrapped is None:
+        return _outer_wrapper
+    else:
+        return _outer_wrapper(wrapped)
 
 def logged_method(wrapped, level: Optional[int] = None):
     """An annotation that allows the annotated method to be logged when called.
@@ -179,7 +221,7 @@ def logged_method(wrapped, level: Optional[int] = None):
 
     """
 
-    return _WrapperType.NORMAL_METHOD.build_wrapper(wrapped, level)
+    return _LoggedWrapperType.NORMAL_METHOD.build_wrapper(wrapped, level)
 
 
 def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
@@ -196,9 +238,10 @@ def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
         A function that wraps a class method
     """
 
-    return _WrapperType.CLASS_METHOD.build_wrapper(wrapped, level)
+    return _LoggedWrapperType.CLASS_METHOD.build_wrapper(wrapped, level)
 
-def log_error(e: BaseException, msg = ''):
+
+def log_error(e: BaseException, msg=''):
     logger.error(f'{msg} - {e!r}')
 
 
