@@ -1,33 +1,25 @@
-import json
 import socket
 from threading import Thread
 
-from data.message_item import build_request
-from global_logger import *
 from manifest import Manifest
+from process_request import *
+from data.message_item import build_request
 
 
 # Class listener is used to listen on a servers ip address and port port_number
 # 12345 for incoming requests.
-from util.threading import ThreadController
-
-
 class Listener:
     hostname = socket.gethostname()
 
-    def __init__(self, controller: ThreadController, request_queue, timeout_seconds: float):
-        self.timeout_seconds = timeout_seconds
-        self.request_queue = request_queue
+    def __init__(self, request_queue):
         self.manifest = Manifest()
-        self.controller = controller
+        self.request_queue = request_queue
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.settimeout(timeout_seconds)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.buffer_size = self.manifest.listener_buffer_size
         self.port_number = self.manifest.port_number
         self.server_ip = ''
         self.req_count = 0
-
 
     @logged_method
     def create_socket(self):
@@ -37,7 +29,7 @@ class Listener:
             self.server_socket.bind((self.server_ip, self.port_number))
             self.server_socket.listen(5)
         except OSError as error:
-            log_error(error)
+            logger.error(error)
         logger.debug(f"server socket: {str(self.server_socket)}")
 
     @logged_method
@@ -65,27 +57,20 @@ class Listener:
     @logged_method
     def process_request(self, connection_socket):
 
-        # we need to ensure that this will eventually recheck self.controller.should_stay_alive
-        #   otherwise it could prevent the program from exiting properly. To do this we use a
-        #   timeout value on any blocking calls that will wait.
-
         full_msg = ''
         received_msg = ''
         buffer_exceeded = False
-        while self.controller.should_stay_alive:
+        while True:
             if buffer_exceeded:
                 try:
-
-                    logger.debug('!trying to receive when buffer exceeded')
+                    connection_socket.settimeout(3)
                     received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
-                    logger.debug('!msg received')
-                except TimeoutError:
+                except socket.timeout:
                     # Expecting a timeout
-                    logger.debug('!timeout raised, breaking out')
                     break
             else:
                 try:
-                    logger.debug('!trying to receive')
+
                     received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
                 except UnicodeDecodeError:
                     self.send_bad_request(connection_socket)
@@ -101,7 +86,7 @@ class Listener:
             if not (full_msg[0] == "{"):
                 full_msg = full_msg[2::]
         except IndexError as error:
-            log_error(error)
+            logger.error(error)
             return
         try:
             parsed_data = json.loads(full_msg)
@@ -109,36 +94,22 @@ class Listener:
             logger.error(f"unable to load message into json: {full_msg}")
             self.send_bad_request(connection_socket)
             return
-
-        logger.debug('!trying to build request')
         request = build_request(connection_socket, parsed_data)
         logger.debug(f"message item: {parsed_data}")
-
-        logger.debug('!trying to put request in queue')
-        self.request_queue.put(request, timeout=self.timeout_seconds)
-
-        logger.debug('!request is in the queue')
+        self.request_queue.put(request)
 
     @logged_method
     def listen(self):
-
-        # we need to ensure that this will eventually recheck self.controller.should_stay_alive
-        #   otherwise it could prevent the program from exiting properly. To do this we use a
-        #   timeout value on any blocking calls that will wait.
-
         connection_socket = None
-        while self.controller.should_stay_alive:
+        while True:
+            self.req_count += 1
             try:
-                self.server_socket.settimeout(self.timeout_seconds)
                 connection_socket, address = self.server_socket.accept()
                 logger.debug(f"received message from {str(address)}")
-                thread = Thread(target=self.process_request, args=(connection_socket,), name=f'listener_sub_thread_{self.req_count}')
-                self.req_count += 1
+                thread = Thread(target=self.process_request, args=(connection_socket,))
                 thread.start()
-            except (TimeoutError, socket.timeout):
-                continue
             except IOError as error:
-                log_error(error, f'Listener.listen IOError catch - {self.controller.should_stay_alive}')
+                logger.error(error)
                 if connection_socket:
                     connection_socket.close()
 
