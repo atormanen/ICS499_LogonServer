@@ -420,7 +420,6 @@ class GetFriendRequestsRequest(ValidRequest):
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError) as e:
                     failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
-                    traceback.print_exception(type(e), e, e.__traceback__)
             else:
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
@@ -461,6 +460,8 @@ class GetFriendsListRequest(ValidRequest):
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError):
                     failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
+                    print("!"*20) # TODO remove
+                    traceback.print_exception(type(e), e, e.__traceback__) # TODO REMOVE
             else:
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
