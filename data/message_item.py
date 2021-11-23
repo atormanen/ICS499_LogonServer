@@ -416,13 +416,17 @@ class GetFriendRequestsRequest(ValidRequest):
             if isinstance(friends_list, list):
                 try:
                     if len(friends_list) > 0 and not isinstance(friends_list[0], list):
+                        global_logger.log(f'friends_list: {friends_list!r}')
+                        
+
                         raise TypeError
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError) as e:
                     failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
-                    global_logger.log_error(e, e.__traceback__)
             else:
+                global_logger.log(f'friends_list: {friends_list!r}')
+                
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
         super().set_response(failure_reason=failure_reason, **friends_list_dict)
@@ -462,7 +466,6 @@ class GetFriendsListRequest(ValidRequest):
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError) as e:
                     failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
-                    global_logger.log_error(e, e.__traceback__)
             else:
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
