@@ -246,7 +246,7 @@ def push(parsed_args) -> None:
 
 
 @commands.add(description='push changes and restart service')
-def checkout(branch, parsed_args) -> None:
+def checkout(parsed_args) -> None:
     __perform_git_op(GitOp.CHECKOUT, parsed_args)
 
 
