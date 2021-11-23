@@ -12,15 +12,7 @@ from typing import List, Optional
 from util.args import CommandDict
 from util.const import ConstContainer
 
-_SCRIPT_NAME: Optional[str] = None
-_SCRIPT_USAGE: Optional[str] = None
-_SCRIPT_DESCRIPTION: Optional[str] = None
-_SCRIPT_EPILOG: Optional[str] = None
-
-# Script Default Constants
-_SCRIPT_IS_INTERACTIVE_BY_DEFAULT = False
-
-commands = CommandDict()
+commands: CommandDict = CommandDict()
 
 
 class GitOp(ConstContainer):
@@ -235,20 +227,31 @@ def __perform_git_op(git_op: str, parsed_args) -> None:
         raise e
 
 
-@commands.add(description='pull changes and restart service')
+@commands.add(description='pull changes and restart service.')
 def pull(parsed_args) -> None:
     __perform_git_op(GitOp.PULL, parsed_args)
 
 
-@commands.add(description='push changes and restart service')
+@commands.add(description='push changes and restart service.')
 def push(parsed_args) -> None:
     __perform_git_op(GitOp.PUSH, parsed_args)
 
 
-@commands.add(description='push changes and restart service')
+@commands.add(description='change current branch.')
 def checkout(parsed_args) -> None:
     __perform_git_op(GitOp.CHECKOUT, parsed_args)
 
+
+_SCRIPT_NAME: Optional[str] = None
+_SCRIPT_USAGE: Optional[str] = '\n'.join(('jargit.py command [command_args ...] [-h] [-v | -q] [--interactive]',
+                                          '',
+                                          'commands:',
+                                          *[f'  {c.name}: {c.description}' for c in commands.values()]))
+_SCRIPT_DESCRIPTION: Optional[str] = None
+_SCRIPT_EPILOG: Optional[str] = None
+
+# Script Default Constants
+_SCRIPT_IS_INTERACTIVE_BY_DEFAULT = False
 
 def main(args: Optional[List[str]]):
     """Executes the script. Use '-h' argument to see help info."""
