@@ -415,18 +415,15 @@ class GetFriendRequestsRequest(ValidRequest):
         if not failure_reason:
             if isinstance(friends_list, list):
                 try:
-                    if len(friends_list) > 0 and not isinstance(friends_list[0], list):
-                        global_logger.log(f'friends_list: {friends_list!r}')
-                        
 
+                    if len(friends_list) > 0 and not isinstance(friends_list[0], list):
                         raise TypeError
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError) as e:
-                    failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
+                    # failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
+                    failure_reason = f'!!!{e.__traceback__}' #TODO remove this line
             else:
-                global_logger.log(f'friends_list: {friends_list!r}')
-                
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
         super().set_response(failure_reason=failure_reason, **friends_list_dict)
@@ -465,7 +462,8 @@ class GetFriendsListRequest(ValidRequest):
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError) as e:
-                    failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
+                    # failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
+                    failure_reason = f'!!!{e.__traceback__}' #TODO remove this line
             else:
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
