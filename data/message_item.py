@@ -7,6 +7,7 @@ from abc import abstractmethod, ABC
 from typing import Optional, Type
 from socket import socket as socket_cls
 
+import global_logger
 from global_logger import logger, logged_method
 from util.const import ConstContainer as ConstContainer
 
@@ -420,6 +421,7 @@ class GetFriendRequestsRequest(ValidRequest):
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError) as e:
                     failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
+                    global_logger.log_error(e, e.__traceback__)
             else:
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
@@ -458,10 +460,9 @@ class GetFriendsListRequest(ValidRequest):
                         raise TypeError
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
-                except (IndexError, TypeError):
+                except (IndexError, TypeError) as e:
                     failure_reason = FailureReasons.U_BAD_FRIENDS_LIST_PROVIDED
-                    print("!"*20) # TODO remove
-                    traceback.print_exception(type(e), e, e.__traceback__) # TODO REMOVE
+                    global_logger.log_error(e, e.__traceback__)
             else:
                 failure_reason = FailureReasons.U_NO_FRIENDS_LIST_PROVIDED_BY_SERVER
 
