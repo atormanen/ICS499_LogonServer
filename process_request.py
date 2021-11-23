@@ -65,10 +65,7 @@ class ProcessRequest:
                        SIGNIN: self.signin.signin}
 
         action_dict[req_item.request_type](req_item)
-
-        print('!'*20)
-        print(f'{req_item!r} {type(req_item)}')
-        self.responder.send_response(req_item.response, 10.0)
+        self.responder.send_response(req_item, 10.0)
 
     # The process thread will block on request_queue.get() until something
     # arrives.
