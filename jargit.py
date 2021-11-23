@@ -237,7 +237,7 @@ def push(parsed_args) -> None:
     __perform_git_op(GitOp.PUSH, parsed_args)
 
 
-@commands.add(description='change current branch.')
+@commands.add(description='change current branch.', args=('<branch>',))
 def checkout(parsed_args) -> None:
     __perform_git_op(GitOp.CHECKOUT, parsed_args)
 
@@ -246,7 +246,7 @@ _SCRIPT_NAME: Optional[str] = None
 _SCRIPT_USAGE: Optional[str] = '\n'.join(('jargit.py command [command_args ...] [-h] [-v | -q] [--interactive]',
                                           '',
                                           'commands:',
-                                          *[f'  {c.name}: {c.description}' for c in commands.values()]))
+                                          *[f'  {c.get_help_msg()}' for c in commands.values()]))
 _SCRIPT_DESCRIPTION: Optional[str] = None
 _SCRIPT_EPILOG: Optional[str] = None
 
