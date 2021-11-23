@@ -1,11 +1,16 @@
-from typing import Mapping, Dict, Iterator, Iterable, overload, ItemsView, ValuesView, KeysView, Tuple
+from typing import Mapping, Dict, Iterator, Iterable, overload, ItemsView, ValuesView, KeysView, Tuple, Collection
 
 
 class Command:
-    def __init__(self, name, description, action):
+    def __init__(self, name, description, action, args:Collection[str] = None):
         self.name = name
         self.description = description
         self.action = action
+        self.args = tuple(args) if args is not None else tuple()
+
+    def get_help_msg(self):
+        arg_str = ''.join([f' {arg}' for arg in self.args])
+        return f"{self.name}{arg_str}: {self.description}"
 
 
 class CommandDict():
@@ -91,11 +96,11 @@ class CommandDict():
     def __ior__(self, __value: Mapping[str, Command]) -> Dict[str, Command]:
         return self._command_dict.__ior__(__value)
 
-    def add(self, description):
+    def add(self, description, args:Collection[str] = None):
         """decorator for a function that is a command"""
 
         def wrapper(func):
-            self[func.__name__] = Command(func.__name__, description, func)
+            self[func.__name__] = Command(func.__name__, description, func, args)
             return func
 
         return wrapper
