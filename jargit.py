@@ -195,7 +195,7 @@ def __perform_git_op(git_op: str, parsed_args) -> None:
                 print('-' * width)
                 exit(2)
             verbose_or_normal_print('Service Status'.center(width))
-            verbose_print(process.stdout)
+            verbose_or_normal_print(process.stdout)
             verbose_or_normal_print(process.stderr, file=sys.stderr)
 
         if (should_monitor_log):
