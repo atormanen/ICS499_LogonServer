@@ -1,7 +1,7 @@
 import unittest
 
 import global_logger
-from global_logger import logged_method, logged_function, logged_class_method, depreciated
+from global_logger import logged_method, logged_function, logged_class_method, deprecated
 from util.testing import EnhancedTestCase
 
 
@@ -249,9 +249,9 @@ if __name__ == '__main__':
 
 
 class TestDepreciated(EnhancedTestCase):
-    def test_depreciated(self):
+    def test_deprecated(self):
 
-        @depreciated
+        @deprecated
         def push(times_pressed=1) -> str:
             tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
             return f'Someone pushed the button{tmp_str}'
@@ -281,12 +281,12 @@ class TestDepreciated(EnhancedTestCase):
                          "{expected_return_value_string}" when pushing button.')
 
         # check that the expected content was logged
-        list_that_must_be_in_actual = ['push is depreciated.']
+        list_that_must_be_in_actual = ['push is deprecated.']
         for str_to_find in list_that_must_be_in_actual:
             self.assertTrue(str_to_find in actual_added_lines[-1],
                             f'"{str_to_find}" was not found in "{actual_added_lines[-1]}"')
 
-    def test_depreciated_with_alternatives(self):
+    def test_deprecated_with_alternatives(self):
 
         def push_a():
             ...
@@ -303,17 +303,17 @@ class TestDepreciated(EnhancedTestCase):
                 self.expected_str = expected_str
                 self.alts = alts
 
-        data_list = [_TestData('push_a alt', 'push is depreciated, consider using push_a.', push_a),
-                     _TestData('(push_a, push_b) alt', 'push is depreciated, consider using push_a or push_b.',
+        data_list = [_TestData('push_a alt', 'push is deprecated, consider using push_a.', push_a),
+                     _TestData('(push_a, push_b) alt', 'push is deprecated, consider using push_a or push_b.',
                                (push_a, push_b)),
-                     _TestData('[push_a, push_b, push_c] alt', 'push is depreciated, consider using push_a, '
+                     _TestData('[push_a, push_b, push_c] alt', 'push is deprecated, consider using push_a, '
                                                                'push_b, or push_c.', [push_a, push_b, push_c])]
         for data in data_list:
 
             @self.inplace_subtest(data.label)
             def _():
 
-                @depreciated(alternatives=data.alts)
+                @deprecated(alternatives=data.alts)
                 def push(times_pressed=1) -> str:
                     tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
                     return f'Someone pushed the button{tmp_str}'
