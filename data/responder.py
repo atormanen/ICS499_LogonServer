@@ -22,12 +22,12 @@ class Responder:
         connection_socket.send(msg.encode('utf-8'))
         connection_socket.close()
 
-    @depreciated
+    @deprecated
     def send_requested_data(self, connection_socket: socket, requested_data):
         connection_socket.settimeout(self.timeout_seconds)
         connection_socket.send(requested_data.encode())
 
-    @depreciated
+    @deprecated
     def send_account_creation_status(self, connection_socket: socket, status):
         connection_socket.settimeout(self.timeout_seconds)
         status = '' + status
