@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import traceback
 from abc import abstractmethod, ABC
-from typing import Optional, Type
+from typing import Optional, Type, Collection
 from socket import socket as socket_cls
 
 import global_logger
@@ -416,8 +416,7 @@ class GetFriendRequestsRequest(ValidRequest):
             if isinstance(friends_list, list):
                 try:
 
-                    if len(friends_list) > 0 and not isinstance(friends_list[0], list):
-                        global_logger.log(f'type(friends_list[0]): {type(friends_list[0])!r}')
+                    if len(friends_list) > 0 and not isinstance(friends_list[0], Collection):
                         raise TypeError
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
@@ -458,7 +457,7 @@ class GetFriendsListRequest(ValidRequest):
         if not failure_reason:
             if isinstance(friends_list, list):
                 try:
-                    if len(friends_list) > 0 and not isinstance(friends_list[0], list):
+                    if len(friends_list) > 0 and not isinstance(friends_list[0], Collection):
                         raise TypeError
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
