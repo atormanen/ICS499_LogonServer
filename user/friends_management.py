@@ -42,7 +42,7 @@ class FriendsManagement:
     #@logged_method
     def get_friend_requests(self, req_item: GetFriendRequestsRequest):
         friend_list = self.db.check_for_friend_requests(req_item.username)
-        req_item.set_response(friends_request_list=friend_list)
+        req_item.set_response(friends_list=friend_list)
 
     #@logged_method
     def get_user_stats(self, username):
