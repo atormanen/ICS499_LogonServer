@@ -1,9 +1,9 @@
-from typing import Optional, List
+from typing import List
 
 import mysql.connector
 
 from database.mysql_db import MysqlDB
-from global_logger import logger, logged_method
+from global_logger import *
 
 
 # from query_builder import query_builder
@@ -65,7 +65,7 @@ class _DBContextManager:
     def __exit__(self, exc_type, exc_val, exc_tb):
 
         if exc_val:
-            logger.error(exc_val)
+            log_error(exc_val)
             self.context.result = False
         else:
             self.context.result = True
@@ -74,12 +74,12 @@ class _DBContextManager:
             if self.context.cursor:
                 self.context.cursor.close()
         except BaseException as e0:
-            logger.error(e0)
+            log_error(e0)
         try:
             if self.context.db:
                 self.context.db.close()
         except BaseException as e1:
-            logger.error(e1)
+            log_error(e1)
 
         return self.context.result
 
@@ -92,9 +92,16 @@ class FailureException(Exception):
         self._msg: str = msg
 
     @property
-    def msg(self) -> str:
+    def failure_reason_msg(self) -> str:
         """The exception's message."""
         return self._msg
+
+
+class CouldNotConnectException(FailureException):
+    """An exception that is raised if a database connection check fails"""
+
+    def __init__(self):
+        super().__init__('Could not connect to database')
 
 
 class UserNotFoundException(FailureException):
@@ -111,13 +118,25 @@ class UserNotFoundException(FailureException):
 class FriendRequestNotFoundException(FailureException):
     """An exception to be raised if a friend request cannot be found."""
 
-    def __init__(self):
-        super().__init__('No matching friend request found.')
+    def __init__(self, username, friend_username):
+        super().__init__(f'No friend request found from {friend_username} on {username}\'s list.')
 
 
 class DB:
 
     def __init__(self, user, password, reader, writer, database: MysqlDB):
+        """ Initializes the DB object.
+
+        Args:
+            user: The user accessing the database.
+            password: The password used to access database.
+            reader: TODO
+            writer: TODO
+            database: The name of the database being accessed.
+
+        Raises:
+            CouldNotConnectException: If connection test fails.
+        """
         self.builder = MysqlDB()
         self.user = user
         self.password = password
@@ -125,7 +144,9 @@ class DB:
         self.writer = writer
         self.database = database
 
-    @logged_method
+        # check to see that connection is good... if not the caller wants to know asap
+        self._test_db_connection()  # this raises CouldNotConnectException if connection fails
+
     def db_insert(self, statement: str) -> bool:
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
@@ -134,7 +155,6 @@ class DB:
             c.commit()
         return False if c.result is None else c.result
 
-    @logged_method
     def db_fetch(self, statement: str) -> List[tuple]:
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
@@ -143,7 +163,6 @@ class DB:
             c.fetchall()
         return c.fetched
 
-    @logged_method
     def db_update(self, statement: str) -> bool:
         """Updates the database.
 
@@ -157,7 +176,7 @@ class DB:
             c.commit()
         return bool(c.result)
 
-    @logged_method
+    #@logged_method
     def db_delete(self, statement: str) -> bool:
 
         with _DBContextManager(user=self.user, password=self.password, host=self.writer, database=self.database,
@@ -166,23 +185,23 @@ class DB:
             c.commit()
         return bool(c.result)
 
-    @logged_method
+    #@logged_method
     def get_password_for(self, username: str) -> List[tuple]:
         result = self.db_fetch(self.builder.get_password_for(username))
 
         # TODO we may want to consider actually returning the password rather than the list.
         return result
 
-    @logged_method
+    #@logged_method
     def increment_signin_failed(self):
         return False  # FIXME
 
-    @logged_method
+    #@logged_method
     def change_password(self, username, password) -> bool:
         status = self.db_update(self.builder.change_password(username, password))
         return status
 
-    @logged_method
+    #@logged_method
     def user_exists(self, username: str) -> bool:
         """Checks if user exists.
 
@@ -195,7 +214,7 @@ class DB:
         result = result[0][0]
         return bool(result)
 
-    @logged_method
+    #@logged_method
     def username_is_available(self, username: str) -> bool:
         """Checks if username is available.
 
@@ -207,7 +226,7 @@ class DB:
         int_result = result[0][0]
         return bool(int_result)
 
-    @logged_method
+    #@logged_method
     def check_if_friend_request_exists(self, sender_username: str, recipient_username: str) -> bool:
         """ Checks if the a friend request from a particular user to another exists.
 
@@ -229,7 +248,7 @@ class DB:
         int_result = result[0][0]
         return bool(int_result)
 
-    @logged_method
+    #@logged_method
     def create_user(self, parsed_data):
         user_id = self.db_fetch(self.builder.get_last_user_id())
         user_id = user_id[0][0]
@@ -244,7 +263,7 @@ class DB:
         result = self.db_insert(self.builder.create_user_stats(user_id))
         return result
 
-    @logged_method
+    #@logged_method
     def signin(self, username: str, token, token_creation_time) -> bool:
         """
 
@@ -256,7 +275,7 @@ class DB:
         result = self.db_update(self.builder.signin(username, token, token_creation_time))
         return result
 
-    @logged_method
+    #@logged_method
     def get_token(self, username):
         result = self.db_fetch(self.builder.get_token(username))
 
@@ -266,7 +285,7 @@ class DB:
 
         return result
 
-    @logged_method
+    #@logged_method
     def get_token_creation_time(self, username: str) -> List[tuple]:
         """Gets the token creation time.
 
@@ -281,7 +300,7 @@ class DB:
 
         return result
 
-    @logged_method
+    #@logged_method
     def get_friends_list(self, username: str) -> List[tuple]:
         """Gets the friends list of a target user
 
@@ -300,11 +319,7 @@ class DB:
 
         return result
 
-    @logged_method
-    def get_user_info(self, username):
-        return False  # FIXME
-
-    @logged_method
+    #@logged_method
     def get_user_stats(self, username: str) -> List[tuple]:
         """Gets the user statistics.
 
@@ -324,7 +339,7 @@ class DB:
 
         return result
 
-    @logged_method
+    #@logged_method
     def send_friend_request(self, username: str, friends_username: str) -> bool:
         """Sends a friend request to the target friend.
 
@@ -344,7 +359,7 @@ class DB:
         result = self.db_insert(self.builder.send_friend_request(user_id, friends_id))
         return result
 
-    @logged_method
+    #@logged_method
     def accept_friend_request(self, username: str, friends_username: str, accepted_request: bool) -> bool:
         """Accepts a friend request.
 
@@ -362,7 +377,7 @@ class DB:
             # we don't need to check if username or friend_username correspond to existing
             # accounts because that happens in the check_if_friend_request_exists call.
             # That said, we should keep in mind that this can raise a UserNotFoundException
-            raise FriendRequestNotFoundException()
+            raise FriendRequestNotFoundException(username, friends_username)
 
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
@@ -370,8 +385,8 @@ class DB:
         self.db_update(self.builder.add_friend(user_id, friends_id))
         return result
 
-    @logged_method
-    def remove_friend(self, username: str, friends_username: str) -> bool:
+    #@logged_method
+    def remove_friend(self, username: str, friends_username: str) -> None:
         """Removes a particular friend from a users friends list.
 
         :param username: The username of the user who is removing a friend.
@@ -387,11 +402,13 @@ class DB:
             raise UserNotFoundException(friends_username)
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
-        result = self.db_delete(self.builder.remove_friend(user_id, friends_id))
+        was_successful = self.db_delete(self.builder.remove_friend(user_id, friends_id))
         self.db_delete(self.builder.remove_friend(friends_id, user_id))
-        return result
+        if not was_successful:
+            raise FailureException(f'request to remove {friends_username} from {username}\'s '
+                                   f'friend list failed for unknown reasons.')
 
-    @logged_method
+    #@logged_method
     def check_for_friend_requests(self, username: str) -> List[tuple]:
         """Checks for friend requests for a particular user.
 
@@ -411,33 +428,50 @@ class DB:
 
         return result
 
-    @logged_method
+    #@logged_method
     def logout(self, username):
         self.db_update(self.builder.logout(username))
 
-    @logged_method
+    #@logged_method
     def get_most_chess_games_won(self, number_of_games):
         result = self.db_fetch(self.builder.get_most_games_won(number_of_games))
         return result
 
-    @logged_method
+    #@logged_method
     def get_longest_win_streak(self, number_of_games):
         result = self.db_fetch(self.builder.get_longest_win_streak(number_of_games))
         return result
 
-    @logged_method
+    #@logged_method
     def get_account_info(self, username):
         result = self.db_fetch(self.builder.get_account_info(username))
         return result
 
-    @logged_method
+    #@logged_method
     def save_account_info(self, username, data):
         self.db_update(self.builder.save_account_info(username, data))
 
-    @logged_method
+    #@logged_method
     def save_account_info_by_key(self, username, key, value) -> None:
         query = self.builder.save_account_info_by_key(username, key, value)
         if (query is None):
             return
         else:
             self.db_update(query)
+
+    #@logged_method
+    def _test_db_connection(self):
+        """tests the database connection.
+
+        Note that this should only be used when initializing the DB object
+
+        Raises:
+            CouldNotConnectException: If the test fails to connect.
+
+        """
+        try:
+            self.db_fetch(self.builder.db_check())
+        except CouldNotConnectException as e:
+            raise e
+        except BaseException as e:
+            raise CouldNotConnectException from e

@@ -14,18 +14,18 @@ from process_request import ProcessRequest
 class Controller:
 
     # requestQueue is shared queue among all processes
-    @logged_method
+    #@logged_method
     def __init__(self):
         self.manifest = Manifest()
         self.request_queue = multiprocessing.Queue()
         self.listener = Listener(self.request_queue)
 
-    @logged_method
+    #@logged_method
     def create_request_processor(self):
         req = ProcessRequest(self.request_queue)
         req.process_requests()
 
-    @logged_method
+    #@logged_method
     def create_request_processors(self):
         processes = []
         for i in range(self.manifest.number_of_request_processors):
@@ -35,7 +35,7 @@ class Controller:
         for i in processes:
             i.start()
 
-    @logged_method
+    #@logged_method
     def create_listener(self):
         logger.info('creating request listener')
         self.listener.create_listener()

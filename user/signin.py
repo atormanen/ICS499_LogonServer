@@ -1,5 +1,6 @@
 import time
 
+from data.message_item import *
 from global_logger import logger, logged_method
 from user.tokens import Tokens
 
@@ -11,7 +12,7 @@ class Signin:
         self.db = db
         self.token = Tokens()
 
-    @logged_method
+    #@logged_method
     def validate_password(self, username, password):
 
         if (self.db.user_exists(username)):
@@ -22,7 +23,7 @@ class Signin:
                 return True
         return False
 
-    @logged_method
+    #@logged_method
     def token_up_to_date(self, username):
 
         token_expiration = self.db.get_token_creation_time(username)
@@ -36,12 +37,12 @@ class Signin:
         logger.debug(f"token is valid for user {username}")
         return True
 
-    @logged_method
-    def signin(self, parsed_data, req_item):
+    #@logged_method
+    def signin(self, req_item: SigninRequest):
 
-        username = parsed_data["username"]
-        password = parsed_data["password"]
-        data = self.get_account_info(parsed_data)
+        username = req_item.username
+        password = req_item.password
+        data = self.get_account_info(req_item.parsed_data)
 
         if (self.validate_password(username, password)):
             if (self.token_up_to_date(username)):
@@ -52,32 +53,30 @@ class Signin:
                 if (signon_token is None):
                     signon_token = self.token.get_token()
                     self.db.signin(username, signon_token, self.token.get_token_creation_time())
-                req_item.set_signin_response(signon_token, data)
+                req_item.set_response(token=signon_token, data=data)
             else:
                 signon_token = self.token.get_token()
                 self.db.signin(username, signon_token, self.token.get_token_creation_time())
-                req_item.set_signin_response(signon_token, data)
+                req_item.set_response(token=signon_token, data=data)
         else:
             logger.debug(f"signin failed for user {username}")
-            req_item.set_signin_response_failed('invalid password')
+            req_item.set_response(failure_reason='invalid password')
 
-    @logged_method
-    def signout(self, parsed_data, req_item):
+    #@logged_method
+    def signout(self, req_item: SignoutRequest):
 
-        username = parsed_data["username"]
-        signon_token = parsed_data["signon_token"]
+        username = req_item.username
         saved_token = self.db.get_token(username)
         saved_token = saved_token[0][0]
         if saved_token is None:
-            req_item.set_signout_response(was_successful=False,
-                                          failure_reason='currently not logged in')
+            req_item.set_response(failure_reason='currently not logged in')
             return
 
         self.db.logout(username)
-        self.db.save_account_info(username, parsed_data)
-        req_item.set_signout_response(was_successful=True)
+        self.db.save_account_info(username, req_item.parsed_data)
+        req_item.set_response()
 
-    @logged_method
+    #@logged_method
     def get_account_info(self, parsed_data):
 
         username = parsed_data["username"]
