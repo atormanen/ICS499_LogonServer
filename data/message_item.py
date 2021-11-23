@@ -417,6 +417,7 @@ class GetFriendRequestsRequest(ValidRequest):
                 try:
 
                     if len(friends_list) > 0 and not isinstance(friends_list[0], list):
+                        global_logger.log(f'type(friends_list[0]): {type(friends_list[0])!r}')
                         raise TypeError
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
@@ -458,7 +459,7 @@ class GetFriendsListRequest(ValidRequest):
             if isinstance(friends_list, list):
                 try:
                     if len(friends_list) > 0 and not isinstance(friends_list[0], list):
-                        global_logger.log(f'type(friends_list[0]): {type(friends_list[0])!r}')
+                        raise TypeError
                     new_friends_list = [{'username': item[1]} for item in friends_list]
                     friends_list_dict = dict(count=len(new_friends_list), friends=str(new_friends_list))
                 except (IndexError, TypeError) as e:
