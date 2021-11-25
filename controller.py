@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 import multiprocessing
+import sys
 from multiprocessing import Process
 from threading import Thread
+from typing import Optional
+
+from database.db import DB
 from global_logger import logged_method, logger
-from listener import Listener
+from listener import Listener, MySQLDB
 from manifest import Manifest
-from process_request import ProcessRequest
+from process_request import RequestProcessor
 
 
 # Controller will initialize all the objects and processes needed
@@ -14,21 +18,23 @@ from process_request import ProcessRequest
 class Controller:
 
     # requestQueue is shared queue among all processes
-    def __init__(self):
+    def __init__(self, database: Optional[DB] = None):
         self.manifest = Manifest()
         self.request_queue = multiprocessing.Queue()
         self.listener = Listener(self.request_queue)
+        self.database = database
 
-    def create_request_processor(self):
-        req = ProcessRequest(self.request_queue)
+    def _create_request_processor(self):
+        req = RequestProcessor(self.request_queue)
         req.process_requests()
+
 
     def create_request_processors(self):
         processes = []
         for i in range(self.manifest.number_of_request_processors):
             logger.info(f"creating request processor {str(i)}")
             # print('Creating processes %d' % i)
-            processes.append(Process(target=self.create_request_processor))
+            processes.append(Process(target=self._create_request_processor))
         for i in processes:
             i.start()
 
@@ -41,9 +47,33 @@ class Controller:
 
 
 if __name__ == '__main__':
+
     logger.info('')
     logger.info('starting logon server')
     logger.info('')
+    if sys.argv:
+        # get database configuration info from arguments and password from input.
+        from getpass import getpass
+        db_implementation, host, username, db_name, *_ = sys.argv
+        password = getpass(prompt='Enter database password: ')
+    else:
+        # load database configuration from params.json file.
+        import json
+        with open('./params.json', 'r') as f:
+            data = json.loads(f.read())
+        db_implementation = 'mysql'
+        host = data['db_host']
+        username = data['db_username']
+        password = data['db_password']
+        db_name = data['db_name']
+
+    # Set up the database object based on database implementation selected
+    db = {'mysql': MySQLDB(username, password, host, host, db_name)}[db_implementation]
+
+    # Setup the controller.
     c = Controller()
+
+    # Start the
     c.create_request_processors()
     c.create_listener()
+

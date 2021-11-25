@@ -7,6 +7,7 @@ from data.test_message_item import REVOKE_FRIEND_REQUEST, GET_ACCOUNT_INFO, SAVE
     GET_MOST_CHESS_GAMES_WON, GET_LONGEST_WIN_STREAK, SIGNOUT, REMOVE_FRIEND, ACCEPT_FRIEND_REQUEST, \
     SEND_FRIEND_REQUEST, GET_FRIEND_REQUESTS, GET_FRIENDS_LIST, GET_USER_STATS, CREATE_ACCOUNT, SIGNIN
 from database.db import DB
+from database.mysql_db import MySQLDB
 from global_logger import logger, logged_method
 from user.account_management import AccountManagement
 from user.friends_management import FriendsManagement
@@ -14,20 +15,13 @@ from user.signin import Signin
 from user.validate_request import RequestValidator
 
 
-class ProcessRequest:
+class RequestProcessor:
 
     # PrecessRequest is set up to be a separate process in the OS and
     # will hold the shared request queue object. It will pull requests
     # from the queue as they are inserted from the listener
-    def __init__(self, request_queue):
-        with open('./params.json', 'r') as f:
-            data = json.loads(f.read())
-        reader = data['db_host']
-        writer = data['db_host']
-        username = data['db_username']
-        password = data['db_password']
-        db_name = data['db_name']
-        self.database = DB(username, password, reader, writer, db_name)
+    def __init__(self, request_queue, database: DB):
+        self.database = database
         # self.database = DB('app','123','192.168.1.106','db_name')
 
         self.request_queue = request_queue
