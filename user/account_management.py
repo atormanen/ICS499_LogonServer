@@ -3,15 +3,15 @@ import time
 
 from data.message_item import GetUserStatsRequest, ChangePasswordRequest, SaveAccountInfoByKeyRequest, \
     CreateAccountRequest
+from database.db import DB
 
 
 class AccountManagement:
-
     username = ''
     password = ''
 
-    def __init__(self, mysql_d_b):
-        self.db = mysql_d_b
+    def __init__(self, db: DB):
+        self.db = db
 
     def validate_username(self, username):
         if (self.db.user_exists(username)):

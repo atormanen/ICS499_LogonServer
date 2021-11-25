@@ -19,7 +19,9 @@ from process_request import RequestProcessor
 class Controller:
 
     # requestQueue is shared queue among all processes
-    def __init__(self, database: Optional[DB] = None):
+    def __init__(self, database: DB):
+        if not isinstance(database, DB):
+            raise TypeError('Controller was not supplied a DB object')
         self.manifest = Manifest()
         self.request_queue = multiprocessing.Queue()
         self.listener = Listener(self.request_queue)
@@ -76,7 +78,7 @@ if __name__ == '__main__':
     db = {'mysql': MySQLDB(username, password, host, host, db_name)}[db_implementation]
 
     # Setup the controller.
-    c = Controller()
+    c = Controller(db)
 
     # Start the
     c.create_request_processors()
