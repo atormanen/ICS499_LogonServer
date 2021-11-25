@@ -217,6 +217,7 @@ class MySQLContext(DBContext):
     @db_connection.setter
     def db_connection(self, connection: MySQLConnection):
         self._db_connection = connection
+        self._cursor = self._db_connection.cursor()
         logger.debug(f'cursor set to {self._cursor}')
 
     @property
@@ -231,9 +232,6 @@ class MySQLContext(DBContext):
                               MySQLCursorBufferedNamedTuple,
                               MySQLCursorPrepared]:
         # noinspection PyTypeChecker
-        if self._cursor is None and self._db_connection is not None:
-            self._cursor = self._db_connection.cursor(buffered=True)
-        log(f'db_connection: {self._db_connection}')
         return self._cursor
 
     @property
@@ -333,6 +331,7 @@ class MySQLContextManager(DBContextManager):
                                                               host=self.host,
                                                               database=self.database_name,
                                                               auth_plugin=self.auth_plugin)
+        log(f'db_connection is {self._context.db_connection}')
         log(f'cursor is {self._context.cursor}')
         return self._context
 
