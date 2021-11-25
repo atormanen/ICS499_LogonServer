@@ -254,7 +254,6 @@ def log_error(e: Exception, msg=''):
         logger.error(f'    {line}')
 
 
-
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
     """Logs a message
 

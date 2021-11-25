@@ -554,6 +554,7 @@ class SigninRequest(ValidRequest):
 
         super().set_response(failure_reason=failure_reason, **user_dict)
 
+
 @logged_method
 def build_request(connection_socket, parsed_data: dict, *args, **kwargs) -> BaseRequest:
     return BaseRequest.Builder.build(connection_socket, parsed_data, *args, **kwargs)

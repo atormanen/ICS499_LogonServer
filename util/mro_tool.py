@@ -1,4 +1,3 @@
-
 def _alt_mro(item):
     # get type if not already type
     cls = item if isinstance(item, type) else type(item)
@@ -15,6 +14,7 @@ def _alt_mro(item):
     r.append(object)
     return r
 
+
 def mro(item):
     if hasattr(item, 'mro'):
         try:
@@ -25,4 +25,3 @@ def mro(item):
         return item.__class__.mro()
     else:
         return _alt_mro(item)
-

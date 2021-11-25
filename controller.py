@@ -3,11 +3,10 @@ import multiprocessing
 import sys
 from multiprocessing import Process
 from threading import Thread
-from typing import Optional
 
 from database.db import DB
 from database.mysql_db import MySQLDB
-from global_logger import logger, log_error
+from global_logger import logger
 from listener import Listener
 from manifest import Manifest
 from process_request import RequestProcessor
@@ -30,7 +29,6 @@ class Controller:
     def _create_request_processor(self):
         req = RequestProcessor(self.request_queue, self.database)
         req.process_requests()
-
 
     def create_request_processors(self):
         processes = []
@@ -57,11 +55,13 @@ if __name__ == '__main__':
     if args:
         # get database configuration info from arguments and password from input.
         from getpass import getpass
+
         db_implementation, host, username, db_name, *_ = args
         password = getpass(prompt='Enter database password: ')
     else:
         # load database configuration from params.json file.
         import json
+
         with open('./params.json', 'r') as f:
             data = json.loads(f.read())
         db_implementation = 'mysql'
@@ -79,4 +79,3 @@ if __name__ == '__main__':
     # Start the
     c.create_request_processors()
     c.create_listener()
-

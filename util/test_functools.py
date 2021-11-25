@@ -321,7 +321,7 @@ class Test_single_dispatch_method(EnhancedTestCase):
 
                 @get_val.register
                 @classmethod
-                def _(cls, a:int):
+                def _(cls, a: int):
                     return 'int'
 
             self.assertEqual('int', A.get_val(3))
@@ -335,10 +335,9 @@ class Test_single_dispatch_method(EnhancedTestCase):
                 def get_val():
                     return ''
 
-
                 @get_val.register
                 @staticmethod
-                def _(a:int):
+                def _(a: int):
                     return 'int'
 
             self.assertEqual('int', A.get_val(3))
@@ -352,7 +351,7 @@ class Test_single_dispatch_method(EnhancedTestCase):
 
                     @get_val.register
                     @classmethod
-                    def _(cls, a:int):
+                    def _(cls, a: int):
                         return 'int'
 
             with self.assertRaises(ClassMethodMismatchError, msg='classmethod dispatcher, non-classmethod register'):
@@ -364,7 +363,7 @@ class Test_single_dispatch_method(EnhancedTestCase):
                         return ''
 
                     @get_val.register
-                    def _(self, a:int):
+                    def _(self, a: int):
                         return 'int'
 
             with self.assertRaises(StaticMethodMismatchError, msg='non-static dispatcher, static register'):
@@ -376,7 +375,7 @@ class Test_single_dispatch_method(EnhancedTestCase):
 
                     @get_val.register
                     @staticmethod
-                    def _(a:int):
+                    def _(a: int):
                         return 'int'
 
             with self.assertRaises(StaticMethodMismatchError, msg='static dispatcher, non-static register'):
@@ -388,7 +387,7 @@ class Test_single_dispatch_method(EnhancedTestCase):
                         return ''
 
                     @get_val.register
-                    def _(self, a:int):
+                    def _(self, a: int):
                         return 'int'
 
             with self.assertRaises(MismatchError, msg='classmethod dispatcher, static register'):
@@ -401,7 +400,7 @@ class Test_single_dispatch_method(EnhancedTestCase):
 
                     @get_val.register
                     @staticmethod
-                    def _(a:int):
+                    def _(a: int):
                         return 'int'
 
             with self.assertRaises(MismatchError, msg='static dispatcher, classmethod register'):
@@ -414,7 +413,7 @@ class Test_single_dispatch_method(EnhancedTestCase):
 
                     @get_val.register
                     @classmethod
-                    def _(cls, a:int):
+                    def _(cls, a: int):
                         return 'int'
 
 
@@ -545,7 +544,7 @@ class Test_single_dispatch_function(EnhancedTestCase):
         @self.inplace_subtest('no arg check')
         def _():
             @single_dispatch_function
-            def get_val(s:str):
+            def get_val(s: str):
                 return 'str'
 
             @get_val.register
