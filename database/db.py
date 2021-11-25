@@ -137,8 +137,6 @@ class DBContextManager(ABC):
     def __exit__(self, exc_type, exc_val, exc_tb) -> bool: ...
 
 
-
-
 class QueryBuilder(ABC):
 
     @abstractmethod
@@ -566,5 +564,3 @@ class DB:
             raise e
         except BaseException as e:
             raise CouldNotConnectException from e
-
-
