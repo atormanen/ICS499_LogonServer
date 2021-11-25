@@ -195,7 +195,6 @@ class GetAccountInfoRequest(ValidRequest):
     def _get_request_type(cls) -> str:
         return RequestType.GET_ACCOUNT_INFO
 
-    #@logged_method
     def set_response(self, *, account_data: Optional[list] = None, failure_reason: Optional[str] = None,
                      **kwargs) -> None:
         """Sets the response for a request to get account info.
@@ -275,7 +274,6 @@ class GetMostChessGamesWonRequest(ValidRequest):
     def _get_request_type(cls) -> str:
         return RequestType.GET_MOST_CHESS_GAMES_WON
 
-    #@logged_method
     def set_response(self,
                      number_of_games: Optional[object] = None,
                      data: Optional[dict] = None,
@@ -305,7 +303,6 @@ class GetLongestWinStreakRequest(ValidRequest):
     def _get_request_type(cls) -> str:
         return RequestType.GET_LONGEST_WIN_STREAK
 
-    #@logged_method
     def set_response(self, *, number_of_games: Optional[object] = None, data: Optional[object] = None,
                      failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to get the longest win streak for a user.
@@ -395,7 +392,6 @@ class GetFriendRequestsRequest(ValidRequest):
     def username(self):
         return self.parsed_data['username']
 
-    #@logged_method
     def set_response(self, *,
                      friends_list: Optional[list] = None,
                      failure_reason: Optional[str] = None) -> None:
@@ -438,7 +434,6 @@ class GetFriendsListRequest(ValidRequest):
     def username(self):
         return self.parsed_data['username']
 
-    #@logged_method
     def set_response(self, *,
                      friends_list: Optional[list] = None,
                      failure_reason: Optional[str] = None) -> None:
@@ -479,7 +474,6 @@ class GetUserStatsRequest(ValidRequest):
     def username(self):
         return self.parsed_data['username']
 
-    #@logged_method
     def set_response(self, *, stats: Optional[list] = None, failure_reason: Optional[str] = None) -> None:
         """Sets the response for a request to get the user stats.
 
@@ -524,8 +518,7 @@ class SigninRequest(ValidRequest):
     def password(self):
         return self.parsed_data['password']
 
-    # #@logged_method
-    def set_response(self, *,
+    # def set_response(self, *,
                      token: Optional[object] = None,
                      data: Optional[list] = None,
                      failure_reason: Optional[str] = None) -> None:

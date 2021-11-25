@@ -12,7 +12,6 @@ class Signin:
         self.db = db
         self.token = Tokens()
 
-    #@logged_method
     def validate_password(self, username, password):
 
         if (self.db.user_exists(username)):
@@ -23,7 +22,6 @@ class Signin:
                 return True
         return False
 
-    #@logged_method
     def token_up_to_date(self, username):
 
         token_expiration = self.db.get_token_creation_time(username)
@@ -37,7 +35,6 @@ class Signin:
         logger.debug(f"token is valid for user {username}")
         return True
 
-    #@logged_method
     def signin(self, req_item: SigninRequest):
 
         username = req_item.username
@@ -62,7 +59,6 @@ class Signin:
             logger.debug(f"signin failed for user {username}")
             req_item.set_response(failure_reason='invalid password')
 
-    #@logged_method
     def signout(self, req_item: SignoutRequest):
 
         username = req_item.username
@@ -76,7 +72,6 @@ class Signin:
         self.db.save_account_info(username, req_item.parsed_data)
         req_item.set_response()
 
-    #@logged_method
     def get_account_info(self, parsed_data):
 
         username = parsed_data["username"]

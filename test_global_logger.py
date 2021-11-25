@@ -88,7 +88,6 @@ class TestGlobalLogger(EnhancedTestCase):
     def test_logged_method(self):
 
         class Button:
-            #@logged_method
             def push(self, times_pressed=1) -> str:
                 tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
                 return f'Someone pushed the button{tmp_str}'
