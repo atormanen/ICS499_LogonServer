@@ -213,7 +213,6 @@ class MySQLContext(DBContext):
     def db_connection(self) -> MySQLConnection:
         return self._db_connection
 
-    @logged_method
     @db_connection.setter
     def db_connection(self, connection: MySQLConnection):
         self._db_connection = connection
