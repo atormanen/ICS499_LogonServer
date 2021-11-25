@@ -243,7 +243,7 @@ def checkout(parsed_args) -> None:
 
 
 _SCRIPT_NAME: Optional[str] = None
-_SCRIPT_USAGE: Optional[str] = '\n'.join(('jargit.py command [command_args ...] [-h] [-v | -q] [--interactive]',
+_SCRIPT_USAGE: Optional[str] = '\n'.join(('jargit command [command_args ...] [-h] [-v | -q] [--interactive]',
                                           '',
                                           'commands:',
                                           *[f'  {c.get_help_msg()}' for c in commands.values()]))
@@ -252,6 +252,7 @@ _SCRIPT_EPILOG: Optional[str] = None
 
 # Script Default Constants
 _SCRIPT_IS_INTERACTIVE_BY_DEFAULT = False
+
 
 def main(args: Optional[List[str]]):
     """Executes the script. Use '-h' argument to see help info."""

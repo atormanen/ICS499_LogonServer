@@ -1,7 +1,7 @@
 import unittest
 
 import global_logger
-from global_logger import logged_method, logged_function, logged_class_method, deprecated
+from global_logger import logged_function, logged_class_method, deprecated
 from util.testing import EnhancedTestCase
 
 
@@ -88,7 +88,7 @@ class TestGlobalLogger(EnhancedTestCase):
     def test_logged_method(self):
 
         class Button:
-            #@logged_method
+            # @logged_method
             def push(self, times_pressed=1) -> str:
                 tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
                 return f'Someone pushed the button{tmp_str}'

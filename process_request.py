@@ -7,7 +7,7 @@ from data.test_message_item import REVOKE_FRIEND_REQUEST, GET_ACCOUNT_INFO, SAVE
     GET_MOST_CHESS_GAMES_WON, GET_LONGEST_WIN_STREAK, SIGNOUT, REMOVE_FRIEND, ACCEPT_FRIEND_REQUEST, \
     SEND_FRIEND_REQUEST, GET_FRIEND_REQUESTS, GET_FRIENDS_LIST, GET_USER_STATS, CREATE_ACCOUNT, SIGNIN
 from database.db import DB
-from global_logger import logger, logged_method
+from global_logger import logger
 from user.account_management import AccountManagement
 from user.friends_management import FriendsManagement
 from user.signin import Signin
@@ -39,13 +39,14 @@ class ProcessRequest:
         self.leaderboard = Leaderboard(self.database)
 
     # TODO: find a better way to process these requests types.
-    #@logged_method
+    # @logged_method
     def process_request_type(self, req_item: BaseRequest):
 
         def _unimplemented(msg: str):
             # noinspection PyUnusedLocal
             def _callable(*args, **kwargs):
                 raise NotImplementedError(msg)
+
             return _callable
 
         action_dict = {REVOKE_FRIEND_REQUEST: _unimplemented('revoke_friend_request has not been implemented yet'),
@@ -69,7 +70,7 @@ class ProcessRequest:
 
     # The process thread will block on request_queue.get() until something
     # arrives.
-    #@logged_method
+    # @logged_method
     def process_requests(self):
 
         while True:
