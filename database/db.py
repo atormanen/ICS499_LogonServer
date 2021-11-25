@@ -115,7 +115,6 @@ class DBContext(ABC):
     def commit(self) -> None:
         """Commits the current transaction."""
         ...
-        ...
 
     @abstractmethod
     def rollback(self) -> None:
