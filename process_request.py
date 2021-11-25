@@ -6,8 +6,8 @@ from data.responder import Responder
 from data.test_message_item import REVOKE_FRIEND_REQUEST, GET_ACCOUNT_INFO, SAVE_ACCOUNT_INFO_BY_KEY, CHANGE_PASSWORD, \
     GET_MOST_CHESS_GAMES_WON, GET_LONGEST_WIN_STREAK, SIGNOUT, REMOVE_FRIEND, ACCEPT_FRIEND_REQUEST, \
     SEND_FRIEND_REQUEST, GET_FRIEND_REQUESTS, GET_FRIENDS_LIST, GET_USER_STATS, CREATE_ACCOUNT, SIGNIN
-from database.db import DB
-from global_logger import logger, logged_method
+from database.mysql_db import MySQLDB
+from global_logger import logger
 from user.account_management import AccountManagement
 from user.friends_management import FriendsManagement
 from user.signin import Signin
@@ -27,7 +27,7 @@ class ProcessRequest:
         username = data['db_username']
         password = data['db_password']
         db_name = data['db_name']
-        self.database = DB(username, password, reader, writer, db_name)
+        self.database = MySQLDB(username, password, reader, writer, db_name)
         # self.database = DB('app','123','192.168.1.106','db_name')
 
         self.request_queue = request_queue
