@@ -213,12 +213,11 @@ class MySQLContext(DBContext):
     def db_connection(self) -> MySQLConnection:
         return self._db_connection
 
-    @logged_method
     @db_connection.setter
     def db_connection(self, connection: MySQLConnection):
         self._db_connection = connection
         self._cursor = self._db_connection.cursor()
-        logger.debug(f'cursor set to {self._cursor}')
+        logger.debug(f'cursor set to {self._cursor} in db_connect setter')
 
     @property
     def cursor(self) -> Union[CursorBase,
