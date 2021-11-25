@@ -236,6 +236,7 @@ class MySQLContext(DBContext):
         """A list of transactions."""
         return self._transactions
 
+    @logged_method
     def execute(self, statement: str):
         """Execute given statement on the database."""
         if not self._transactions or self._transactions[-1].is_closed:
@@ -248,6 +249,7 @@ class MySQLContext(DBContext):
             self.transactions[-1].was_rolled_back = True
             raise DBQueryError(statement, f"error in sql statement: {statement}") from e
 
+    @logged_method
     def commit(self) -> None:
         """Commits the current transaction."""
         if not self._transactions or not self._transactions[-1].statements:
@@ -262,6 +264,7 @@ class MySQLContext(DBContext):
             self.transactions[-1].was_rolled_back = True
             raise DBCommitError(self._transactions[-1], f"Failed to commit database transaction.") from e
 
+    @logged_method
     def rollback(self) -> None:
         """Rolls back the current transaction."""
         if not self._transactions or not self._transactions[-1].statements:
