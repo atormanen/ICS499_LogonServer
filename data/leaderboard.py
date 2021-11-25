@@ -1,6 +1,6 @@
 """This module holds the Leaderboard class used to retrieve leaderboard statistics"""
 from data.message_item import GetLongestWinStreakRequest, GetMostChessGamesWonRequest
-from database.db import FailureException
+from database.db import DatabaseFailureException
 from global_logger import logged_method
 
 
@@ -53,7 +53,7 @@ class Leaderboard:
                 user_dict[user_str] = user
                 i += 1
                 req_item.set_response(number_of_games=number_of_games, data=user_dict)
-        except FailureException as e:
+        except DatabaseFailureException as e:
             req_item.set_response(failure_reason=e.failure_reason_msg)
 
 

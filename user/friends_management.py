@@ -1,6 +1,6 @@
 import time
 
-from database.db import DB, FriendRequestNotFoundException, FailureException
+from database.db import DB, FriendRequestNotFoundException, DatabaseFailureException
 from global_logger import logger, logged_method
 from data.message_item import GetFriendsListRequest, GetFriendRequestsRequest, SendFriendRequestRequest, \
     AcceptFriendRequestRequest, RemoveFriendRequest
@@ -103,7 +103,7 @@ class FriendsManagement:
         if self.validate_username(friends_username):
             try:
                 self.db.remove_friend(username, friends_username)
-            except FailureException as e:
+            except DatabaseFailureException as e:
                 req_item.set_response(failure_reason=e.failure_reason_msg)
         else:
             req_item.set_response(failure_reason='friends username not valid')
