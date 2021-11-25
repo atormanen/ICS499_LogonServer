@@ -233,7 +233,7 @@ class MySQLContext(DBContext):
         # noinspection PyTypeChecker
         if self._cursor is None and self._db_connection is not None:
             self._cursor = self._db_connection.cursor(buffered=True)
-        log('hit')
+        log(f'db_connection: {self._db_connection}')
         return self._cursor
 
     @property
