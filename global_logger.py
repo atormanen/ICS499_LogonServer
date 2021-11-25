@@ -21,8 +21,10 @@ _verbose_level_name = 'VERBOSE'
 _log_file = './logs/logon_server.log'
 
 # noinspection SpellCheckingInspection
-_log_formatter = logging.Formatter(
+_old_log_formatter = logging.Formatter(
     "%(levelname)-7.7s %(process)-12.12d %(processName)-12.12s %(threadName)-12.12s %(asctime)s: %(message)s")
+_log_formatter = logging.Formatter(
+    "%(levelname)-7.7s %(threadName)-12.12s: %(message)s")
 logger = logging.getLogger()
 logging.addLevelName(VERBOSE, _verbose_level_name)
 
@@ -241,8 +243,16 @@ def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
     return _LoggedWrapperType.CLASS_METHOD.build_wrapper(wrapped, level)
 
 
-def log_error(e: BaseException, msg=''):
-    logger.error(f'{msg} - {e!r}')
+def log_error(e: Exception, msg=''):
+    import traceback
+    tb = traceback.format_tb(e.__traceback__)
+    tb_lines = []
+    for item in tb:
+        tb_lines.extend(item.split('\n'))
+    logger.error(f'{msg} - {e!r}' if msg else repr(e))
+    for line in tb_lines:
+        logger.error(f'    {line}')
+
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:

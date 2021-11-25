@@ -1,6 +1,5 @@
 from data.message_item import RequestType
 
-
 # Validate request will check the initial variable to see what kind of request
 # type it is.
 # TODO: Check the entire json object for appropriate fields and not just the req type
@@ -11,7 +10,6 @@ class RequestValidator:
     def __init__(self):
         self.num = 0
 
-    # @logged_method
     def is_bad_request(self, parsed_data):
 
         # If any check returns True, the request is considered bad
