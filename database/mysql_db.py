@@ -201,9 +201,18 @@ class MySQLQueryBuilder(QueryBuilder):
 class MySQLContext(DBContext):
     def __init__(self):
         self._fetched: List[tuple] = []
-        self._db_connection: MySQLConnection = None
+        self._db_connection: Optional[MySQLConnection] = None
         self._transactions: List[DBTransaction] = []
-        self._cursor = None
+        self._cursor: Optional[Union[CursorBase,
+                                     MySQLCursor,
+                                     MySQLCursorBuffered,
+                                     MySQLCursorRaw,
+                                     MySQLCursorBufferedRaw,
+                                     MySQLCursorDict,
+                                     MySQLCursorBufferedDict,
+                                     MySQLCursorNamedTuple,
+                                     MySQLCursorBufferedNamedTuple,
+                                     MySQLCursorPrepared]] = None
 
     @property
     def fetched(self) -> List[tuple]:

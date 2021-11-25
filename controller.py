@@ -25,7 +25,7 @@ class Controller:
         self.database = database
 
     def _create_request_processor(self):
-        req = RequestProcessor(self.request_queue)
+        req = RequestProcessor(self.request_queue, self.database)
         req.process_requests()
 
 
