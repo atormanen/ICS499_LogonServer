@@ -76,6 +76,6 @@ if __name__ == '__main__':
     # Setup the controller.
     c = Controller(db)
 
-    # Start the
+    # Start the threads and/or processes
     c.create_request_processors()
     c.create_listener()
