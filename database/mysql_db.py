@@ -335,7 +335,7 @@ class MySQLContextManager(DBContextManager):
         return self._context
 
     # noinspection PyBroadException
-    @logged_method()
+    @logged_method
     def __exit__(self, exc_type, exc_val, exc_tb):
 
         if exc_val:
