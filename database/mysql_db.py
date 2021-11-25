@@ -396,3 +396,4 @@ class MySQLDB(DB):
                                        auth_plugin=self.auth_plugin)
 
         super().__init__(MySQLQueryBuilder(), mysql_context_manager_factory)
+

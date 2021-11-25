@@ -564,8 +564,3 @@ class DB:
             raise CouldNotConnectException from e
 
 
-if __name__ == '__main__':
-    l = list(k for k, v in vars(DBContext).items())
-    l.sort()
-    for v in l:
-        print(f'{v}()')
