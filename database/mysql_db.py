@@ -201,8 +201,9 @@ class MySQLQueryBuilder(QueryBuilder):
 class MySQLContext(DBContext):
     def __init__(self):
         self._fetched: List[tuple] = []
-        self._db: Optional[MySQLConnection] = None
+        self._db_connection: Optional[MySQLConnection] = None
         self._transactions: List[DBTransaction] = []
+        self._cursor = None
 
     @property
     def fetched(self) -> List[tuple]:
@@ -210,7 +211,12 @@ class MySQLContext(DBContext):
 
     @property
     def db(self) -> MySQLConnection:
-        return self._db
+        return self._db_connection
+
+    @db.setter
+    def db(self, connection: MySQLConnection):
+        self._db_connection = connection
+        self._cursor = connection.cursor()
 
     @property
     def cursor(self) -> Union[CursorBase,
@@ -224,7 +230,7 @@ class MySQLContext(DBContext):
                               MySQLCursorBufferedNamedTuple,
                               MySQLCursorPrepared]:
         # noinspection PyTypeChecker
-        return self._db.cursor(buffered=True)
+        return self._cursor
 
     @property
     def was_successful(self) -> bool:
@@ -236,7 +242,6 @@ class MySQLContext(DBContext):
         """A list of transactions."""
         return self._transactions
 
-    @logged_method
     def execute(self, statement: str):
         """Execute given statement on the database."""
         if not self._transactions or self._transactions[-1].is_closed:
@@ -249,7 +254,6 @@ class MySQLContext(DBContext):
             self.transactions[-1].was_rolled_back = True
             raise DBQueryError(statement, f"error in sql statement: {statement}") from e
 
-    @logged_method
     def commit(self) -> None:
         """Commits the current transaction."""
         if not self._transactions or not self._transactions[-1].statements:
@@ -264,7 +268,6 @@ class MySQLContext(DBContext):
             self.transactions[-1].was_rolled_back = True
             raise DBCommitError(self._transactions[-1], f"Failed to commit database transaction.") from e
 
-    @logged_method
     def rollback(self) -> None:
         """Rolls back the current transaction."""
         if not self._transactions or not self._transactions[-1].statements:
@@ -275,7 +278,6 @@ class MySQLContext(DBContext):
         self.db.rollback()
         self.transactions[-1].was_rolled_back = True
 
-    @logged_method
     def fetchall(self) -> List[tuple]:
         """Gets all rows of a query result, stores them in the context field `fetched` and also returned."""
         self._fetched = self.cursor.fetchall()
@@ -321,11 +323,10 @@ class MySQLContextManager(DBContextManager):
         return self._context
 
     def __enter__(self) -> MySQLContext:
-        self.context._db = mysql.connector.connect(user=self.user, password=self.password,
-                                                   host=self.host,
-                                                   database=self.database_name,
-                                                   auth_plugin=self.auth_plugin)
-        self.context._cursor = self.context.db.cursor()
+        self.context.db_connection = mysql.connector.connect(user=self.user, password=self.password,
+                                                              host=self.host,
+                                                              database=self.database_name,
+                                                              auth_plugin=self.auth_plugin)
         return self.context
 
     # noinspection PyBroadException
