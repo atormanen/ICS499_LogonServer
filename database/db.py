@@ -3,14 +3,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import List
-
-import mysql.connector
-from mysql.connector import MySQLConnection
-from mysql.connector.cursor import MySQLCursor, \
-    CursorBase, MySQLCursorBuffered, MySQLCursorRaw, MySQLCursorBufferedRaw, \
-    MySQLCursorDict, MySQLCursorBufferedDict, MySQLCursorNamedTuple, MySQLCursorBufferedNamedTuple, MySQLCursorPrepared
-
-from database.mysql_db import MySQLQueryBuilder
 from global_logger import *
 
 
