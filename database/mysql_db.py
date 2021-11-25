@@ -374,7 +374,7 @@ class MySQLDB(DB):
         self.database = database
         self.auth_plugin = 'mysql_native_password'
 
-        @logged_method
+        @logged_function
         def mysql_context_manager_factory():
             return MySQLContextManager(user=self.user,
                                        password=self.password,
