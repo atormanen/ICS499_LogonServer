@@ -50,10 +50,6 @@ class Controller:
 
 
 if __name__ == '__main__':
-    try:
-        raise TypeError('test')
-    except BaseException as e:
-        log_error(e)
     args = sys.argv[1:]
     logger.info('')
     logger.info('starting logon server')
