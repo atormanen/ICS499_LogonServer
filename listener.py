@@ -61,7 +61,6 @@ class Listener:
                 try:
                     connection_socket.settimeout(3)
                     received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
-                    logger.debug(f'received_msg: {received_msg}')
                 except socket.timeout:
                     # Expecting a timeout
                     break
@@ -69,7 +68,6 @@ class Listener:
                 try:
 
                     received_msg = connection_socket.recv(self.buffer_size).decode('utf-8', 'replace')
-                    logger.debug(f'received_msg: {received_msg}')
                 except UnicodeDecodeError:
                     self.send_bad_request(connection_socket)
             full_msg += received_msg
