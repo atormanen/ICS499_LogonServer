@@ -272,6 +272,7 @@ class MySQLContext(DBContext):
         self.db.rollback()
         self.transactions[-1].was_rolled_back = True
 
+    @logged_method
     def fetchall(self) -> List[tuple]:
         """Gets all rows of a query result, stores them in the context field `fetched` and also returned."""
         self._fetched = self.cursor.fetchall()
