@@ -250,7 +250,6 @@ class DB:
         return False if c.result is None else c.result
 
     def db_fetch(self, statement: str) -> List[tuple]:
-
         with self.context_manager_factory() as c:
             c.execute(statement)
             c.fetchall()

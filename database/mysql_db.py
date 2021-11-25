@@ -296,7 +296,7 @@ class MySQLContextManager(DBContextManager):
         self._host = host
         self._password = password
         self._user = user
-        self._context = MySQLContext()
+        self._context = None
 
     @property
     def auth_plugin(self):
@@ -323,6 +323,7 @@ class MySQLContextManager(DBContextManager):
         return self._context
 
     def __enter__(self) -> MySQLContext:
+        self._context = MySQLContext()
         self.context.db_connection = mysql.connector.connect(user=self.user, password=self.password,
                                                               host=self.host,
                                                               database=self.database_name,
@@ -373,6 +374,7 @@ class MySQLDB(DB):
         self.database = database
         self.auth_plugin = 'mysql_native_password'
 
+        @logged_method
         def mysql_context_manager_factory():
             return MySQLContextManager(user=self.user,
                                        password=self.password,
