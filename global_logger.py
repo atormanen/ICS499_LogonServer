@@ -21,8 +21,10 @@ _verbose_level_name = 'VERBOSE'
 _log_file = './logs/logon_server.log'
 
 # noinspection SpellCheckingInspection
-_log_formatter = logging.Formatter(
+_old_log_formatter = logging.Formatter(
     "%(levelname)-7.7s %(process)-12.12d %(processName)-12.12s %(threadName)-12.12s %(asctime)s: %(message)s")
+_log_formatter = logging.Formatter(
+    "%(levelname)-7.7s %(threadName)-12.12s: %(message)s")
 logger = logging.getLogger()
 logging.addLevelName(VERBOSE, _verbose_level_name)
 
