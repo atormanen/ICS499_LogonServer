@@ -224,7 +224,7 @@ class MySQLContext(DBContext):
                               MySQLCursorBufferedNamedTuple,
                               MySQLCursorPrepared]:
         # noinspection PyTypeChecker
-        return self._db.cursor()
+        return self._db.cursor(buffered=True)
 
     @property
     def was_successful(self) -> bool:
