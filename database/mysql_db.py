@@ -213,6 +213,7 @@ class MySQLContext(DBContext):
     def db(self) -> MySQLConnection:
         return self._db_connection
 
+    @logged_method
     @db.setter
     def db(self, connection: MySQLConnection):
         self._db_connection = connection
@@ -374,7 +375,6 @@ class MySQLDB(DB):
         self.database = database
         self.auth_plugin = 'mysql_native_password'
 
-        @logged_function
         def mysql_context_manager_factory():
             return MySQLContextManager(user=self.user,
                                        password=self.password,
