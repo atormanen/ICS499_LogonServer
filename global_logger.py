@@ -245,7 +245,10 @@ def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
 
 def log_error(e: Exception, msg=''):
     import traceback
-    tb_lines = traceback.format_tb(e.__traceback__)
+    tb = traceback.format_tb(e.__traceback__)
+    tb_lines = []
+    for item in tb:
+        tb_lines.extend(item.split('\n'))
     logger.error(f'{msg} - {e!r}' if msg else repr(e))
     for line in tb_lines:
         logger.error(f'    {line}')
