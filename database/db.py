@@ -6,12 +6,6 @@ from typing import List
 from global_logger import *
 
 
-# from query_builder import query_builder
-
-# MysqlDB is a class used to implement common database queries programmatically. It
-# uses the query_builder class which holds the actual mysql syntax.
-
-
 class DatabaseFailureException(Exception):
     """An exception raised to give more information about the failure."""
 
@@ -119,6 +113,12 @@ class DBContext(ABC):
 
     @abstractmethod
     def commit(self) -> None:
+        """Commits the current transaction."""
+        ...
+        ...
+
+    @abstractmethod
+    def rollback(self) -> None:
         """Commits the current transaction."""
         ...
 
@@ -230,7 +230,7 @@ class QueryBuilder(ABC):
 
 class DB:
 
-    def __init__(self, query_builder: QueryBuilder, context_manager_factory):
+    def __init__(self, query_builder: QueryBuilder, context_manager_factory: Callable):
         """ Initializes the DB object.
 
         Raises:
@@ -366,7 +366,7 @@ class DB:
         return result
 
     # @logged_method
-    def get_token(self, username):
+    def get_token(self, username: str):
         result = self.db_fetch(self.query_builder.get_token(username))
 
         # TODO we may want to think about extracting the needed token and returning that in
@@ -519,7 +519,7 @@ class DB:
         return result
 
     # @logged_method
-    def logout(self, username):
+    def logout(self, username: str):
         self.db_update(self.query_builder.logout(username))
 
     # @logged_method
@@ -533,15 +533,15 @@ class DB:
         return result
 
     # @logged_method
-    def get_account_info(self, username):
+    def get_account_info(self, username: str):
         result = self.db_fetch(self.query_builder.get_account_info(username))
         return result
 
     # @logged_method
-    def save_account_info(self, username, data):
+    def save_account_info(self, username: str, data):
         self.db_update(self.query_builder.save_account_info(username, data))
 
-    def save_account_info_by_key(self, username, key, value) -> None:
+    def save_account_info_by_key(self, username: str, key, value) -> None:
         query = self.query_builder.save_account_info_by_key(username, key, value)
         if (query is None):
             return
@@ -563,3 +563,10 @@ class DB:
             raise e
         except BaseException as e:
             raise CouldNotConnectException from e
+
+
+if __name__ == '__main__':
+    l = list(k for k, v in vars(DBContext).items())
+    l.sort()
+    for v in l:
+        print(f'{v}()')
