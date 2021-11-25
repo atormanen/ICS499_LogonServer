@@ -241,11 +241,10 @@ def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
     return _LoggedWrapperType.CLASS_METHOD.build_wrapper(wrapped, level)
 
 
-def log_error(e: BaseException, msg=''):
+def log_error(e: Exception, msg=''):
     import traceback
-    et, ev, tb = e
-    tb_str = ''.join(traceback.format_exception(et, ev, tb))
-    log_error(f'{msg} - {e!r}\n{tb_str}')
+    tb_str = ''.join(traceback.format_tb(e.__traceback__))
+    logger.error(f'{msg} - {e!r}\n{tb_str}')
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:

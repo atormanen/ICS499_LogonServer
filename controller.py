@@ -7,7 +7,7 @@ from typing import Optional
 
 from database.db import DB
 from database.mysql_db import MySQLDB
-from global_logger import logger
+from global_logger import logger, log_error
 from listener import Listener
 from manifest import Manifest
 from process_request import RequestProcessor
@@ -48,6 +48,10 @@ class Controller:
 
 
 if __name__ == '__main__':
+    try:
+        raise TypeError('test')
+    except BaseException as e:
+        log_error(e)
     args = sys.argv[1:]
     logger.info('')
     logger.info('starting logon server')
