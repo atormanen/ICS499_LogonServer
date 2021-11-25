@@ -47,14 +47,14 @@ class Controller:
 
 
 if __name__ == '__main__':
-
+    args = sys.argv[1:]
     logger.info('')
     logger.info('starting logon server')
     logger.info('')
-    if sys.argv:
+    if args:
         # get database configuration info from arguments and password from input.
         from getpass import getpass
-        db_implementation, host, username, db_name, *_ = sys.argv
+        db_implementation, host, username, db_name, *_ = args
         password = getpass(prompt='Enter database password: ')
     else:
         # load database configuration from params.json file.
