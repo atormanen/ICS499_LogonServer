@@ -1,7 +1,6 @@
 """This module holds the Leaderboard class used to retrieve leaderboard statistics"""
 from data.message_item import GetLongestWinStreakRequest, GetMostChessGamesWonRequest
-from database.db import FailureException
-from global_logger import logged_method
+from database.db import DatabaseFailureException
 
 
 class Leaderboard:
@@ -10,7 +9,6 @@ class Leaderboard:
     def __init__(self, database):
         self.db = database
 
-    #@logged_method
     def get_longest_win_streak(self, req_item: GetLongestWinStreakRequest,
                                number_of_games) -> None:  # TODO put type hint for number_of_games
         """Gets the longest consecutive string of wins not including games results that are omitted from leaderboards.
@@ -25,7 +23,6 @@ class Leaderboard:
         resp = self.db.get_longest_win_streak(number_of_games)
         req_item.set_response(number_of_games=number_of_games, data=resp)
 
-    #@logged_method
     def get_most_chess_games_won(self, req_item: GetMostChessGamesWonRequest, number_of_games) -> None:
         """ TODO describe what this method does exactly...
                  If it just gets the number of games won, why have the word 'most'?
@@ -53,7 +50,7 @@ class Leaderboard:
                 user_dict[user_str] = user
                 i += 1
                 req_item.set_response(number_of_games=number_of_games, data=user_dict)
-        except FailureException as e:
+        except DatabaseFailureException as e:
             req_item.set_response(failure_reason=e.failure_reason_msg)
 
 

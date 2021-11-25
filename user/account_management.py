@@ -1,25 +1,23 @@
 # Is this class necessary? Should it be combined with signin?
 import time
-from global_logger import logged_method
+
 from data.message_item import GetUserStatsRequest, ChangePasswordRequest, SaveAccountInfoByKeyRequest, \
     CreateAccountRequest
+from database.db import DB
 
 
 class AccountManagement:
-
     username = ''
     password = ''
 
-    def __init__(self, mysql_d_b):
-        self.db = mysql_d_b
+    def __init__(self, db: DB):
+        self.db = db
 
-    #@logged_method
     def validate_username(self, username):
         if (self.db.user_exists(username)):
             return True
         return False
 
-    #@logged_method
     def is_password_valid(self, password):
         upper_ctr, lower_ctr, number_ctr, special_ctr = 0, 0, 0, 0
 
@@ -39,7 +37,6 @@ class AccountManagement:
         else:
             return False
 
-    #@logged_method
     def create_account(self, req_item: CreateAccountRequest):
         parsed_data = req_item.parsed_data
         # check if username exists
@@ -52,12 +49,10 @@ class AccountManagement:
         else:
             req_item.set_response(failure_reason='username already exists')
 
-    #@logged_method
     def get_user_stats(self, req_item: GetUserStatsRequest):
         stats = self.db.get_user_stats(req_item.username)
         req_item.set_response(stats=stats[0])
 
-    #@logged_method
     def validate_password(self, username, password):
         if (self.db.user_exists(username)):
             db_password = self.db.get_password_for(username)
@@ -67,7 +62,6 @@ class AccountManagement:
                 return True
         return False
 
-    #@logged_method
     def token_up_to_date(self, username):
         token_expiration = self.db.get_token_creation_time(username)
         # if(token_expiration):
@@ -78,7 +72,6 @@ class AccountManagement:
             return False
         return True
 
-    #@logged_method
     def change_password(self, req_item: ChangePasswordRequest):
         username = req_item.username
         # signon_token = parsed_data["signon_token"]
@@ -98,7 +91,6 @@ class AccountManagement:
         else:
             req_item.set_response(failure_reason='Unable to validate password.')
 
-    #@logged_method
     def save_account_info_by_key(self, req_item: SaveAccountInfoByKeyRequest):
         username = req_item.username
         hash_val = req_item.hash_val
