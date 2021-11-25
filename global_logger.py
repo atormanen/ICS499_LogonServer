@@ -245,7 +245,7 @@ def log_error(e: BaseException, msg=''):
     import traceback
     et, ev, tb = e
     tb_str = ''.join(traceback.format_exception(et, ev, tb))
-    logger.error(f'{msg} - {e!r}\n{tb_str}')
+    log_error(f'{msg} - {e!r}\n{tb_str}')
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:

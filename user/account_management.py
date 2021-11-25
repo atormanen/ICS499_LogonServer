@@ -1,6 +1,6 @@
 # Is this class necessary? Should it be combined with signin?
 import time
-from global_logger import logged_method
+
 from data.message_item import GetUserStatsRequest, ChangePasswordRequest, SaveAccountInfoByKeyRequest, \
     CreateAccountRequest
 

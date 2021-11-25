@@ -1,7 +1,7 @@
 import time
 
 from data.message_item import *
-from global_logger import logger, logged_method
+from global_logger import logger
 from user.tokens import Tokens
 
 

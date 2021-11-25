@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 import unittest
 from typing import Callable, Union, Optional, Any, Dict
-from unittest import TestCase
+
 from util.functools import single_dispatch_function, single_dispatch_method, IllegalRegistryError, \
     StaticMethodMismatchError, MismatchError, ClassMethodMismatchError
 from util.testing import EnhancedTestCase

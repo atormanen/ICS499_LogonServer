@@ -1,6 +1,8 @@
+import json
 import socket
 from threading import Thread
 
+from global_logger import log_error
 from manifest import Manifest
 from process_request import *
 from data.message_item import build_request
@@ -28,7 +30,7 @@ class Listener:
             self.server_socket.bind((self.server_ip, self.port_number))
             self.server_socket.listen(5)
         except OSError as error:
-            logger.error(error)
+            log_error(error)
         logger.debug(f"server socket: {str(self.server_socket)}")
 
     def set_ip(self):
@@ -82,12 +84,12 @@ class Listener:
             if not (full_msg[0] == "{"):
                 full_msg = full_msg[2::]
         except IndexError as error:
-            logger.error(error)
+            log_error(error)
             return
         try:
             parsed_data = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
-            logger.error(f"unable to load message into json: {full_msg}")
+            log_error(f"unable to load message into json: {full_msg}")
             self.send_bad_request(connection_socket)
             return
         request = build_request(connection_socket, parsed_data)
@@ -104,7 +106,7 @@ class Listener:
                 thread = Thread(target=self.process_request, args=(connection_socket,))
                 thread.start()
             except IOError as error:
-                logger.error(error)
+                log_error(error)
                 if connection_socket:
                     connection_socket.close()
 

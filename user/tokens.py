@@ -2,8 +2,6 @@ import random
 import string
 import time
 
-from global_logger import logged_method
-
 
 class Tokens:
 

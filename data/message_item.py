@@ -2,10 +2,9 @@
 from __future__ import annotations
 
 import json
-import traceback
 from abc import abstractmethod, ABC
-from typing import Optional, Type, Collection
 from socket import socket as socket_cls
+from typing import Optional, Type, Collection
 
 import global_logger
 from global_logger import logger, logged_method

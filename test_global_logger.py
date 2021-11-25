@@ -1,7 +1,7 @@
 import unittest
 
 import global_logger
-from global_logger import logged_method, logged_function, logged_class_method, deprecated
+from global_logger import logged_function, logged_class_method, deprecated
 from util.testing import EnhancedTestCase
 
 

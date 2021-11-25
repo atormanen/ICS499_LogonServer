@@ -1,5 +1,3 @@
-import json
-
 from data.leaderboard import Leaderboard
 from data.message_item import BaseRequest
 from data.responder import Responder
@@ -7,8 +5,7 @@ from data.test_message_item import REVOKE_FRIEND_REQUEST, GET_ACCOUNT_INFO, SAVE
     GET_MOST_CHESS_GAMES_WON, GET_LONGEST_WIN_STREAK, SIGNOUT, REMOVE_FRIEND, ACCEPT_FRIEND_REQUEST, \
     SEND_FRIEND_REQUEST, GET_FRIEND_REQUESTS, GET_FRIENDS_LIST, GET_USER_STATS, CREATE_ACCOUNT, SIGNIN
 from database.db import DB
-from database.mysql_db import MySQLDB
-from global_logger import logger, logged_method
+from global_logger import logger
 from user.account_management import AccountManagement
 from user.friends_management import FriendsManagement
 from user.signin import Signin
@@ -72,6 +69,6 @@ class RequestProcessor:
                 self.process_request_type(request_item)
                 logger.debug('b')  # TODO Remove
             except Exception as e:
-                logger.error(e)
+                log_error(e)
                 request_item.set_invalid_request_response()
                 self.responder.send_response(request_item, 10.0)

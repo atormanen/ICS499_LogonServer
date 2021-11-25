@@ -3,7 +3,6 @@ from data.message_item import RequestType
 # Validate request will check the initial variable to see what kind of request
 # type it is.
 # TODO: Check the entire json object for appropriate fields and not just the req type
-from global_logger import logged_method
 
 
 class RequestValidator:

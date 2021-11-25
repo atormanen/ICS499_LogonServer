@@ -1,9 +1,9 @@
 import time
 
-from database.db import DB, FriendRequestNotFoundException, DatabaseFailureException
-from global_logger import logger, logged_method
 from data.message_item import GetFriendsListRequest, GetFriendRequestsRequest, SendFriendRequestRequest, \
     AcceptFriendRequestRequest, RemoveFriendRequest
+from database.db import DB, FriendRequestNotFoundException, DatabaseFailureException
+from global_logger import logger
 
 
 # Friends management will handle the mechanics of sending friends requests,

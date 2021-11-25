@@ -6,8 +6,9 @@ from threading import Thread
 from typing import Optional
 
 from database.db import DB
-from global_logger import logged_method, logger
-from listener import Listener, MySQLDB
+from database.mysql_db import MySQLDB
+from global_logger import logger
+from listener import Listener
 from manifest import Manifest
 from process_request import RequestProcessor
 
