@@ -371,7 +371,7 @@ class DB:
 
         # TODO we may want to think about extracting the needed token and returning that in
         #  a way that is easier to use. The parsing of database results should be the responsibility
-        #  of the db module, not the caller.
+        #  of the db_connection module, not the caller.
 
         return result
 
@@ -386,7 +386,7 @@ class DB:
 
         # TODO we may want to think about extracting the needed time and returning that in
         #  a way that is easier to use. The parsing of database results should be the responsibility
-        #  of the db module, not the caller.
+        #  of the db_connection module, not the caller.
 
         return result
 

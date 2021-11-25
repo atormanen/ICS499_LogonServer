@@ -201,7 +201,7 @@ class MySQLQueryBuilder(QueryBuilder):
 class MySQLContext(DBContext):
     def __init__(self):
         self._fetched: List[tuple] = []
-        self._db_connection: Optional[MySQLConnection] = None
+        self._db_connection: MySQLConnection = None
         self._transactions: List[DBTransaction] = []
         self._cursor = None
 
@@ -210,12 +210,12 @@ class MySQLContext(DBContext):
         return self._fetched
 
     @property
-    def db(self) -> MySQLConnection:
+    def db_connection(self) -> MySQLConnection:
         return self._db_connection
 
     @logged_method
-    @db.setter
-    def db(self, connection: MySQLConnection):
+    @db_connection.setter
+    def db_connection(self, connection: MySQLConnection):
         self._db_connection = connection
         self._cursor = connection.cursor()
 
@@ -251,7 +251,7 @@ class MySQLContext(DBContext):
         try:
             return self.cursor.execute(statement)
         except mysql.connector.Error as e:
-            self.db.rollback()
+            self.db_connection.rollback()
             self.transactions[-1].was_rolled_back = True
             raise DBQueryError(statement, f"error in sql statement: {statement}") from e
 
@@ -262,10 +262,10 @@ class MySQLContext(DBContext):
         if self._transactions[-1].is_closed:
             raise DBCommitError(self._transactions[-1], 'Transaction already closed')
         try:
-            self.db.commit()
+            self.db_connection.commit()
             self.transactions[-1].was_committed = True
         except mysql.connector.Error as e:
-            self.db.rollback()
+            self.db_connection.rollback()
             self.transactions[-1].was_rolled_back = True
             raise DBCommitError(self._transactions[-1], f"Failed to commit database transaction.") from e
 
@@ -276,7 +276,7 @@ class MySQLContext(DBContext):
         if self._transactions[-1].is_closed:
             raise DBRollbackError(self._transactions[-1], 'Transaction already closed')
 
-        self.db.rollback()
+        self.db_connection.rollback()
         self.transactions[-1].was_rolled_back = True
 
     def fetchall(self) -> List[tuple]:
@@ -325,11 +325,12 @@ class MySQLContextManager(DBContextManager):
 
     def __enter__(self) -> MySQLContext:
         self._context = MySQLContext()
-        self.context.db_connection = mysql.connector.connect(user=self.user, password=self.password,
+        self._context.db_connection = mysql.connector.connect(user=self.user, password=self.password,
                                                               host=self.host,
                                                               database=self.database_name,
                                                               auth_plugin=self.auth_plugin)
-        return self.context
+        logger.debug(f'db connection set up: {self._context.db_connection}')
+        return self._context
 
     # noinspection PyBroadException
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -346,8 +347,8 @@ class MySQLContextManager(DBContextManager):
         except BaseException as e0:
             log_error(e0)
         try:
-            if self.context.db:
-                self.context.db.close()
+            if self.context.db_connection:
+                self.context.db_connection.close()
         except BaseException as e1:
             log_error(e1)
 
