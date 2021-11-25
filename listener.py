@@ -21,7 +21,6 @@ class Listener:
         self.server_ip = ''
         self.req_count = 0
 
-    #@logged_method
     def create_socket(self):
 
         logger.info('creating server socket listener')
@@ -32,7 +31,6 @@ class Listener:
             logger.error(error)
         logger.debug(f"server socket: {str(self.server_socket)}")
 
-    #@logged_method
     def set_ip(self):
         ip = None
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -48,13 +46,11 @@ class Listener:
             # self.server_ip = '18.191.38.171'
             logger.info(f"server ip set to: {self.server_ip}")
 
-    #@logged_method
     def send_bad_request(self, connection_socket):
 
         msg = "{'ERROR':'BAD REQUEST'}"
         connection_socket.send(msg.encode())
 
-    #@logged_method
     def process_request(self, connection_socket):
 
         full_msg = ''
@@ -98,7 +94,6 @@ class Listener:
         logger.debug(f"message item: {parsed_data}")
         self.request_queue.put(request)
 
-    #@logged_method
     def listen(self):
         connection_socket = None
         while True:
@@ -113,7 +108,6 @@ class Listener:
                 if connection_socket:
                     connection_socket.close()
 
-    #@logged_method
     def create_listener(self):
 
         self.set_ip()

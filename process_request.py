@@ -39,7 +39,6 @@ class ProcessRequest:
         self.leaderboard = Leaderboard(self.database)
 
     # TODO: find a better way to process these requests types.
-    #@logged_method
     def process_request_type(self, req_item: BaseRequest):
 
         def _unimplemented(msg: str):
@@ -69,7 +68,6 @@ class ProcessRequest:
 
     # The process thread will block on request_queue.get() until something
     # arrives.
-    #@logged_method
     def process_requests(self):
 
         while True:
