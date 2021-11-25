@@ -232,7 +232,7 @@ class MySQLContext(DBContext):
                               MySQLCursorPrepared]:
         # noinspection PyTypeChecker
         if self._cursor is None and self._db_connection is not None:
-            self._cursor = self._db_connection.cursor()
+            self._cursor = self._db_connection.cursor(buffered=True)
         return self._cursor
 
     @property
