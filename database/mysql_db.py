@@ -218,6 +218,7 @@ class MySQLContext(DBContext):
     def db_connection(self, connection: MySQLConnection):
         self._db_connection = connection
         self._cursor = connection.cursor()
+        logger.debug(f'cursor set to {self._cursor}')
 
     @property
     def cursor(self) -> Union[CursorBase,
@@ -329,7 +330,6 @@ class MySQLContextManager(DBContextManager):
                                                               host=self.host,
                                                               database=self.database_name,
                                                               auth_plugin=self.auth_plugin)
-        logger.debug(f'db connection set up: {self._context.db_connection}')
         return self._context
 
     # noinspection PyBroadException
