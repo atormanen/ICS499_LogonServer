@@ -242,7 +242,10 @@ def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
 
 
 def log_error(e: BaseException, msg=''):
-    logger.error(f'{msg} - {e!r}')
+    import traceback
+    et, ev, tb = e
+    tb_str = ''.join(traceback.format_exception(et, ev, tb))
+    logger.error(f'{msg} - {e!r}\n{tb_str}')
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
