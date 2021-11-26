@@ -483,16 +483,23 @@ class DB:
         :return: True if successful, else False.
         :raises UserNotFoundException If either user cannot be found in the database.
         """
+
+        log(f'username: {username}', label='remove_friend')
+        log(f'friends_username: {friends_username}', label='remove_friend')
         user_id = self.db_fetch(self.query_builder.get_user_id(username))
+        log(f'user_id: {user_id}', label='remove_friend')
         friends_id = self.db_fetch(self.query_builder.get_user_id(friends_username))
+        log(f'friends_id: {friends_id}', label='remove_friend')
         if (user_id is False):
             raise UserNotFoundException(username)
         if (friends_id is False):
             raise UserNotFoundException(friends_username)
         friends_id = friends_id[0][0]
+        log(f'friends_id: {friends_id}', label='remove_friend')
         user_id = user_id[0][0]
+        log(f'user_id: {user_id}', label='remove_friend')
         was_successful = self.db_delete(self.query_builder.remove_friend(user_id, friends_id))
-        self.db_delete(self.query_builder.remove_friend(friends_id, user_id))
+        log(f'was_successful: {was_successful}', label='remove_friend')
         if not was_successful:
             raise DatabaseFailureException(f'request to remove {friends_username} from {username}\'s '
                                            f'friend list failed for unknown reasons.')
