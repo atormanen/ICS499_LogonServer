@@ -118,14 +118,11 @@ class _LoggedWrapperType(Enum):
 
             #   Add the function/method name
             if self is _LoggedWrapperType.FUNCTION:
-                log_dict.update(function=__wrapped.__name__)
-                name = log_dict['function']
+                name = f'{__wrapped.__name__}'
             elif self is _LoggedWrapperType.NORMAL_METHOD:
-                log_dict.update(method=f'{type(self_obj).__name__}.{__wrapped.__name__}')
-                name = log_dict['method']
+                name = f'{type(self_obj).__name__}.{__wrapped.__name__}'
             elif self is _LoggedWrapperType.CLASS_METHOD:
-                log_dict.update(method=f'{cls.__name__}.{__wrapped.__name__}')
-                name = log_dict['method']
+                name = f'{cls.__name__}.{__wrapped.__name__}'
             else:
                 raise ValueError(f'Unsupported _WrapperType: {self}')
             #   Add arguments
@@ -148,14 +145,12 @@ class _LoggedWrapperType(Enum):
                 log_dict.update(self_object=self_obj.__repr__())
 
             # build the message
-            log_msg = f'CALL - {name}\n{pprint.pformat(log_dict)}'
-            for i, line in enumerate(log_msg.split('\n')):
+            label = f'CALL {name} details: '
+            log_msg = [f'CALL {name}']
+            log_msg.extend([f'{label}{line}' for line in pprint.pformat(log_dict).split('\n')])
 
-                # format the message line
-                if i > 0:
-                    line = f'  {line}'
-
-                # log the message line
+            # log the message
+            for line in log_msg:
                 if __level:
                     _logger.log(__level, line)
                 else:
