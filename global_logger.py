@@ -36,7 +36,7 @@ _log_file = './logs/logon_server.log'
 _old_log_formatter = logging.Formatter(
     "%(levelname)-7.7s %(process)-12.12d %(processName)-12.12s %(threadName)-12.12s %(asctime)s: %(message)s")
 _log_formatter = logging.Formatter(
-    "%(levelname)-7.7s %(threadName)-12.12s: %(message)s")
+    "%(levelname)-8.8s %(threadName)-12.12s: %(message)s")
 _logger = logging.getLogger()
 logging.addLevelName(VERBOSE, _verbose_level_name)
 
