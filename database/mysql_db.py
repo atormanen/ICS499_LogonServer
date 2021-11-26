@@ -338,8 +338,6 @@ class MySQLContextManager(DBContextManager):
                                                               host=self.host,
                                                               database=self.database_name,
                                                               auth_plugin=self.auth_plugin)
-        log(f'db_connection is {self._context.db_connection}')
-        log(f'cursor is {self._context.cursor}')
         return self._context
 
     # noinspection PyBroadException
