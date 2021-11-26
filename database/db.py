@@ -492,7 +492,8 @@ class DB:
         friends_id = friends_id[0][0]
         user_id = user_id[0][0]
         was_successful = self.db_delete(self.query_builder.remove_friend(user_id, friends_id))
-        self.db_delete(self.query_builder.remove_friend(friends_id, user_id))
+        if was_successful:
+            was_successful = all([was_successful, bool(self.db_delete(self.query_builder.remove_friend(friends_id, user_id)))])
         if not was_successful:
             raise DatabaseFailureException(f'request to remove {friends_username} from {username}\'s '
                                            f'friend list failed for unknown reasons.')

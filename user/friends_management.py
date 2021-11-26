@@ -94,6 +94,7 @@ class FriendsManagement:
         if self.validate_username(friends_username):
             try:
                 self.db.remove_friend(username, friends_username)
+                req_item.set_response()
             except DatabaseFailureException as e:
                 req_item.set_response(failure_reason=e.failure_reason_msg)
         else:
