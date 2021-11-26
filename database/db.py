@@ -499,6 +499,7 @@ class DB:
         user_id = user_id[0][0]
         log(f'user_id: {user_id}', label='remove_friend')
         was_successful = self.db_delete(self.query_builder.remove_friend(user_id, friends_id))
+        was_successful = all([was_successful, bool(self.db_delete(self.query_builder.remove_friend(friends_id, user_id)))])
         log(f'was_successful: {was_successful}', label='remove_friend')
         if not was_successful:
             raise DatabaseFailureException(f'request to remove {friends_username} from {username}\'s '
