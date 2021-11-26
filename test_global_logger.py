@@ -81,6 +81,53 @@ class TestGlobalLogger(EnhancedTestCase):
                 self.assertTrue(str_to_find in added_msg,
                                 f'"{str_to_find}" was not found in "{added_msg}"')
 
+
+    def test_logged_class_method_on_levels(self):
+
+        for level_name, level in global_logger.LogLevels.items():
+            class A:
+                @logged_class_method(level=level)
+                def push(cls, times_pressed=1) -> str:
+                    tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
+                    return f'Someone pushed the button{tmp_str}'
+
+            with self.subTest(f'level: {level_name}'):
+
+                global_logger._SINGLE_LINE_MODE = True
+
+                expected_return_value_string = 'Someone pushed the button 3 times'
+
+                length = []
+                # noinspection PyUnusedLocal
+                actual_added_lines = []
+                with open('./logs/logon_server.log', 'r') as f:
+                    lines = f.read().splitlines()
+                    length.append(len(lines))
+
+                actual_return_value_string = A.push(times_pressed=3)
+                self.assertEqual(expected_return_value_string, actual_return_value_string,
+                                 f'The returned string "{actual_return_value_string}" did not match \
+                                 "{expected_return_value_string}" when pushing button.')
+
+                with open('./logs/logon_server.log', 'r') as f:
+                    lines = f.read().splitlines()
+                    length.append(len(lines))
+                    actual_added_lines = lines[length[0]:]
+                    added_msg = '\n'.join(actual_added_lines)
+
+                for line in actual_added_lines:
+                    self.assertTrue(line.startswith(level_name), f'{line!r} does not start with {level_name!r}')
+
+                # check that the line has the correct function
+                list_that_must_be_in_actual = ["CALL A.push",
+                                               "'kwargs': {'times_pressed': 3}",
+                                               "'args': ()",
+                                               "'return_value': 'Someone pushed the button 3 times'"]
+
+                for str_to_find in list_that_must_be_in_actual:
+                    self.assertTrue(str_to_find in added_msg,
+                                    f'{str_to_find!r} was not found in {added_msg!r}')
+
     def test_logged_method(self):
 
         class Button:
@@ -158,6 +205,53 @@ class TestGlobalLogger(EnhancedTestCase):
             for str_to_find in list_that_must_be_in_actual:
                 self.assertTrue(str_to_find in added_msg,
                                 f'"{str_to_find}" was not found in "{added_msg}"')
+
+
+    def test_logged_method_on_levels(self):
+
+        for level_name, level in global_logger.LogLevels.items():
+            class A:
+                @logged_method(level=level)
+                def push(self, times_pressed=1) -> str:
+                    tmp_str = f' {times_pressed} times' if times_pressed > 1 else ''
+                    return f'Someone pushed the button{tmp_str}'
+
+            with self.subTest(f'level: {level_name}'):
+
+                global_logger._SINGLE_LINE_MODE = True
+
+                expected_return_value_string = 'Someone pushed the button 3 times'
+
+                length = []
+                # noinspection PyUnusedLocal
+                actual_added_lines = []
+                with open('./logs/logon_server.log', 'r') as f:
+                    lines = f.read().splitlines()
+                    length.append(len(lines))
+
+                actual_return_value_string = A().push(times_pressed=3)
+                self.assertEqual(expected_return_value_string, actual_return_value_string,
+                                 f'The returned string "{actual_return_value_string}" did not match \
+                                 "{expected_return_value_string}" when pushing button.')
+
+                with open('./logs/logon_server.log', 'r') as f:
+                    lines = f.read().splitlines()
+                    length.append(len(lines))
+                    actual_added_lines = lines[length[0]:]
+                    added_msg = '\n'.join(actual_added_lines)
+
+                for line in actual_added_lines:
+                    self.assertTrue(line.startswith(level_name), f'{line!r} does not start with {level_name!r}')
+
+                # check that the line has the correct function
+                list_that_must_be_in_actual = ["CALL A.push",
+                                               "'kwargs': {'times_pressed': 3}",
+                                               "'args': ()",
+                                               "'return_value': 'Someone pushed the button 3 times'"]
+
+                for str_to_find in list_that_must_be_in_actual:
+                    self.assertTrue(str_to_find in added_msg,
+                                    f'{str_to_find!r} was not found in {added_msg!r}')
 
     def test_logged_function(self):
 
