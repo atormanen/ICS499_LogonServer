@@ -1,9 +1,9 @@
 import time
 
-from database.db import DB, FriendRequestNotFoundException, FailureException
-from global_logger import logger, logged_method
 from data.message_item import GetFriendsListRequest, GetFriendRequestsRequest, SendFriendRequestRequest, \
     AcceptFriendRequestRequest, RemoveFriendRequest
+from database.db import DB, FriendRequestNotFoundException, DatabaseFailureException
+from global_logger import logger
 
 
 # Friends management will handle the mechanics of sending friends requests,
@@ -13,7 +13,6 @@ class FriendsManagement:
     def __init__(self, database: DB):
         self.db: DB = database
 
-    #@logged_method
     def validate_token(self, username):
         token_expiration = self.db.get_token_creation_time(username)
         token = self.db.get_token(username)
@@ -27,31 +26,26 @@ class FriendsManagement:
         logger.debug(f"token is valid for user {username}")
         return True
 
-    #@logged_method
     def validate_username(self, username):
         if (self.db.user_exists(username)):
             return True
         return False
 
-    #@logged_method
     def get_friends_list(self, req_item: GetFriendsListRequest):
         # connect to mysqldb to get FriendsList
         friends_list = self.db.get_friends_list(req_item.username)
         req_item.set_response(friends_list=friends_list)
 
-    #@logged_method
     def get_friend_requests(self, req_item: GetFriendRequestsRequest):
         friend_list = self.db.check_for_friend_requests(req_item.username)
         req_item.set_response(friends_list=friend_list)
 
-    #@logged_method
     def get_user_stats(self, username):
         if (self.validate_username(username)):
             stats = self.db.get_user_stats(username)
             return stats
         return False
 
-    #@logged_method
     def send_friend_request(self, req_item: SendFriendRequestRequest):
         # send a friend req
         username = req_item.username
@@ -71,7 +65,6 @@ class FriendsManagement:
             else:
                 req_item.set_response(failure_reason="The requester's request does not exist.")
 
-    #@logged_method
     def accept_friend_request(self, req_item: AcceptFriendRequestRequest):
         username = req_item.username
         friends_username = req_item.friends_username
@@ -83,11 +76,9 @@ class FriendsManagement:
                 except FriendRequestNotFoundException as e:
                     req_item.set_response(failure_reason=e.failure_reason_msg)
 
-    #@logged_method
     def deny_friend_request(self):
         return False
 
-    #@logged_method
     def remove_friend(self, req_item: RemoveFriendRequest):
         username = req_item.username
         friends_username = req_item.friends_username
@@ -103,7 +94,7 @@ class FriendsManagement:
         if self.validate_username(friends_username):
             try:
                 self.db.remove_friend(username, friends_username)
-            except FailureException as e:
+            except DatabaseFailureException as e:
                 req_item.set_response(failure_reason=e.failure_reason_msg)
         else:
             req_item.set_response(failure_reason='friends username not valid')

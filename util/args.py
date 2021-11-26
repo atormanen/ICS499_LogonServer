@@ -2,7 +2,7 @@ from typing import Mapping, Dict, Iterator, Iterable, overload, ItemsView, Value
 
 
 class Command:
-    def __init__(self, name, description, action, args:Collection[str] = None):
+    def __init__(self, name, description, action, args: Collection[str] = None):
         self.name = name
         self.description = description
         self.action = action
@@ -96,7 +96,7 @@ class CommandDict():
     def __ior__(self, __value: Mapping[str, Command]) -> Dict[str, Command]:
         return self._command_dict.__ior__(__value)
 
-    def add(self, description, args:Collection[str] = None):
+    def add(self, description, args: Collection[str] = None):
         """decorator for a function that is a command"""
 
         def wrapper(func):

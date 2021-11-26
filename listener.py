@@ -1,9 +1,10 @@
+import json
 import socket
 from threading import Thread
 
+from data.message_item import build_request
 from manifest import Manifest
 from process_request import *
-from data.message_item import build_request
 
 
 # Class listener is used to listen on a servers ip address and port port_number
@@ -21,7 +22,6 @@ class Listener:
         self.server_ip = ''
         self.req_count = 0
 
-    #@logged_method
     def create_socket(self):
 
         logger.info('creating server socket listener')
@@ -29,10 +29,9 @@ class Listener:
             self.server_socket.bind((self.server_ip, self.port_number))
             self.server_socket.listen(5)
         except OSError as error:
-            logger.error(error)
+            log_error(error)
         logger.debug(f"server socket: {str(self.server_socket)}")
 
-    #@logged_method
     def set_ip(self):
         ip = None
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -48,13 +47,11 @@ class Listener:
             # self.server_ip = '18.191.38.171'
             logger.info(f"server ip set to: {self.server_ip}")
 
-    #@logged_method
     def send_bad_request(self, connection_socket):
 
         msg = "{'ERROR':'BAD REQUEST'}"
         connection_socket.send(msg.encode())
 
-    #@logged_method
     def process_request(self, connection_socket):
 
         full_msg = ''
@@ -86,19 +83,18 @@ class Listener:
             if not (full_msg[0] == "{"):
                 full_msg = full_msg[2::]
         except IndexError as error:
-            logger.error(error)
+            log_error(error)
             return
         try:
             parsed_data = json.loads(full_msg)
         except (json.decoder.JSONDecodeError):
-            logger.error(f"unable to load message into json: {full_msg}")
+            log_error(f"unable to load message into json: {full_msg}")
             self.send_bad_request(connection_socket)
             return
         request = build_request(connection_socket, parsed_data)
         logger.debug(f"message item: {parsed_data}")
         self.request_queue.put(request)
 
-    #@logged_method
     def listen(self):
         connection_socket = None
         while True:
@@ -109,11 +105,10 @@ class Listener:
                 thread = Thread(target=self.process_request, args=(connection_socket,))
                 thread.start()
             except IOError as error:
-                logger.error(error)
+                log_error(error)
                 if connection_socket:
                     connection_socket.close()
 
-    #@logged_method
     def create_listener(self):
 
         self.set_ip()

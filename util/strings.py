@@ -1,7 +1,8 @@
 from typing import Collection
 
 
-def cslist(items: Collection = None,  conjunction='and', *, use_oxford_comma=True, sepr: str = ', ',):
+def cslist(items: Collection = None, conjunction='and', *, use_oxford_comma=True, separator: str = ', ', ):
+    """Creates a comma separated list"""
     if items is None:
         items = tuple()
     elif not isinstance(items, Collection):
@@ -18,4 +19,4 @@ def cslist(items: Collection = None,  conjunction='and', *, use_oxford_comma=Tru
     else:
         conjunction_str = f' {conjunction} '
 
-    return conjunction_str.join((sepr.join(items[0:-1]), items[-1]))
+    return conjunction_str.join((separator.join(items[0:-1]), items[-1]))

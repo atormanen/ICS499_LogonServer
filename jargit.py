@@ -12,6 +12,8 @@ from typing import List, Optional
 from util.args import CommandDict
 from util.const import ConstContainer
 
+WAIT_TIME_SECONDS = 2.0
+
 commands: CommandDict = CommandDict()
 
 
@@ -180,7 +182,7 @@ def __perform_git_op(git_op: str, parsed_args) -> None:
             # to see if the server false to get started
             verbose_or_normal_print('-' * width)
             verbose_or_normal_print('Waiting on Service Status'.center(width), end='\r')
-            sleep(5.0)
+            sleep(WAIT_TIME_SECONDS)
             try:
                 process = run(['systemctl', 'status', '-n', '100', 'jar_logon.service'], check=True, text=True,
                               capture_output=True)
@@ -243,7 +245,7 @@ def checkout(parsed_args) -> None:
 
 
 _SCRIPT_NAME: Optional[str] = None
-_SCRIPT_USAGE: Optional[str] = '\n'.join(('jargit.py command [command_args ...] [-h] [-v | -q] [--interactive]',
+_SCRIPT_USAGE: Optional[str] = '\n'.join(('jargit command [command_args ...] [-h] [-v | -q] [--interactive]',
                                           '',
                                           'commands:',
                                           *[f'  {c.get_help_msg()}' for c in commands.values()]))
@@ -252,6 +254,7 @@ _SCRIPT_EPILOG: Optional[str] = None
 
 # Script Default Constants
 _SCRIPT_IS_INTERACTIVE_BY_DEFAULT = False
+
 
 def main(args: Optional[List[str]]):
     """Executes the script. Use '-h' argument to see help info."""

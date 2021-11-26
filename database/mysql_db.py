@@ -1,50 +1,51 @@
-import time
-from typing import Optional
+from __future__ import annotations
 
-from global_logger import logged_method
+from typing import List
+
+import mysql.connector
+from mysql.connector import MySQLConnection
+from mysql.connector.cursor import MySQLCursor, \
+    CursorBase, MySQLCursorBuffered, MySQLCursorRaw, MySQLCursorBufferedRaw, \
+    MySQLCursorDict, MySQLCursorBufferedDict, MySQLCursorNamedTuple, MySQLCursorBufferedNamedTuple, MySQLCursorPrepared
+
+from database.db import QueryBuilder, DBContext, DBContextManager, DBTransaction, DBRollbackError, DBCommitError, \
+    DBQueryError, DB
+from global_logger import *
 
 
-# TODO: change MysqlDB to db and change query builder to mysql_query
-class MysqlDB:
+class MySQLQueryBuilder(QueryBuilder):
     """This class holds all the mysql syntax for the sql class"""
 
     def __init__(self):
         self.table_name = 'test'
 
-    #@logged_method
     def get_password_for(self, username) -> str:
         select_statement = "SELECT password FROM user WHERE username ='" + \
                            username + "';"
         return select_statement
 
-    #@logged_method
     def change_password(self, username, password) -> str:
         query = "UPDATE user SET password = '" + str(password) + "' WHERE username = '" + str(username) + "';"
         return query
 
-    #@logged_method
     def validate_user_exists(self, username) -> str:
         statement = "SELECT EXISTS(SELECT username FROM user WHERE username = '" + \
                     username + "');"
         return statement
 
-    #@logged_method
     def check_if_friend_request_exists(self, user_id, friends_id) -> str:
         query = "SELECT EXISTS(SELECT user_id FROM friend_list WHERE user_id = \
         " + str(user_id) + " AND friend_id = " + str(friends_id) + " AND request_accepted = 0);"
         return query
 
-    #@logged_method
     def validate_username_available(self, username) -> str:
         statement = "SELECT EXISTS(SELECT username FROM user WHERE username = '" + \
                     username + "');"
         return statement
 
-    #@logged_method
     def get_last_user_id(self) -> str:
         return "SELECT MAX(user_id) FROM user;"
 
-    #@logged_method
     def create_user(self, user_id, parsed_data) -> str:
         now = time.strftime('%Y-%m-%d %H-%M-%S')
         user_id = str(user_id)
@@ -59,11 +60,9 @@ class MysqlDB:
 
     # id, username, firstname, lastname, email, avatar, ####, password, now, signon_token,
 
-    #@logged_method
     def create_user_stats(self, user_id) -> str:
         return "INSERT INTO user_statistics VALUES(" + str(user_id) + ",0,0,0,0,0,null,1);"
 
-    #@logged_method
     def get_friends_list(self, user_id) -> str:
         query = "select user.user_id, user.username \
                     from user \
@@ -73,64 +72,54 @@ class MysqlDB:
                 " AND request_accepted = 1;"
         return query
 
-    #@logged_method
     def get_user_id(self, username) -> str:
         query = "SELECT user_id FROM user WHERE username = '" + username + "';"
         return query
 
-    #@logged_method
     def get_user_from_id(self, user_id) -> str:
         query = "SELECT username FROM user WHERE user_id = '" + str(user_id) + "';"
         return query
 
-    #@logged_method
     def get_user_stats(self, user_id) -> str:
         query = "SELECT * FROM user_statistics WHERE user_id = " + user_id + ";"
         return query
 
-    #@logged_method
     def signin(self, username, token, token_expiration) -> str:
         query = "UPDATE user SET token_creation='" + token_expiration + \
                 "',signon_token='" + token + "' WHERE username = " + \
                 "'" + username + "';"
         return query
 
-    #@logged_method
     def get_token(self, username) -> str:
         query = "SELECT signon_token FROM user WHERE username='" + username + "';"
         return query
 
-    #@logged_method
     def get_token_creation_time(self, username) -> str:
         query = "SELECT unix_timestamp(token_creation) FROM user WHERE username='" + username + "';"
         return query
 
-    #@logged_method
     def send_friend_request(self, user_id, friend_id) -> str:
         query = "INSERT INTO friend_list VALUES(" + str(user_id) + \
                 "," + str(friend_id) + ",0);"
         return query
 
-    #@logged_method
     def add_friend(self, user_id, friend_id) -> str:
         query = "INSERT INTO friend_list VALUES(" + str(user_id) + \
                 "," + str(friend_id) + ",1);"
         return query
 
     # UserId and friend_id are backwards... that is intentional
-    #@logged_method
+
     def accept_friend_request(self, user_id, friend_id, accepted_request) -> str:
         query = "UPDATE friend_list set request_accepted = " + str(accepted_request) + \
                 " WHERE friend_id = " + str(user_id) + " AND user_id = " + \
                 str(friend_id) + ";"
         return query
 
-    #@logged_method
     def remove_friend(self, user_id, friend_id) -> str:
         query = "DELETE FROM friend_list WHERE user_id = " + str(user_id) + " AND friend_id = " + str(friend_id) + ";"
         return query
 
-    #@logged_method
     def check_for_friend_requests(self, user_id) -> str:
         query = f'SELECT user.user_id, user.username FROM user \
         INNER JOIN friend_list ON user.user_id = friend_list.user_id WHERE friend_list.friend_id = {str(user_id)} \
@@ -139,34 +128,29 @@ class MysqlDB:
 
     #  FIXME Remove noinspection comment when implemented
     # noinspection PyUnreachableCode,PyUnusedLocal
-    #@logged_method
-    def revoke_friend_request(self, user_id, friend_id) -> str:
 
+    def revoke_friend_request(self, user_id, friend_id) -> str:
         raise NotImplementedError('revoke_friend_request has not been implemented yet')  # FIXME remove when implemented
         query = f'SELECT friend_list.user_id, '
 
         return query
 
-    #@logged_method
     def logout(self, username) -> str:
         query = f"UPDATE user SET signon_token = null WHERE username = '{username}';"
         return query
 
-    #@logged_method
     def get_most_games_won(self, number_of_games) -> str:
         query = "select user.username, user_statistics.* from user inner join user_statistics on user.user_id = \
         user_statistics.user_id order by games_won desc limit " + str(
             number_of_games) + ";"
         return query
 
-    #@logged_method
     def get_longest_win_streak(self, number_of_games) -> str:
         query = "select user.username, user_statistics.* from user \
         inner join user_statistics on user.user_id = user_statistics.user_id\
         order by longest_win_streak desc limit" + str(number_of_games) + ";"
         return query
 
-    #@logged_method
     def get_account_info(self, username) -> str:
         query = "SELECT user.avatar, user.chess_board_style,  user.chess_piece_style, \
         user.match_clock_choice, user.automatic_queueing, user.disable_pausing, user.require_commit_press, \
@@ -174,7 +158,6 @@ class MysqlDB:
         Where username = '" + str(username) + "';"
         return query
 
-    #@logged_method
     def save_account_info(self, username, data) -> str:
         query = "UPDATE user, user_statistics SET user.avatar = " + str(
             data["avatar_style"]) + ", user.chess_board_style = " + str(
@@ -187,7 +170,6 @@ class MysqlDB:
             data["level"]) + " WHERE user.username = '" + str(username) + "';"
         return query
 
-    #@logged_method
     def save_account_info_by_key(self, username, key, value) -> Optional[str]:
         column = self.get_column(key)
         if (column is None):
@@ -196,7 +178,6 @@ class MysqlDB:
             value) + " WHERE user.username = '" + str(username) + "';"
         return query
 
-    #@logged_method
     def get_column(self, key) -> str:
         # noinspection SpellCheckingInspection
         columns = {
@@ -212,6 +193,207 @@ class MysqlDB:
         }
         return columns.get(key)
 
-    @staticmethod
-    def db_check():
-        return"SELECT user_id FROM user;"
+    @classmethod
+    def db_check(cls):
+        return "SELECT user_id FROM user;"
+
+
+class MySQLContext(DBContext):
+    def __init__(self):
+        self._fetched: List[tuple] = []
+        self._db_connection: Optional[MySQLConnection] = None
+        self._transactions: List[DBTransaction] = []
+        self._cursor: Optional[Union[CursorBase,
+                                     MySQLCursor,
+                                     MySQLCursorBuffered,
+                                     MySQLCursorRaw,
+                                     MySQLCursorBufferedRaw,
+                                     MySQLCursorDict,
+                                     MySQLCursorBufferedDict,
+                                     MySQLCursorNamedTuple,
+                                     MySQLCursorBufferedNamedTuple,
+                                     MySQLCursorPrepared]] = None
+
+    @property
+    def fetched(self) -> List[tuple]:
+        return self._fetched
+
+    @property
+    def db_connection(self) -> MySQLConnection:
+        return self._db_connection
+
+    @db_connection.setter
+    def db_connection(self, connection: MySQLConnection):
+        self._db_connection = connection
+        self._cursor = self._db_connection.cursor()
+        logger.debug(f'cursor set to {self._cursor} in db_connect setter')
+
+    @property
+    def cursor(self) -> Union[CursorBase,
+                              MySQLCursor,
+                              MySQLCursorBuffered,
+                              MySQLCursorRaw,
+                              MySQLCursorBufferedRaw,
+                              MySQLCursorDict,
+                              MySQLCursorBufferedDict,
+                              MySQLCursorNamedTuple,
+                              MySQLCursorBufferedNamedTuple,
+                              MySQLCursorPrepared]:
+        # noinspection PyTypeChecker
+        return self._cursor
+
+    @property
+    def was_successful(self) -> bool:
+        """True if all transactions have been committed successfully."""
+        return all(t.was_committed for t in self._transactions)
+
+    @property
+    def transactions(self) -> List[DBTransaction]:
+        """A list of transactions."""
+        return self._transactions
+
+    def execute(self, statement: str):
+        """Execute given statement on the database."""
+        if not self._transactions or self._transactions[-1].is_closed:
+            self._transactions.append(DBTransaction())
+        self._transactions[-1].add_statement(statement)
+        try:
+            return self.cursor.execute(statement)
+        except mysql.connector.Error as e:
+            self.db_connection.rollback()
+            self.transactions[-1].was_rolled_back = True
+            raise DBQueryError(statement, f"error in sql statement: {statement}") from e
+
+    def commit(self) -> None:
+        """Commits the current transaction."""
+        if not self._transactions or not self._transactions[-1].statements:
+            raise DBCommitError(self._transactions[-1], 'Nothing to commit')
+        if self._transactions[-1].is_closed:
+            raise DBCommitError(self._transactions[-1], 'Transaction already closed')
+        try:
+            self.db_connection.commit()
+            self.transactions[-1].was_committed = True
+        except mysql.connector.Error as e:
+            self.db_connection.rollback()
+            self.transactions[-1].was_rolled_back = True
+            raise DBCommitError(self._transactions[-1], f"Failed to commit database transaction.") from e
+
+    def rollback(self) -> None:
+        """Rolls back the current transaction."""
+        if not self._transactions or not self._transactions[-1].statements:
+            raise DBRollbackError(self._transactions[-1], 'Nothing to rollback')
+        if self._transactions[-1].is_closed:
+            raise DBRollbackError(self._transactions[-1], 'Transaction already closed')
+
+        self.db_connection.rollback()
+        self.transactions[-1].was_rolled_back = True
+
+    def fetchall(self) -> List[tuple]:
+        """Gets all rows of a query result, stores them in the context field `fetched` and also returned."""
+        self._fetched = self.cursor.fetchall()
+        return self.fetched
+
+
+class MySQLContextManager(DBContextManager):
+    def __init__(self,
+                 user,
+                 password,
+                 host,
+                 database,
+                 auth_plugin):
+        self._auth_plugin = auth_plugin
+        self._database = database
+        self._host = host
+        self._password = password
+        self._user = user
+        self._context = None
+
+    @property
+    def auth_plugin(self):
+        return self._auth_plugin
+
+    @property
+    def database_name(self) -> str:
+        return self._database
+
+    @property
+    def host(self) -> str:
+        return self._host
+
+    @property
+    def password(self) -> str:
+        return self._password
+
+    @property
+    def user(self) -> str:
+        return self._user
+
+    @property
+    def context(self) -> MySQLContext:
+        return self._context
+
+    @logged_method
+    def __enter__(self) -> MySQLContext:
+        self._context = MySQLContext()
+        self._context.db_connection = mysql.connector.connect(user=self.user, password=self.password,
+                                                              host=self.host,
+                                                              database=self.database_name,
+                                                              auth_plugin=self.auth_plugin)
+        log(f'db_connection is {self._context.db_connection}')
+        log(f'cursor is {self._context.cursor}')
+        return self._context
+
+    # noinspection PyBroadException
+    @logged_method
+    def __exit__(self, exc_type, exc_val, exc_tb):
+
+        if exc_val:
+            log_error(exc_val)
+            self.context.result = False
+        else:
+            self.context.result = True
+
+        try:
+            if self.context.cursor:
+                self.context.cursor.close()
+        except BaseException as e0:
+            log_error(e0)
+        try:
+            if self.context.db_connection:
+                self.context.db_connection.close()
+        except BaseException as e1:
+            log_error(e1)
+
+        return self.context.result
+
+
+class MySQLDB(DB):
+    def __init__(self, user, password, reader, writer, database: str):
+        """ Initializes the DB object.
+
+        Args:
+            user: The user accessing the database.
+            password: The password used to access database.
+            reader: TODO
+            writer: TODO
+            database: The name of the database being accessed.
+
+        Raises:
+            CouldNotConnectException: If connection test fails.
+        """
+        self.user = user
+        self.password = password
+        self.reader = reader
+        self.writer = writer
+        self.database = database
+        self.auth_plugin = 'mysql_native_password'
+
+        def mysql_context_manager_factory():
+            return MySQLContextManager(user=self.user,
+                                       password=self.password,
+                                       host=self.writer,
+                                       database=self.database,
+                                       auth_plugin=self.auth_plugin)
+
+        super().__init__(MySQLQueryBuilder(), mysql_context_manager_factory)
+
