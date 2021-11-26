@@ -271,7 +271,7 @@ def log_error(e: Exception, msg=''):
         tb_lines.extend(item.split('\n'))
     _logger.error(f'{msg} - {e!r}' if msg else repr(e))
     for line in tb_lines:
-        _logger.error(f'    {line}')
+        _logger.error(f'{e!r} traceback: {line}')
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
