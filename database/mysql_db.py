@@ -226,7 +226,6 @@ class MySQLContext(DBContext):
     def db_connection(self, connection: MySQLConnection):
         self._db_connection = connection
         self._cursor = self._db_connection.cursor()
-        logger.debug(f'cursor set to {self._cursor} in db_connect setter')
 
     @property
     def cursor(self) -> Union[CursorBase,
