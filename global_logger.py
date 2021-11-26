@@ -162,10 +162,15 @@ class _LoggedWrapperType(Enum):
             else:
                 return return_value
 
-        return classmethod(_wrapper) if self is _LoggedWrapperType.CLASS_METHOD else _wrapper
+        if __wrapped is None:
+            def _outer_wrapper(func):
+                return self.build_wrapper(func, __level)
+            return _outer_wrapper
+        else:
+            return classmethod(_wrapper) if self is _LoggedWrapperType.CLASS_METHOD else _wrapper
 
 
-def logged_function(wrapped, level: Optional[int] = None):
+def logged_function(wrapped = None, level: Optional[int] = None):
     """An annotation that allows the annotated function to be logged when called.
 
     Args:
@@ -223,7 +228,7 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
         return _outer_wrapper(wrapped)
 
 
-def logged_method(wrapped, level: Optional[int] = None):
+def logged_method(wrapped = None, level: Optional[int] = None):
     """An annotation that allows the annotated method to be logged when called.
 
     Args:
@@ -241,7 +246,7 @@ def logged_method(wrapped, level: Optional[int] = None):
     return _LoggedWrapperType.NORMAL_METHOD.build_wrapper(wrapped, level)
 
 
-def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
+def logged_class_method(wrapped = None, level: Optional[int] = None) -> classmethod:
     """An annotation that allows the annotated class method to be logged when called.
 
     Args:
