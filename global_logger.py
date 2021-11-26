@@ -6,16 +6,27 @@ import time
 from enum import auto, Enum
 from functools import wraps
 from typing import Optional, Union, Callable, Collection
+from util.const import ConstContainer
 
 # Set up logging level constants
 from util.strings import cslist
 
-CRITICAL = logging.CRITICAL  # 50
-ERROR = logging.ERROR  # 40
-WARNING = logging.WARNING  # 30
-INFO = logging.INFO  # 20
-VERBOSE = 15
-DEBUG = logging.DEBUG  # 10
+
+class LogLevels(ConstContainer):
+    CRITICAL = logging.CRITICAL  # 50
+    ERROR = logging.ERROR  # 40
+    WARNING = logging.WARNING  # 30
+    INFO = logging.INFO  # 20
+    VERBOSE = 15
+    DEBUG = logging.DEBUG  # 10
+
+
+CRITICAL = LogLevels.CRITICAL  # 50
+ERROR = LogLevels.ERROR  # 40
+WARNING = LogLevels.WARNING  # 30
+INFO = LogLevels.INFO  # 20
+VERBOSE = LogLevels.VERBOSE # 15
+DEBUG = LogLevels.DEBUG  # 10
 
 # Setup internal vars
 _verbose_level_name = 'VERBOSE'
