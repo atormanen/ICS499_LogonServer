@@ -33,7 +33,7 @@ class Responder:
         connection_socket.send(status.encode())
 
     def send_response(self, msg_item: BaseRequest, timeout_seconds: float):
-        logger.debug(msg_item.response)
+        logger.debug(f'response: {msg_item.response}')
         try:
             msg_item.socket.settimeout(timeout_seconds)
             msg_item.socket.send(msg_item.response.encode())

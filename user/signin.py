@@ -46,7 +46,7 @@ class Signin:
                 # Bundle the token into the response package
                 signon_token = self.db.get_token(username)
                 signon_token = signon_token[0][0]
-                logger.debug(type(signon_token))
+                logger.debug(f'type of token from signin: {type(signon_token)}')
                 if (signon_token is None):
                     signon_token = self.token.get_token()
                     self.db.signin(username, signon_token, self.token.get_token_creation_time())
