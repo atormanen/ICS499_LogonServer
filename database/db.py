@@ -333,7 +333,7 @@ class DB:
         user_id = user_id[0][0]
         friends_id = friends_id[0][0]
         result = self.db_fetch(self.query_builder.check_if_friend_request_exists(user_id, friends_id))
-        logger.debug(type(result))
+        logger.debug(f'type of result from check_if_friend_request_exists: {type(result)}')
         int_result = result[0][0]
         return bool(int_result)
 
@@ -483,6 +483,7 @@ class DB:
         :return: True if successful, else False.
         :raises UserNotFoundException If either user cannot be found in the database.
         """
+
         user_id = self.db_fetch(self.query_builder.get_user_id(username))
         friends_id = self.db_fetch(self.query_builder.get_user_id(friends_username))
         if (user_id is False):
