@@ -1,6 +1,7 @@
 import logging.handlers
 import logging.handlers
 import os
+import pprint
 import time
 from enum import auto, Enum
 from functools import wraps
@@ -107,10 +108,13 @@ class _LoggedWrapperType(Enum):
             #   Add the function/method name
             if self is _LoggedWrapperType.FUNCTION:
                 log_dict.update(function=__wrapped.__name__)
+                name = log_dict['function']
             elif self is _LoggedWrapperType.NORMAL_METHOD:
                 log_dict.update(method=f'{type(self_obj).__name__}.{__wrapped.__name__}')
+                name = log_dict['method']
             elif self is _LoggedWrapperType.CLASS_METHOD:
                 log_dict.update(method=f'{cls.__name__}.{__wrapped.__name__}')
+                name = log_dict['method']
             else:
                 raise ValueError(f'Unsupported _WrapperType: {self}')
             #   Add arguments
@@ -133,13 +137,18 @@ class _LoggedWrapperType(Enum):
                 log_dict.update(self_object=self_obj.__repr__())
 
             # build the message
-            log_msg = f'CALL - {log_dict!r}'
+            log_msg = f'CALL - {name}\n{pprint.pformat(log_dict)}'
+            for i, line in enumerate(log_msg.split('\n')):
 
-            # log the message
-            if __level:
-                _logger.log(__level, log_msg)
-            else:
-                _logger.debug(log_msg)
+                # format the message line
+                if i > 0:
+                    line = f'  {line}'
+
+                # log the message line
+                if __level:
+                    _logger.log(__level, line)
+                else:
+                    _logger.debug(line)
 
             # return the return value or raise the exception to finish
             if exception:
@@ -195,7 +204,7 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
         msg = f'{deprecated_name} is deprecated{alt_part_of_msg}'
 
         def _wrapper(*args, **kwargs):
-            logger.warning(msg)
+            _logger.warning(msg)
             return func(*args, **kwargs)
 
         return classmethod(_wrapper) if isinstance(func, classmethod) \
