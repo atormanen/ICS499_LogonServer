@@ -537,8 +537,6 @@ class SigninRequest(ValidRequest):
         if not failure_reason:
             if token:
                 if data and len(data) > 0 and len(data[0]) > 7:
-                    logger.debug(data)
-
                     # noinspection SpellCheckingInspection
                     user_dict = {'token': token, 'avatar_style': data[0][0], 'chessboard_style': data[0][1],
                                  'chesspiece_style': data[0][2], 'match_clock_choice': data[0][3],

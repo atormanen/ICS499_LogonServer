@@ -63,11 +63,9 @@ class RequestProcessor:
 
         while True:
             request_item = self.request_queue.get()
-            logger.debug('a')  # TODO Remove
             # Decrypt parsed_data
             try:
                 self.process_request_type(request_item)
-                logger.debug('b')  # TODO Remove
             except Exception as e:
                 log_error(e)
                 request_item.set_invalid_request_response()
