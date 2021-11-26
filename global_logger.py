@@ -25,7 +25,7 @@ _old_log_formatter = logging.Formatter(
     "%(levelname)-7.7s %(process)-12.12d %(processName)-12.12s %(threadName)-12.12s %(asctime)s: %(message)s")
 _log_formatter = logging.Formatter(
     "%(levelname)-7.7s %(threadName)-12.12s: %(message)s")
-logger = logging.getLogger()
+_logger = logging.getLogger()
 logging.addLevelName(VERBOSE, _verbose_level_name)
 
 # Make directory (if it doesn't exist)
@@ -39,9 +39,9 @@ file_handler = logging.handlers.WatchedFileHandler(filename=os.environ.get('LOGF
 file_handler.setFormatter(_log_formatter)
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(_log_formatter)
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
-logger.setLevel(logging.DEBUG)
+_logger.addHandler(file_handler)
+_logger.addHandler(console_handler)
+_logger.setLevel(logging.DEBUG)
 
 
 class _LoggedWrapperType(Enum):
@@ -137,9 +137,9 @@ class _LoggedWrapperType(Enum):
 
             # log the message
             if __level:
-                logger.log(__level, log_msg)
+                _logger.log(__level, log_msg)
             else:
-                logger.debug(log_msg)
+                _logger.debug(log_msg)
 
             # return the return value or raise the exception to finish
             if exception:
@@ -249,9 +249,9 @@ def log_error(e: Exception, msg=''):
     tb_lines = []
     for item in tb:
         tb_lines.extend(item.split('\n'))
-    logger.error(f'{msg} - {e!r}' if msg else repr(e))
+    _logger.error(f'{msg} - {e!r}' if msg else repr(e))
     for line in tb_lines:
-        logger.error(f'    {line}')
+        _logger.error(f'    {line}')
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
@@ -273,4 +273,4 @@ def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
 
     """
     msg = f'{label} - {msg}' if label else msg
-    logger.log(level, msg, **kwargs)
+    _logger.log(level, msg, **kwargs)
