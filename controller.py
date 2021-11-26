@@ -6,7 +6,7 @@ from threading import Thread
 
 from database.db import DB
 from database.mysql_db import MySQLDB
-from global_logger import logger
+from global_logger import log, INFO
 from listener import Listener
 from manifest import Manifest
 from process_request import RequestProcessor
@@ -33,14 +33,14 @@ class Controller:
     def create_request_processors(self):
         processes = []
         for i in range(self.manifest.number_of_request_processors):
-            logger.info(f"creating request processor {str(i)}")
+            log(f"creating request processor {str(i)}", level=INFO)
             # print('Creating processes %d' % i)
             processes.append(Process(target=self._create_request_processor))
         for i in processes:
             i.start()
 
     def create_listener(self):
-        logger.info('creating request listener')
+        log('creating request listener', level=INFO)
         self.listener.create_listener()
         thread = Thread(target=self.listener.listen)
         thread.start()
@@ -49,9 +49,9 @@ class Controller:
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    logger.info('')
-    logger.info('starting logon server')
-    logger.info('')
+    log(level=INFO)
+    log('starting logon server', level=INFO)
+    log(level=INFO)
     if args:
         # get database configuration info from arguments and password from input.
         from getpass import getpass

@@ -3,6 +3,7 @@ import socket
 from threading import Thread
 
 from data.message_item import build_request
+from global_logger import INFO, log
 from manifest import Manifest
 from process_request import *
 
@@ -24,13 +25,13 @@ class Listener:
 
     def create_socket(self):
 
-        logger.info('creating server socket listener')
+        log('creating server socket listener', level=INFO)
         try:
             self.server_socket.bind((self.server_ip, self.port_number))
             self.server_socket.listen(5)
         except OSError as error:
             log_error(error)
-        logger.debug(f"server socket: {str(self.server_socket)}")
+        log(f"server socket: {str(self.server_socket)}")
 
     def set_ip(self):
         ip = None
@@ -45,7 +46,7 @@ class Listener:
             s.close()
             self.server_ip = ip
             # self.server_ip = '18.191.38.171'
-            logger.info(f"server ip set to: {self.server_ip}")
+            log(f"server ip set to: {self.server_ip}", level=INFO)
 
     def send_bad_request(self, connection_socket):
 
@@ -92,7 +93,7 @@ class Listener:
             self.send_bad_request(connection_socket)
             return
         request = build_request(connection_socket, parsed_data)
-        logger.debug(f"message item: {parsed_data}")
+        log(f"message item: {parsed_data}")
         self.request_queue.put(request)
 
     def listen(self):
@@ -101,7 +102,7 @@ class Listener:
             self.req_count += 1
             try:
                 connection_socket, address = self.server_socket.accept()
-                logger.debug(f"received message from {str(address)}")
+                log(f"received message from {str(address)}")
                 thread = Thread(target=self.process_request, args=(connection_socket,))
                 thread.start()
             except IOError as error:

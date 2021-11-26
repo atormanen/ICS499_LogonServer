@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import List
-from global_logger import *
+from typing import List, Callable, Optional
+from global_logger import log
 
 
 class DatabaseFailureException(Exception):
@@ -333,7 +333,7 @@ class DB:
         user_id = user_id[0][0]
         friends_id = friends_id[0][0]
         result = self.db_fetch(self.query_builder.check_if_friend_request_exists(user_id, friends_id))
-        logger.debug(f'type of result from check_if_friend_request_exists: {type(result)}')
+        log(f'type of result from check_if_friend_request_exists: {type(result)}')
         int_result = result[0][0]
         return bool(int_result)
 

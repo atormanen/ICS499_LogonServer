@@ -1,7 +1,7 @@
 from socket import socket
 
 from data.message_item import BaseRequest
-from global_logger import *
+from global_logger import log, VERBOSE, deprecated, log_error
 
 
 # from MessageItem import MessageItem
@@ -16,7 +16,7 @@ class Responder:
 
     def send_bad_request(self, connection_socket: socket):
         connection_socket.settimeout(self.timeout_seconds)
-        logger.verbose(f"bad request")
+        log(f"bad request", level=VERBOSE)
         msg = "ERROR - BAD REQUEST"
         connection_socket.send(msg.encode('utf-8'))
         connection_socket.close()
@@ -33,7 +33,7 @@ class Responder:
         connection_socket.send(status.encode())
 
     def send_response(self, msg_item: BaseRequest, timeout_seconds: float):
-        logger.debug(f'response: {msg_item.response}')
+        log(f'response: {msg_item.response}')
         try:
             msg_item.socket.settimeout(timeout_seconds)
             msg_item.socket.send(msg_item.response.encode())

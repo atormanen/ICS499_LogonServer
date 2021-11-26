@@ -3,7 +3,7 @@ import time
 from data.message_item import GetFriendsListRequest, GetFriendRequestsRequest, SendFriendRequestRequest, \
     AcceptFriendRequestRequest, RemoveFriendRequest
 from database.db import DB, FriendRequestNotFoundException, DatabaseFailureException
-from global_logger import logger
+from global_logger import log
 
 
 # Friends management will handle the mechanics of sending friends requests,
@@ -21,9 +21,9 @@ class FriendsManagement:
         current_time = time.time()
         time_difference = current_time - token_expiration[0][0]
         if (time_difference > 86400):
-            logger.debug(f"token expired for user {username}")
+            log(f"token expired for user {username}")
             return False
-        logger.debug(f"token is valid for user {username}")
+        log(f"token is valid for user {username}")
         return True
 
     def validate_username(self, username):

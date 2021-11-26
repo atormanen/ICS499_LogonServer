@@ -7,7 +7,7 @@ from socket import socket as socket_cls
 from typing import Optional, Type, Collection
 
 import global_logger
-from global_logger import logger, logged_method
+from global_logger import log, logged_method
 from util.const import ConstContainer as ConstContainer
 
 
@@ -543,7 +543,7 @@ class SigninRequest(ValidRequest):
                                  'automatic_queening': data[0][4], 'disable_pausing': data[0][5],
                                  'require_commit_press': data[0][6], 'level': data[0][7]}
                 elif data:
-                    logger.debug(data)
+                    log(f'set_response was provided invalid data: {data}')
                     failure_reason = 'Unexpected Error - Invalid user data received from database.'
                 else:
                     failure_reason = 'Unexpected Error - No user data received from database.'

@@ -1,7 +1,7 @@
 import time
 
 from data.message_item import *
-from global_logger import logger
+from global_logger import log
 from user.tokens import Tokens
 
 
@@ -30,9 +30,9 @@ class Signin:
         current_time = time.time()
         time_difference = current_time - token_expiration[0][0]
         if (time_difference > 86400):
-            logger.debug(f"token expired for user {username}")
+            log(f"token expired for user {username}")
             return False
-        logger.debug(f"token is valid for user {username}")
+        log(f"token is valid for user {username}")
         return True
 
     def signin(self, req_item: SigninRequest):
@@ -46,7 +46,7 @@ class Signin:
                 # Bundle the token into the response package
                 signon_token = self.db.get_token(username)
                 signon_token = signon_token[0][0]
-                logger.debug(f'type of token from signin: {type(signon_token)}')
+                log(f'type of token from signin: {type(signon_token)}')
                 if (signon_token is None):
                     signon_token = self.token.get_token()
                     self.db.signin(username, signon_token, self.token.get_token_creation_time())
@@ -56,7 +56,7 @@ class Signin:
                 self.db.signin(username, signon_token, self.token.get_token_creation_time())
                 req_item.set_response(token=signon_token, data=data)
         else:
-            logger.debug(f"signin failed for user {username}")
+            log(f"signin failed for user {username}")
             req_item.set_response(failure_reason='invalid password')
 
     def signout(self, req_item: SignoutRequest):

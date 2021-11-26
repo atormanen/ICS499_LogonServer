@@ -5,7 +5,7 @@ from data.test_message_item import REVOKE_FRIEND_REQUEST, GET_ACCOUNT_INFO, SAVE
     GET_MOST_CHESS_GAMES_WON, GET_LONGEST_WIN_STREAK, SIGNOUT, REMOVE_FRIEND, ACCEPT_FRIEND_REQUEST, \
     SEND_FRIEND_REQUEST, GET_FRIEND_REQUESTS, GET_FRIENDS_LIST, GET_USER_STATS, CREATE_ACCOUNT, SIGNIN
 from database.db import DB
-from global_logger import logger, log_error
+from global_logger import log_error
 from user.account_management import AccountManagement
 from user.friends_management import FriendsManagement
 from user.signin import Signin
