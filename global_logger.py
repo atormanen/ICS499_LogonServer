@@ -1,20 +1,32 @@
 import logging.handlers
 import logging.handlers
 import os
+import pprint
 import time
 from enum import auto, Enum
 from functools import wraps
 from typing import Optional, Union, Callable, Collection
+from util.const import ConstContainer
 
 # Set up logging level constants
 from util.strings import cslist
 
-CRITICAL = logging.CRITICAL  # 50
-ERROR = logging.ERROR  # 40
-WARNING = logging.WARNING  # 30
-INFO = logging.INFO  # 20
-VERBOSE = 15
-DEBUG = logging.DEBUG  # 10
+
+class LogLevels(ConstContainer):
+    CRITICAL = logging.CRITICAL  # 50
+    ERROR = logging.ERROR  # 40
+    WARNING = logging.WARNING  # 30
+    INFO = logging.INFO  # 20
+    VERBOSE = 15
+    DEBUG = logging.DEBUG  # 10
+
+
+CRITICAL = LogLevels.CRITICAL  # 50
+ERROR = LogLevels.ERROR  # 40
+WARNING = LogLevels.WARNING  # 30
+INFO = LogLevels.INFO  # 20
+VERBOSE = LogLevels.VERBOSE # 15
+DEBUG = LogLevels.DEBUG  # 10
 
 # Setup internal vars
 _verbose_level_name = 'VERBOSE'
@@ -24,8 +36,8 @@ _log_file = './logs/logon_server.log'
 _old_log_formatter = logging.Formatter(
     "%(levelname)-7.7s %(process)-12.12d %(processName)-12.12s %(threadName)-12.12s %(asctime)s: %(message)s")
 _log_formatter = logging.Formatter(
-    "%(levelname)-7.7s %(threadName)-12.12s: %(message)s")
-logger = logging.getLogger()
+    "%(levelname)-8.8s %(threadName)-12.12s: %(message)s")
+_logger = logging.getLogger()
 logging.addLevelName(VERBOSE, _verbose_level_name)
 
 # Make directory (if it doesn't exist)
@@ -39,9 +51,9 @@ file_handler = logging.handlers.WatchedFileHandler(filename=os.environ.get('LOGF
 file_handler.setFormatter(_log_formatter)
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(_log_formatter)
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
-logger.setLevel(logging.DEBUG)
+_logger.addHandler(file_handler)
+_logger.addHandler(console_handler)
+_logger.setLevel(logging.DEBUG)
 
 
 class _LoggedWrapperType(Enum):
@@ -106,11 +118,11 @@ class _LoggedWrapperType(Enum):
 
             #   Add the function/method name
             if self is _LoggedWrapperType.FUNCTION:
-                log_dict.update(function=__wrapped.__name__)
+                name = f'{__wrapped.__name__}'
             elif self is _LoggedWrapperType.NORMAL_METHOD:
-                log_dict.update(method=f'{type(self_obj).__name__}.{__wrapped.__name__}')
+                name = f'{type(self_obj).__name__}.{__wrapped.__name__}'
             elif self is _LoggedWrapperType.CLASS_METHOD:
-                log_dict.update(method=f'{cls.__name__}.{__wrapped.__name__}')
+                name = f'{cls.__name__}.{__wrapped.__name__}'
             else:
                 raise ValueError(f'Unsupported _WrapperType: {self}')
             #   Add arguments
@@ -133,13 +145,16 @@ class _LoggedWrapperType(Enum):
                 log_dict.update(self_object=self_obj.__repr__())
 
             # build the message
-            log_msg = f'CALL - {log_dict!r}'
+            label = f'CALL {name} details: '
+            log_msg = [f'CALL {name}']
+            log_msg.extend([f'{label}{line}' for line in pprint.pformat(log_dict).split('\n')])
 
             # log the message
-            if __level:
-                logger.log(__level, log_msg)
-            else:
-                logger.debug(log_msg)
+            for line in log_msg:
+                if __level:
+                    _logger.log(__level, line)
+                else:
+                    _logger.debug(line)
 
             # return the return value or raise the exception to finish
             if exception:
@@ -147,10 +162,15 @@ class _LoggedWrapperType(Enum):
             else:
                 return return_value
 
-        return classmethod(_wrapper) if self is _LoggedWrapperType.CLASS_METHOD else _wrapper
+        if __wrapped is None:
+            def _outer_wrapper(func):
+                return self.build_wrapper(func, __level)
+            return _outer_wrapper
+        else:
+            return classmethod(_wrapper) if self is _LoggedWrapperType.CLASS_METHOD else _wrapper
 
 
-def logged_function(wrapped, level: Optional[int] = None):
+def logged_function(wrapped = None, level: Optional[int] = None):
     """An annotation that allows the annotated function to be logged when called.
 
     Args:
@@ -195,7 +215,7 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
         msg = f'{deprecated_name} is deprecated{alt_part_of_msg}'
 
         def _wrapper(*args, **kwargs):
-            logger.warning(msg)
+            _logger.warning(msg)
             return func(*args, **kwargs)
 
         return classmethod(_wrapper) if isinstance(func, classmethod) \
@@ -208,7 +228,7 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
         return _outer_wrapper(wrapped)
 
 
-def logged_method(wrapped, level: Optional[int] = None):
+def logged_method(wrapped = None, level: Optional[int] = None):
     """An annotation that allows the annotated method to be logged when called.
 
     Args:
@@ -226,7 +246,7 @@ def logged_method(wrapped, level: Optional[int] = None):
     return _LoggedWrapperType.NORMAL_METHOD.build_wrapper(wrapped, level)
 
 
-def logged_class_method(wrapped, level: Optional[int] = None) -> classmethod:
+def logged_class_method(wrapped = None, level: Optional[int] = None) -> classmethod:
     """An annotation that allows the annotated class method to be logged when called.
 
     Args:
@@ -249,9 +269,9 @@ def log_error(e: Exception, msg=''):
     tb_lines = []
     for item in tb:
         tb_lines.extend(item.split('\n'))
-    logger.error(f'{msg} - {e!r}' if msg else repr(e))
+    _logger.error(f'{msg} - {e!r}' if msg else repr(e))
     for line in tb_lines:
-        logger.error(f'    {line}')
+        _logger.error(f'{e!r} traceback: {line}')
 
 
 def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
@@ -273,4 +293,4 @@ def log(msg='', *, label='', level=DEBUG, **kwargs) -> None:
 
     """
     msg = f'{label} - {msg}' if label else msg
-    logger.log(level, msg, **kwargs)
+    _logger.log(level, msg, **kwargs)
