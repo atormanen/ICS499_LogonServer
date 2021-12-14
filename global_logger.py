@@ -171,7 +171,7 @@ class _LoggedWrapperType(Enum):
             return classmethod(_wrapper) if self is _LoggedWrapperType.CLASS_METHOD else _wrapper
 
 
-def logged_function(wrapped = None, level: Optional[int] = None):
+def logged_function(wrapped=None, level: Optional[int] = None):
     """An annotation that allows the annotated function to be logged when called.
 
     Args:
