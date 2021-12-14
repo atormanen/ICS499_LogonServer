@@ -23,11 +23,13 @@ class Responder:
 
     @deprecated
     def send_requested_data(self, connection_socket: socket, requested_data):
+        warn('This is deprecated.', DeprecationWarning)
         connection_socket.settimeout(self.timeout_seconds)
         connection_socket.send(requested_data.encode())
 
     @deprecated
     def send_account_creation_status(self, connection_socket: socket, status):
+        warn('This is deprecated.', DeprecationWarning)
         connection_socket.settimeout(self.timeout_seconds)
         status = '' + status
         connection_socket.send(status.encode())
