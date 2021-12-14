@@ -201,6 +201,21 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
     Returns:
         A function that wraps a function
 
+    Notes::
+
+        If you want your IDE to be aware of the deprecation,
+        you may need to manually include a warning within the actual function definition.
+
+        It seems to be that way with PyCharm when creating this.
+
+        My work around is to include the following in the function definition:
+
+            global_logger.warn(<string literal msg>, DeprecationWarning)
+
+            example: global_logger.warn('This is deprecated.', DeprecationWarning)
+
+        It doesn't seem to work using variables for either argument at the moment.
+
     """
 
     def _outer_wrapper(func):
