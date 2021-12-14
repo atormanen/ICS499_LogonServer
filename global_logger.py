@@ -3,13 +3,14 @@ import logging.handlers
 import os
 import pprint
 import time
+import warnings
 from enum import auto, Enum
 from functools import wraps
 from typing import Optional, Union, Callable, Collection
 from util.const import ConstContainer
-
-# Set up logging level constants
 from util.strings import cslist
+
+warn = warnings.warn
 
 
 class LogLevels(ConstContainer):
@@ -25,7 +26,7 @@ CRITICAL = LogLevels.CRITICAL  # 50
 ERROR = LogLevels.ERROR  # 40
 WARNING = LogLevels.WARNING  # 30
 INFO = LogLevels.INFO  # 20
-VERBOSE = LogLevels.VERBOSE # 15
+VERBOSE = LogLevels.VERBOSE  # 15
 DEBUG = LogLevels.DEBUG  # 10
 
 # Setup internal vars
