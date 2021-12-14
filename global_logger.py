@@ -189,6 +189,19 @@ def logged_function(wrapped=None, level: Optional[int] = None):
     return _LoggedWrapperType.FUNCTION.build_wrapper(wrapped, level)
 
 
+def _get_deprecated_msg(func, alternatives: Optional[Union[Callable, Collection[Callable]]] = None):
+    alts = None
+    if alternatives:
+        if isinstance(alternatives, Collection):
+            alts = [f.__name__ for f in alternatives]
+        else:
+            alts = (alternatives.__name__,)
+
+    deprecated_name = func.__name__
+    alt_part_of_msg = '.' if not alts else f", consider using {cslist(alts, conjunction='or')}."
+    return f'{deprecated_name} is deprecated{alt_part_of_msg}'
+
+
 def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[Callable]]] = None) -> Callable:
     """An annotation that logs a warning that the method/function is deprecated.
 
@@ -219,16 +232,7 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
     """
 
     def _outer_wrapper(func):
-        alts = None
-        if alternatives:
-            if isinstance(alternatives, Collection):
-                alts = [f.__name__ for f in alternatives]
-            else:
-                alts = (alternatives.__name__,)
-
-        deprecated_name = func.__name__
-        alt_part_of_msg = '.' if not alts else f", consider using {cslist(alts, conjunction='or')}."
-        msg = f'{deprecated_name} is deprecated{alt_part_of_msg}'
+        msg = _get_deprecated_msg(func, alternatives)
 
         def _wrapper(*args, **kwargs):
             _logger.warning(msg)
