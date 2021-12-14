@@ -228,7 +228,7 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
         return _outer_wrapper(wrapped)
 
 
-def logged_method(wrapped = None, level: Optional[int] = None):
+def logged_method(wrapped=None, level: Optional[int] = None):
     """An annotation that allows the annotated method to be logged when called.
 
     Args:
@@ -246,7 +246,7 @@ def logged_method(wrapped = None, level: Optional[int] = None):
     return _LoggedWrapperType.NORMAL_METHOD.build_wrapper(wrapped, level)
 
 
-def logged_class_method(wrapped = None, level: Optional[int] = None) -> classmethod:
+def logged_class_method(wrapped=None, level: Optional[int] = None) -> classmethod:
     """An annotation that allows the annotated class method to be logged when called.
 
     Args:
