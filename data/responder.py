@@ -1,7 +1,7 @@
 from socket import socket
 
 from data.message_item import BaseRequest
-from global_logger import log, VERBOSE, deprecated, log_error
+from global_logger import log, VERBOSE, deprecated, log_error, warn
 
 
 # from MessageItem import MessageItem
