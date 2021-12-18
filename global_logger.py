@@ -3,13 +3,14 @@ import logging.handlers
 import os
 import pprint
 import time
+import warnings
 from enum import auto, Enum
 from functools import wraps
 from typing import Optional, Union, Callable, Collection
 from util.const import ConstContainer
-
-# Set up logging level constants
 from util.strings import cslist
+
+warn = warnings.warn
 
 
 class LogLevels(ConstContainer):
@@ -25,7 +26,7 @@ CRITICAL = LogLevels.CRITICAL  # 50
 ERROR = LogLevels.ERROR  # 40
 WARNING = LogLevels.WARNING  # 30
 INFO = LogLevels.INFO  # 20
-VERBOSE = LogLevels.VERBOSE # 15
+VERBOSE = LogLevels.VERBOSE  # 15
 DEBUG = LogLevels.DEBUG  # 10
 
 # Setup internal vars
@@ -170,7 +171,7 @@ class _LoggedWrapperType(Enum):
             return classmethod(_wrapper) if self is _LoggedWrapperType.CLASS_METHOD else _wrapper
 
 
-def logged_function(wrapped = None, level: Optional[int] = None):
+def logged_function(wrapped=None, level: Optional[int] = None):
     """An annotation that allows the annotated function to be logged when called.
 
     Args:
@@ -188,6 +189,19 @@ def logged_function(wrapped = None, level: Optional[int] = None):
     return _LoggedWrapperType.FUNCTION.build_wrapper(wrapped, level)
 
 
+def _get_deprecated_msg(func, alternatives: Optional[Union[Callable, Collection[Callable]]] = None):
+    alts = None
+    if alternatives:
+        if isinstance(alternatives, Collection):
+            alts = [f.__name__ for f in alternatives]
+        else:
+            alts = (alternatives.__name__,)
+
+    deprecated_name = func.__name__
+    alt_part_of_msg = '.' if not alts else f", consider using {cslist(alts, conjunction='or')}."
+    return f'{deprecated_name} is deprecated{alt_part_of_msg}'
+
+
 def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[Callable]]] = None) -> Callable:
     """An annotation that logs a warning that the method/function is deprecated.
 
@@ -200,19 +214,25 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
     Returns:
         A function that wraps a function
 
+    Notes::
+
+        If you want your IDE to be aware of the deprecation,
+        you may need to manually include a warning within the actual function definition.
+
+        It seems to be that way with PyCharm when creating this.
+
+        My work around is to include the following in the function definition:
+
+            global_logger.warn(<string literal msg>, DeprecationWarning)
+
+            example: global_logger.warn('This is deprecated.', DeprecationWarning)
+
+        It doesn't seem to work using variables for either argument at the moment.
+
     """
 
     def _outer_wrapper(func):
-        alts = None
-        if alternatives:
-            if isinstance(alternatives, Collection):
-                alts = [f.__name__ for f in alternatives]
-            else:
-                alts = (alternatives.__name__,)
-
-        deprecated_name = func.__name__
-        alt_part_of_msg = '.' if not alts else f", consider using {cslist(alts, conjunction='or')}."
-        msg = f'{deprecated_name} is deprecated{alt_part_of_msg}'
+        msg = _get_deprecated_msg(func, alternatives)
 
         def _wrapper(*args, **kwargs):
             _logger.warning(msg)
@@ -228,7 +248,7 @@ def deprecated(wrapped=None, alternatives: Optional[Union[Callable, Collection[C
         return _outer_wrapper(wrapped)
 
 
-def logged_method(wrapped = None, level: Optional[int] = None):
+def logged_method(wrapped=None, level: Optional[int] = None):
     """An annotation that allows the annotated method to be logged when called.
 
     Args:
@@ -246,7 +266,7 @@ def logged_method(wrapped = None, level: Optional[int] = None):
     return _LoggedWrapperType.NORMAL_METHOD.build_wrapper(wrapped, level)
 
 
-def logged_class_method(wrapped = None, level: Optional[int] = None) -> classmethod:
+def logged_class_method(wrapped=None, level: Optional[int] = None) -> classmethod:
     """An annotation that allows the annotated class method to be logged when called.
 
     Args:
